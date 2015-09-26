@@ -19,14 +19,21 @@ Webpage from the BioDocker repository
 
 Links:
 -------
-[Web Page](https://github.com/BioDocker/BioDocker.github.io)
+Web Page              : http://biodocker.github.io/
 
-[Project Definition](https://github.com/BioDocker/biodocker)
+Project Definition    : https://github.com/BioDocker/biodocker
 
-[Contribution Rules](https://github.com/BioDocker/biodocker/blob/master/CONTRIBUTING.md)
+Contribution Rules    : https://github.com/BioDocker/biodocker/blob/master/CONTRIBUTING.md
 
-[Wiki of the project](https://github.com/BioDocker/biodocker/wiki)
+Wiki of the project   : https://github.com/BioDocker/biodocker/wiki
 
-[Containers](https://github.com/BioDocker/containers)
+Containers            : https://github.com/BioDocker/containers
 
-[Containers Development](https://github.com/BioDocker/sandbox)
+Containers Development: https://github.com/BioDocker/sandbox
+
+Email                 : biodockers@gmail.com
+
+License
+----------
+
+[Apache 2](http://www.apache.org/licenses/LICENSE-2.0)
