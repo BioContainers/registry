@@ -3,6 +3,8 @@ encoding: utf-8
 lsi: true
 title: Bio Docker
 url: http://biodocker.org/
+gems:
+  - jekyll-feed
 defaults:
   - 
     scope:
