@@ -1,0 +1,8 @@
+{
+  "containers": {
+    "ncbi-blast": true
+  },
+  "sandbox": {
+    "velvet": true
+  }
+}
