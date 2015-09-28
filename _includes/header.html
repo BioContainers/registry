@@ -1,1 +1,91 @@
-<h1>{{ title }}</h1>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="{{ site.description }}">
+
+    {% feed_meta %}
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <style>
+#page_title {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 300;
+  background: none;
+  text-shadow: #111 0px 0px 10px;
+}
+
+#sidebar {
+  width: 250px;
+  max-width: 250px;
+  min-width: 250px;
+  top: 0px;
+  bottom: 0px;
+  background: #d2d2d2;
+  position: absolute;
+  margin-bottom:  -101%; /* any large number will do */
+  padding-bottom:  101%; 
+}
+
+#header {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+#main_content {
+  padding-top: 0px !important;  
+}
+
+.outer {
+  margin-left: 250px;
+  width: 640px;
+  max-width: 640px;
+  min-width: 640px;  
+}
+
+body {
+  float: center;
+}
+
+.nospaceafter {
+  line-height: 100% !important;
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+
+.singleline {
+  display: inline;
+}
+    </style>
+
+    <title>{{ site.title }}</title>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    
+      ga('create', 'UA-52449822-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </head>
+
+  <body>
+{% include sidebar.html %}
+        <div id="header_wrap" class="outer">
+          <header class="inner" id="header">
+            <!-- <a id="forkme_banner" href="{{ giturl }}">View on GitHub</a> -->
+            <h1 id="project_title">{{ site.title }}</h1>
+            <h2 id="project_tagline">{{ site.description }}</h2>
+            <h3 id="page_title">{{ page.title }}</h2>
+          </header>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div id="main_content_wrap" class="outer">
+          <section id="main_content" class="inner">
+

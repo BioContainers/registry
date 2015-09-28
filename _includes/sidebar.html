@@ -1,0 +1,29 @@
+<div class="span4" id="sidebar">
+ <h4 class="nospaceafter">Navigation</h4>
+
+ <h5 class="nospaceafter">Posts:</h5>
+
+ <ul class="nospaceafter">
+  {% for post in site.posts limit: 5 %}
+   <li class="nospaceafter"><a href="{{ post.url }}">{{ post.title }}</a></li>
+  {% endfor %}
+ </ul>
+
+ <h5 class="nospaceafter singleline">Status:</h5>
+ Check the <a href="status/">status</a> of all our repositories<br/>
+
+ <h5 class="nospaceafter singleline">About:</h5>
+ <a href="about/">About</a></br>
+
+ <h5 class="nospaceafter singleline">Contact:</h5>
+ On <a href="{{ site.urls.project }}">GitHub</a> or
+ by <a href="{{ site.email        }}">Mail</a>
+
+ <h5 class="nospaceafter">Links:</h5>
+ <p class="nospaceafter"><a href="{{ site.urls.project      }}">Project repo</a></p>
+ <p class="nospaceafter"><a href="{{ site.urls.definition   }}">Container definitions</a></p>
+ <p class="nospaceafter"><a href="{{ site.urls.contribution }}">Contribution guidelines</a></p>
+ <p class="nospaceafter"><a href="{{ site.urls.wiki         }}">Wiki</a></p>
+ <p class="nospaceafter"><a href="{{ site.urls.containers   }}">Available containers</a></p>
+ <p class="nospaceafter"><a href="{{ site.urls.development  }}">Containers under development</a></p>
+</div>

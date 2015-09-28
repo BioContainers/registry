@@ -2,7 +2,18 @@
 encoding: utf-8
 lsi: true
 title: Bio Docker
+description: Docker for Bioinformatics
 url: http://biodocker.org/
+email: biodockers@gmail.com
+urls:
+  project: https://github.com/BioDocker
+  definition: https://github.com/BioDocker/biodocker
+  contribution: https://github.com/BioDocker/biodocker/blob/master/CONTRIBUTING.md
+  wiki: https://github.com/BioDocker/biodocker/wiki
+  containers: https://github.com/BioDocker/containers
+  development: https://github.com/BioDocker/sandbox
+paginate: 5
+permalink: pretty
 gems:
   - jekyll-feed
   - jekyll-sitemap
