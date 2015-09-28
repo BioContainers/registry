@@ -1,0 +1,14 @@
+- slug: genomics
+  name: Genomics
+- slug: transcriptomics
+  name: Transcriptomics
+- slug: proteomics
+  name: Proteomics
+- slug: metabolomics
+  name: Metabolomics
+- slug: general
+  name: General
+- slug: update
+  name: Container Update
+- slug: new
+  name: New Container

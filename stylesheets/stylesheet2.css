@@ -1,0 +1,53 @@
+#page_title {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 300;
+  background: none;
+  text-shadow: #111 0px 0px 10px;
+}
+
+#sidebar {
+  width: 250px;
+  max-width: 250px;
+  min-width: 250px;
+  top: 0px;
+  bottom: 0px;
+  background: #d2d2d2;
+  position: absolute;
+  margin-bottom:  -101%; /* any large number will do */
+  padding-bottom:  101%; 
+}
+
+#header {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+#main_content {
+  padding-top: 0px !important;  
+}
+
+.outer {
+  margin-left: 250px;
+  width: 640px;
+  max-width: 640px;
+  min-width: 640px;  
+}
+
+footer {
+  color: white;
+}
+
+.nospaceafter {
+  line-height: 100% !important;
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+
+.singleline {
+  display: inline;
+}
+
+.white {
+  color: white;
+}

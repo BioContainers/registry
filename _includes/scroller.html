@@ -1,0 +1,15 @@
+{% if page.previous %}
+<a href="{{ page.previous }}">previous ({{ page.previous.excerpt }})</a>
+{% else  %}
+no previous
+{% endif %}
+ .. 
+{% if page.next %}
+<a href="{{ page.next }}">next ({{ page.next.excerpt }})</a>
+{% else  %}
+no next
+{% endif %}
+<br/>
+
+Tags: 
+{% include tags.html %}
