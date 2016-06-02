@@ -1,119 +1,205 @@
-<!DOCTYPE html>
-<html>
+<html lang="en-us">
+    <head>
+        <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="BioDocker">
+<meta name="description" content="BioDocker: An open-source and community-driven framework for software standardization">
+<meta name="generator" content="Hugo 0.15" />
+<title>BioDocker</title>
+<!-- Favicon -->
+<link rel="shortcut icon" href="http://biodocker.org/favicon.ico">
+<!-- Bootstrap Core CSS -->
+<link rel="stylesheet" href="http://biodocker.org/css/bootstrap.min.css" type="text/css">
+<!-- Custom Fonts -->
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="http://biodocker.org/font-awesome/css/font-awesome.min.css" type="text/css">
+<!-- Plugin CSS -->
+<link rel="stylesheet" href="http://biodocker.org/css/animate.min.css" type="text/css">
+<!-- Custom CSS -->
+<link rel="stylesheet" href="http://biodocker.org/css/creative.css" type="text/css">
+<link rel="stylesheet" href="http://biodocker.org/css/modals.css" type="text/css">
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
 
-  <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="BioDocker : Docker for Bioinformatics" />
+    </head>
+    <body id="page-top">
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet2.css">
-
-    <title>Bio Docker</title>
-
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-    
-      ga('create', 'UA-52449822-1', 'auto');
-      ga('send', 'pageview');
-    
-    </script>
-  </head>
-
-  <body>
-
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/BioDocker">View on GitHub</a>
-
-          <h1 id="project_title">Bio Docker</h1>
-          <h2 id="project_tagline">Docker for Bioinformatics</h2>
-          <h4 class="project_links"><a href="http://status-biodocker.rhcloud.com/">Status</a> | </h4>
-          <h4 class="project_links"><a href="https://github.com/BioDocker/containers">Containers</a> | </h4>
-          <h4 class="project_links"><a href="https://github.com/BioDocker/sandbox">Sandbox</a> | </h4>|
-          <h4 class="project_links"><a href="https://github.com/BioDocker/compositions">Compositions</a></h4></br>
-          <h4 class="project_links"><a href="https://github.com/BioDocker/biodocker">Specifications</a> | </h4>
-          <h4 class="project_links"><a href="https://github.com/BioDocker/biodocker/blob/master/CONTRIBUTING.md">Contributing</a> | </h4>
-          <h4 class="project_links"><a href="https://github.com/BioDocker/biodocker/wiki">Wiki</a></h4>
-
-        </header>
+        <!-- NAVIGATION -->
+<nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand page-scroll" href="#page-top">BioDocker Project</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="page-scroll" href="#about">Registry</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="#services">GitHub</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="#portfolio">Documentation</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="#contact">About</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
     </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h3>
-	<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>What is Docker?
-	</h3>
-
-<p>Docker is a revolutionary platform for developers and sysadmins to build, ship, and run applications anywhere. With Docker you can build an image containing your software and all dependencies and ship it ready to use.</p>
-
-<!--
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
--->
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Why Use it?
-</h3>
-
-<p>Have you ever suffered from installing some software written in some obscure language? Docker resolves this kind of problem for you, you do not need to install software in your precious local machine or inside a heavy Virtual Machine. Just download and run the software direcly from docker containers.</p>
-
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>So why Bio Docker?
-</h3>
-
-<p>The main purpose of this project is to spread the use of Docker on the Bioinformatics and Computational Biology areas. By using pre-configured containers with different bioinformatic softwares some critical aspects of Bioinformatics like reproducibility are minimized. Here you will find a list of containers with different bioinformatics software and how to use it.</p>
-
-<br />
-<h2>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>I am a user, what can I do?
-</h2>
-
-<p>
-If you are looking for some application or software you should start by looking our <a href="https://github.com/BioDocker"> GitHub</a> repository, there you will find the containerized applications and the instructions on how to use them. 
-</p>
-<br />
+    <!-- /.container-fluid -->
+</nav>
 
 
-<h2>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>I am a developer, how can I containerize my bioinformatic software?
-</h2>
+        <!-- HEADER -->
+<header>
+    <div class="header-content">
+        <div class="header-content-inner">
+            <h1>Bioinformatics more Accessible &amp; Reproducible</h1>
+            <hr>
+            <p><a href="http://biodocker.org">BioDocker</a> is an open source and community-driven framework which provides system-agnostic executable environments for bioinformatics software. BioDocker is based on the popular <a href="http://www.docker.com">Docker</a> framework that allows software to be installed and executed under an isolated and controllable environment.</p>
+            <div class="buttonbox">
+                <a href="#documentation" class="btn btn-primary btn-lg">Docs
+                </a>
+                <a href="#about" class="btn btn-success btn-lg">Find More</a>
+                <a href="#community" class="btn btn-info btn-lg">Community</a>
+                <a href="#services" class="btn btn-warning btn-lg">GitHub</a>
+            </div>
 
-<p>
-If you are a fellow bioinformatician and want your software containerized you should start by reading the Docker <a href="https://docs.docker.com/reference/builder/">documentation</a> and <a href="https://docs.docker.com/articles/dockerfile_best-practices/">best practices</a>. After that you can read our <a href=""https://github.com/BioDocker/biodocker">specification</a> and <a href="https://github.com/BioDocker/biodocker/blob/master/CONTRIBUTING.md">contributing rules</a>. After that you can fork our <a href="https://github.com/BioDocker/sandbox">Sandbox</a> repository which you can then modify to add you own code. Then you can create a pull request which we will be glad to evaluate and help you to build and distribute. If you like, you can send us your software and the necessary instructions to build it by openning an <a href="https://github.com/BioDocker/sandbox/issues">issue</a> on our sandbox and we will try manage the container for you. Alternatively you can contatact us directly by <a href="mailto:biodcokers@gmail.com">email</a>.
-</p>
-<br />
-
-
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors
-</h3>
-
-<p>The BioDocker idea was created and promoted by me, Felipe da Veiga Leprevost (<a href=https://github.com/Leprevost class="user-mention">@leprevost</a>) with the help of Yasset Perez-Riverol <a href="https://github.com/ypriverol" class="user-mention">@ypriverol</a> and <a href="https://github.com/orgs/BioDocker/people">other</a> members</p>
-
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact
-</h3>
-
-<p>If you have doubt on how to use Docker, please visit the<a href=http://www.docker.com/tryit/> Docker</a> website.</p>
-<p>You can also contact me through <a href="mailto:biodockers@gmail.com">biodockers@gmail.com </a>.
-      </section>
+        </div>
     </div>
+</header>
 
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        BioDocker.
-      </footer>
+        <!-- ABOUT -->
+<section class="bg-primary" id="about">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 text-center">
+                <h2 class="section-heading">We&#39;ve got what you need!</h2>
+                <hr class="light">
+                <p class="text-faded"><a href="http://status-biodocker.rhcloud.com/">BioDocker Registry</a> provides a list of all containers ready to be use!!</p>
+                <a href="http://status-biodocker.rhcloud.com/" class="btn btn-default btn-xl">Check The Registry</a>
+            </div>
+        </div>
     </div>
+</section>
 
-    
+        <!-- SERVICES -->
+<section id="services">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading">BioDocker on GitHub</h2>
+                <hr class="primary">
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            
+            <div class="col-lg-3 col-md-6 text-center">
+                <div class="service-box">
+                    <a href="https://github.com/BioDocker/containers"><i class="fa fa-4x fa-cloud-download wow bounceIn text-primary"></i></a>
+                    <h3>Containers</h3>
+                    <p class="text-muted">Find out the BioDocker containers</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 text-center">
+                <div class="service-box">
+                    <a href="https://github.com/BioDocker/containers/issues"><i class="fa fa-4x fa-question-circle wow bounceIn text-primary"></i></a>
+                    <h3>Ask for a container</h3>
+                    <p class="text-muted">Request a container to the BioDocker community</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 text-center">
+                <div class="service-box">
+                    <a href="https://github.com/BioDocker/sandbox"><i class="fa fa-4x fa-plus-square wow bounceIn text-primary"></i></a>
+                    <h3>Sandbox</h3>
+                    <p class="text-muted">Workplace for new or broken containers</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 text-center">
+                <div class="service-box">
+                    <a href="https://github.com/BioDocker/biodocker"><i class="fa fa-4x fa-book wow bounceIn text-primary"></i></a>
+                    <h3>Specifications</h3>
+                    <p class="text-muted">Read about BioDocker specification and guidelines</p>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</section>
+<section class="no-padding" id="portfolio">
+    <div class="container-fluid">
+        <div class="row no-gutter">
+            
+        </div>
+    </div>
+</section>
 
-  </body>
+        <!-- ASIDE -->
+<section id="documentation">
+<aside class="bg-dark">
+    <div class="container text-center">
+        <div class="call-to-action">
+            <h2>Get Started with BioDocker</h2>
+            <a href="documentation" class="btn btn-default btn-xl wow tada">Documentation</a>
+        </div>
+    </div>
+</aside>
+</section>
+
+        <!-- CONTACT -->
+<section id="contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 text-center">
+                <h2 class="section-heading">Let&#39;s Get In Touch!</h2>
+                <hr class="primary">
+                <p>Ready to start your next project with us? That&rsquo;s great! Send us an email and we will get back to you as soon as possible!</p>
+            </div>
+            <div class="col-lg-4 col-lg-offset-2 text-center">
+                <i class="fa fa-keyboard-o fa-3x wow bounceIn"></i>
+                <a href="https://github.com/BioDocker/biodocker/blob/master/CONTRIBUTING.md" ><p>Contribute with us</p></a>
+            </div>
+            <div class="col-lg-4 text-center">
+                <i class="fa fa-envelope-o fa-3x wow bounceIn" data-wow-delay=".1s"></i>
+                <p><a href="mailto:biodockers@gmail.com">biodockers@gmail.com</a></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+        <!-- jQuery -->
+<script src="http://biodocker.org/js/jquery.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="http://biodocker.org/js/bootstrap.min.js"></script>
+<!-- Plugin JavaScript -->
+<script src="http://biodocker.org/js/jquery.easing.min.js"></script>
+<script src="http://biodocker.org/js/jquery.fittext.js"></script>
+<script src="http://biodocker.org/js/wow.min.js"></script>
+<!-- Custom Theme JavaScript -->
+<script src="http://biodocker.org/js/creative.js"></script>
+
+    </body>
 </html>

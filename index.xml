@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>BioDocker</title>
+    <link>http://biodocker.org/</link>
+    <description>Recent content on BioDocker</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 02 Jun 2016 22:37:57 +0100</lastBuildDate>
+    <atom:link href="http://biodocker.org/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>good to great</title>
+      <link>http://biodocker.org/post/good-to-great/</link>
+      <pubDate>Thu, 02 Jun 2016 22:37:57 +0100</pubDate>
+      
+      <guid>http://biodocker.org/post/good-to-great/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
