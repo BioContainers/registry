@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>BioDocker Documentation</title>
+    <link>http://biodocker.org/documentation/</link>
+    <description>Recent content on BioDocker Documentation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <atom:link href="http://biodocker.org/documentation/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Docker Release Notes</title>
+      <link>http://biodocker.org/documentation/release-notes/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://biodocker.org/documentation/release-notes/</guid>
+      <description>
+
+&lt;h1 id=&#34;release-notes&#34;&gt;Release notes&lt;/h1&gt;
+
+&lt;p&gt;For information about releases and the features they contain, see the &lt;a href=&#34;http://blog.docker.com/category/engineering/docker-releases/&#34;&gt;releases
+feed on the Docker
+Blog&lt;/a&gt;. For our
+open source projects, you can find detailed information about what changes were
+made in each release in the project changelogs.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/docker/docker/blob/master/CHANGELOG.md&#34;
+target=&#34;_blank&#34;&gt;Docker Engine&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/docker/machine/blob/master/CHANGELOG.md&#34;
+target=&#34;_blank&#34;&gt;Docker Machine&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/docker/compose/blob/master/CHANGELOG.md&#34;
+target=&#34;_blank&#34;&gt;Docker Compose&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/docker/swarm/blob/master/CHANGELOG.md&#34;
+target=&#34;_blank&#34;&gt;Docker Swarm&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Welcome to the BioDocker Docs!</title>
+      <link>http://biodocker.org/documentation/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://biodocker.org/documentation/</guid>
+      <description>
+
+&lt;h1 id=&#34;welcome-friends-to-the-biodocker-docs&#34;&gt;Welcome Friends to the BioDocker Docs!&lt;/h1&gt;
+
+&lt;p&gt;&lt;style type=&#34;text/css&#34;&gt;
+.splashTable {border:0;background:none;padding:0;}
+td {vertical-align:top;background:none;padding-top:0px;padding-bottom: 0;border-style:none;border-width:0px;overflow:hidden;word-break:normal;}
+p {margin-bottom:.25rem;}
+.splash-031e {padding-left:10px;padding-right:10px;}
+.splashIcon {float:left;vertical-align:middle;margin:10px;}
+&lt;/style&gt;
+&lt;table id=&#34;splashTable&#34;&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;splash-031e&#34; colspan=2&gt;&lt;p&gt;&lt;img class=&#34;splashIcon&#34; src=&#34;./icons/toolbox-color.png&#34;&gt; &lt;strong&gt;Docker Toolbox&lt;/strong&gt; delivers all the Docker tools such as Engine, Machine, and Compose to your &lt;a href=&#34;./engine/installation/mac&#34;/&gt;Mac OS
+    X&lt;/a&gt; or &lt;a href=&#34;./engine/installation/windows&#34;/&gt;Windows&lt;/a&gt; desktop. This is a great way to set up a local development environment.&lt;/p&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;splash-031e&#34;&gt;
+    &lt;p&gt;
+    &lt;strong&gt;Docker Engine&lt;/strong&gt; provides the core functions you need to create Docker images and run Docker containers. Install Engine
+    on &lt;a href=&#34;engine/installation/linux/ubuntulinux/&#34;/&gt;Ubuntu&lt;/a&gt; or see the &lt;a href=&#34;./engine/installation/&#34;/&gt;full list of supported platforms&lt;/a&gt;.
+    &lt;/p&gt; &lt;/td&gt;
+    &lt;td class=&#34;splash-031e&#34;&gt;&lt;p&gt;
+    &lt;strong&gt;Docker Machine&lt;/strong&gt; automates container provisioning on your network or in
+    the cloud. Install Machine on &lt;a href=&#34;./machine/install-machine/&#34;&gt;Windows, Mac OS X, or Linux&lt;/a&gt;.&lt;/p&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;splash-031e&#34;&gt;&lt;p&gt;
+    &lt;strong&gt;Docker Swarm&lt;/strong&gt; is used to host clustering and container scheduling. &lt;a
+    href=&#34;./swarm/get-swarm/&#34;&gt;Deploy your own &amp;ldquo;swarm&amp;rdquo;&lt;/a&gt; today in just a
+    few short steps.
+    &lt;/p&gt;&lt;/td&gt;
+    &lt;td class=&#34;splash-031e&#34;&gt;&lt;p&gt;
+    &lt;strong&gt;Docker Compose&lt;/strong&gt; defines multi-container applications. You can install
+    Docker Compose &lt;a href=&#34;./compose/install/&#34;&gt;on Ubuntu, Mac OS X, and other
+    systems&lt;/a&gt;.&lt;p&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;splash-031e&#34;&gt;&lt;p&gt;
+    &lt;strong&gt;Docker Hub&lt;/strong&gt; is our hosted registry service for managing your images.     Docker Hub and Docker Cloud use free Docker ID. &lt;a href=&#34;https://hub.docker.com/&#34;&gt;Sign up here&lt;/a&gt;!&lt;/p&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;p&gt;
+    &lt;strong&gt;Docker Cloud&lt;/strong&gt; is our hosted service for building, testing, and deploying Docker images to your hosts. Check out our &lt;a href=&#34;./docker-cloud/getting-started/&#34;&gt;Getting Started tutorial&lt;/a&gt; and deploy your first service!&lt;/p&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;splash-031e&#34;&gt;&lt;p&gt;
+    &lt;strong&gt;Docker Trusted Registry&lt;/strong&gt; (DTR) supplies a private dedicated image registry. To learn about DTR for your team, see the &lt;a href=&#34;./docker-trusted-registry/&#34;&gt;overview&lt;/a&gt;.
+    &lt;/p&gt;&lt;/td&gt;
+    &lt;td class=&#34;splash-031e&#34;&gt;&lt;p&gt;
+    &lt;strong&gt;Docker Universal Control Plane&lt;/strong&gt; (UCP) helps you deploy and manage Dockerized applications on-premises, behind your firewall. To learn about see the &lt;a href=&#34;./ucp/overview/&#34;&gt;overview&lt;/a&gt;.
+    &lt;/p&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
