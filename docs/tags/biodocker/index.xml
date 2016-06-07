@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Biodocker on BioDocker Documentation</title>
+    <link>http://biodocker.org/docs/tags/biodocker/</link>
+    <description>Recent content in Biodocker on BioDocker Documentation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 03 Jun 2016 12:09:52 +0100</lastBuildDate>
+    <atom:link href="http://biodocker.org/docs/tags/biodocker/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>What is BioDocker?</title>
+      <link>http://biodocker.org/docs/what-is-biodocker/</link>
+      <pubDate>Fri, 03 Jun 2016 12:09:52 +0100</pubDate>
+      
+      <guid>http://biodocker.org/docs/what-is-biodocker/</guid>
+      <description>
+
+&lt;h1 id=&#34;what-is-biodocker&#34;&gt;What is BioDocker?&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://biodocker.org&#34;&gt;BioDocker&lt;/a&gt; is a community-driven project that provides the infrastructure and basic guidelines to create, manage and distribute Bioinformatics Docker containers with special focus in Proteomics, Genomics, Transcriptomics and Metabolomics.
+BioDocker is based in the popular &lt;a href=&#34;#what-is-docker&#34;&gt;Docker framework&lt;/a&gt;. A revolutionary platform for developers and sysadmins to build, ship, and run applications
+anywhere. With Docker you can build an image containing your software and all dependencies and ship it ready to use (see &lt;a href=&#34;#what-is-docker&#34;&gt;Details&lt;/a&gt;).&lt;/p&gt;
+
+&lt;h2 id=&#34;biodocker-goals&#34;&gt;BioDocker Goals&lt;/h2&gt;
+
+&lt;p&gt;BioDocker community and project have three major goals:
+ &lt;ul&gt;
+  &lt;li&gt;A central registry with containers ready to be use: &lt;a href=&#34;biodocker-projects#registry&#34;&gt;The BioDocker Registry&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Specifications about how to create a BioDocker container/image and infrastructure to deploy them.&lt;/li&gt;
+  &lt;li&gt;A complete infrastructure create, share and request docker images from bioinformatics software&lt;/li&gt;
+ &lt;/ul&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/BioDocker/containers&#34;&gt;BioDocker containers&lt;/a&gt; facilitate the usage, integration and reproducibility
+of software and algorithms into more comprehensive bioinformatics pipelines. Finally, we presented the guidelines and specifications to create a container, contribute to the group or request a container from the group. Our guidelines and specifications are part of community efforts like Bioboxes (&lt;a href=&#34;https://github.com/bioboxes&#34;&gt;https://github.com/bioboxes&lt;/a&gt;), open-containers (&lt;a href=&#34;https://github.com/opencontainers&#34;&gt;https://github.com/opencontainers&lt;/a&gt;) or Bioconda (&lt;a href=&#34;https://bioconda.github.io/&#34;&gt;https://bioconda.github.io/&lt;/a&gt;) to make installation, addition, evaluation and benchmarking of new algorithms and tools accessible to researchers, minimizing the efforts for installation and configuration.&lt;/p&gt;
+
+&lt;h1 id=&#34;what-is-docker&#34;&gt;What is Docker?&lt;/h1&gt;
+
+&lt;div class=&#34;row&#34;&gt;
+   &lt;div class=&#34;medium-6 columns&#34;&gt;
+     &lt;p&gt;Docker containers wrap up a piece of software in a complete filesystem that contains everything it needs to run: code, runtime, system tools, system libraries – anything you can install on a server. 
+        This guarantees that it will always run the same, regardless of the environment it is running in. 
+     &lt;/p&gt;
+     &lt;p&gt;&lt;/p&gt;                            
+   &lt;/div&gt;
+   &lt;div class=&#34;medium-6 columns&#34;&gt;
+        &lt;p style=&#34;text-align: center&#34;&gt;
+         
+&lt;figure &gt;
+    
+        &lt;img src=&#34;../../icons/figure1.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+        &lt;/p&gt;                            
+   &lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

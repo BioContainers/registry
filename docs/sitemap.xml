@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>http://biodocker.org/docs/</loc>
+    <lastmod>2016-06-07T13:31:56+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://biodocker.org/docs/biodocker-best-practices/</loc>
+    <lastmod>2016-06-07T13:31:56+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://biodocker.org/docs/biodocker-deploy-new/</loc>
+    <lastmod>2016-06-07T12:06:21+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://biodocker.org/docs/biodocker-input-output/</loc>
+    <lastmod>2016-06-07T11:56:34+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://biodocker.org/docs/biodocker-docker-template/</loc>
+    <lastmod>2016-06-07T11:37:37+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://biodocker.org/docs/biodocker-registry/</loc>
+    <lastmod>2016-06-07T08:48:27+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://biodocker.org/docs/quick-start-users/</loc>
+    <lastmod>2016-06-07T08:45:26+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://biodocker.org/docs/docker-client/</loc>
+    <lastmod>2016-06-06T20:58:39+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://biodocker.org/docs/docker-in-nutshell/</loc>
+    <lastmod>2016-06-06T08:47:25+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://biodocker.org/docs/docker-install/</loc>
+    <lastmod>2016-06-04T13:53:55+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://biodocker.org/docs/biodocker-history/</loc>
+    <lastmod>2016-06-03T21:48:35+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://biodocker.org/docs/what-is-biodocker/</loc>
+    <lastmod>2016-06-03T12:09:52+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://biodocker.org/docs/release-notes/</loc>
+  </url>
+  
+  <url>
+    <loc>http://biodocker.org/docs/</loc>
+  </url>
+  
+</urlset>
