@@ -1399,7 +1399,7 @@ p {margin-bottom:.25rem;}
     &lt;/p&gt; &lt;/td&gt;
     &lt;td class=&#34;splash-031e&#34;&gt;&lt;p&gt;
     &lt;strong&gt;BioDocker Registry&lt;/strong&gt; is hosted registry of all biodocker images that are ready to be use.
-    &lt;a href=&#34;http://status-biodocker.rhcloud.com/&#34;&gt; BioDocker Registry&lt;/a&gt; provides an easy way to find a container.&lt;/p&gt;
+    &lt;a href=&#34;https://hub.docker.com/u/biodckr/&#34;&gt; BioDocker Registry&lt;/a&gt; provides an easy way to find a container.&lt;/p&gt;
     &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
