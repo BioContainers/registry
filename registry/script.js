@@ -47,48 +47,39 @@ app.config(function (hljsServiceProvider) {
 
 app.config(function($routeProvider) {
 	$routeProvider
-		.when('/showNamespaces', {
-			templateUrl : 'pages/showNamespaces.html',
-			controller  : 'NamespacesController'
-		})
 		.when('/showImages', {
 			templateUrl : 'pages/showImages.html',
 			controller  : 'ImagesController'
 		})
         .when('/', {
-            templateUrl : 'pages/home.html',
+            templateUrl : 'pages/showNamespaces.html',
             controller  : 'MainController'
         });
 });
 
-app.controller('MainController', ['$scope','$route','$window','$cookies','$location',function($scope,$route,$window,$cookies,$location) {
-	var paramIP = DOCKERHUB_ORGANIZATION;
-	if(paramIP!=='') {
-		console.log('the ip has been changed to ' + paramIP);
-		$window.location.href = "#showNamespaces";
-		$route.reload();
-	}
+app.controller('MainController', ['$scope','$route','$window','$cookies','$location', '$http','ngProgressFactory',function($scope,$route,$window,$cookies,$location, $http, ngProgressFactory) {
+    if(DOCKERHUB_ORGANIZATION === undefined) {
+        $window.location.href="#";
+        $route.reload();
+    } else {
+        console.log('the ip is ' + DOCKERHUB_ORGANIZATION);
+        $scope.IP = DOCKERHUB_ORGANIZATION;
+        $scope.num_results=0;
+        $scope.dictionary={};
+        $scope.namespacesList=[];
+        results=[];
+        $scope.num_results = 0;
+        retrieveDockerHub(CROSS_PROXY + DOCKERHUB_ORGANIZATION, $http, $scope);
+        retrieveQuayIO(  QUAY_ORGANIZATION, $http, $scope);
+        console.log($scope.num_results)
+    }
+    $scope.progressbar = ngProgressFactory.createInstance();
+    $scope.progressbar.start();
 }]);
 
 app.controller('NamespacesController', function($rootScope,$scope,$http,$route,$cookies,$window,$location, ngProgressFactory) {
 
-    if(DOCKERHUB_ORGANIZATION === undefined) {
-		$window.location.href="#";
-		$route.reload();
-	} else {
-		console.log('the ip is ' + DOCKERHUB_ORGANIZATION);
-        $scope.IP = DOCKERHUB_ORGANIZATION;
-		$scope.num_results=0;
-		$scope.dictionary={};
-		$scope.namespacesList=[];
-		results=[];
-		$scope.num_results = 0;
-		retrieveDockerHub(CROSS_PROXY + DOCKERHUB_ORGANIZATION, $http, $scope);
-		retrieveQuayIO(  QUAY_ORGANIZATION, $http, $scope);
-		console.log($scope.num_results)
-	}
-    $scope.progressbar = ngProgressFactory.createInstance();
-    $scope.progressbar.start();
+
 
 });
 
