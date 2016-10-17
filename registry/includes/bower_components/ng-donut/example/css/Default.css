@@ -1,0 +1,95 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: table;
+    width: 100%;
+    height: 100%;
+}
+
+body, html {
+    height: 100%;
+}
+
+donut {
+    position: relative;
+    display: inline-block;
+}
+
+div.tooltip {
+    border: 1px solid rgba(0, 0, 0, .25);
+    border-radius: 3px;
+    background-color: white;
+    font-size: 12px;
+    font-family: Arial, Tahoma, Verdana, Arial, Helvetica, sans-serif;
+    position: absolute;
+    padding: 2px 5px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, .25);
+    white-space: nowrap;
+    top: 100px;
+    pointer-events: none;
+}
+
+section.container {
+    display: table-row;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+}
+
+section.container section.app {
+    display: table-cell;
+    vertical-align: middle;
+    margin: auto;
+}
+
+section.container section.app section.legend {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    border: 1px solid rgba(0, 0, 0, .25);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+    background-color: white;
+    text-align: left;
+}
+
+section.container section.app section.legend div.item {
+    border-bottom: 1px solid rgba(0, 0, 0, .15);
+}
+
+section.container section.app section.legend div.item:last-of-type {
+    border-bottom: 0;
+}
+
+section.container section.app section.legend div.item label {
+    float: left;
+    overflow: hidden;
+    font-family: Arial, Tahoma, Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: rgba(0, 0, 0, .5);
+    padding: 10px 10px 0 20px;
+    width: 15px;
+}
+
+section.container section.app section.legend div.item input {
+    padding: 10px;
+    border: 0;
+    width: 40px;
+    outline: none;
+}
+
+section.container section.app section.legend div.item.modify-all {
+    padding: 20px;
+    text-align: center;
+    font-family: Arial, Tahoma, Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: dodgerblue;
+    transition: all .35s;
+    cursor: pointer;
+}
+
+section.container section.app section.legend div.item.modify-all:hover {
+    color: black;
+}

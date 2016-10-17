@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>ngDonut Example</title>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="theme-color" content="#cc0101" />
+
+    <!-- Prettification! -->
+    <link rel="stylesheet" href="css/Default.css"/>
+
+    <!-- Scriptalicious! -->
+    <script src="vendor/d3/d3.js"></script>
+    <script src="vendor/angular/angular.js"></script>
+    <script src="vendor/ng-donut/ng-donut.js"></script>
+    <script src="js/Application.js"></script>
+
+</head>
+<body>
+
+    <section class="container">
+
+        <section class="app" ng-app="donutApp" ng-controller="DonutController">
+
+            <donut stroke="'#fff'" width="300" height="300" radius="50" property="'value'" colours="donutColours"
+                   mousemove="openTooltip(model)" mouseleave="closeTooltip()"
+                   ng-model="donutModel">
+
+                <tooltip ng-model="selectedModel"></tooltip>
+
+           </donut>
+
+            <legend ng-include="'partials/legend.html'"></legend>
+
+        </section>
+
+    </section>
+
+</body>
+</html>

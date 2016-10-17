@@ -1,0 +1,22 @@
+{
+  "name": "includes",
+  "homepage": "https://github.com/ypriverol/docker-registry-ui",
+  "authors": [
+    "Yasset Perez-Riverol <ypriverol@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "zeroclipboard": "~2.1.5",
+    "angular": "~1.5.x",
+    "si-table": "^0.2.3"
+  }
+}

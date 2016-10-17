@@ -1,0 +1,12 @@
+{
+    "name": "si-table",
+    "version": "0.1.2",
+    "main": "dist/si-table.js",
+    "dependencies": {
+        "angular": "^1.1.4"
+    },
+    "devDependencies": {
+        "angular-mocks": "^1.2",
+        "angular-scenario": "^1.2"
+    }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "si-table",
+  "version": "0.2.3",
+  "main": "dist/si-table.js",
+  "dependencies": {
+    "angular": "^1.1.4"
+  },
+  "devDependencies": {
+    "angular-mocks": "^1.2",
+    "angular-scenario": "^1.2"
+  },
+  "homepage": "https://github.com/simplicitylabs/si-table",
+  "_release": "0.2.3",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.2.3",
+    "commit": "df7b369a27eda5b8490cc414719752d001265624"
+  },
+  "_source": "https://github.com/simplicitylabs/si-table.git",
+  "_target": "^0.2.3",
+  "_originalSource": "si-table",
+  "_direct": true
+}

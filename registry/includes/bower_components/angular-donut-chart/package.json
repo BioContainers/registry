@@ -1,0 +1,20 @@
+{
+  "name": "angular-chart-donut",
+  "version": "0.1.0",
+  "description": "",
+  "main": "src/donut.js",
+  "scripts": {
+    "test": "karma start karma.config.js"
+  },
+  "author": "Raymond Julin <raymond.julin@gmail.com> (http://raymondjulin.com/)",
+  "contributors": [
+    "Christian Leon Christensen <chrleon@gmail.com>"
+  ],
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "karma": "^0.12.5",
+    "karma-jasmine": "^0.1.5",
+    "karma-phantomjs-launcher": "^0.1.4"
+  }
+}

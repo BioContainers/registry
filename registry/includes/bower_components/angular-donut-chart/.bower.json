@@ -1,0 +1,39 @@
+{
+  "name": "angular-donut-chart",
+  "version": "0.1.0",
+  "authors": [
+    "Raymond Julin <raymond.julin@gmail.com>",
+    "Christian Leon Christensen <chrleon@gmail.com>"
+  ],
+  "description": "Donut chart directive for angular based on D3",
+  "main": "src/donut.js",
+  "keywords": [
+    "angular",
+    "d3",
+    "chart"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.2.16",
+    "d3": "~3.4.5",
+    "angular-mocks": "~1.2.16"
+  },
+  "homepage": "https://github.com/nervetattoo/angular-chart-donut",
+  "_release": "0.1.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.1.0",
+    "commit": "ee5d9c55e80a62b826777b90babe041c693844ea"
+  },
+  "_source": "https://github.com/nervetattoo/angular-chart-donut.git",
+  "_target": "^0.1.0",
+  "_originalSource": "angular-chart-donut",
+  "_direct": true
+}

@@ -1,0 +1,93 @@
+<div class="row">
+	<!--<div class="col-lg-4">-->
+		<!--<div class="row">-->
+			<!--<div class="col-lg-1">-->
+			<!--</div>-->
+			<!--<div class="col-lg-5">-->
+				<!--<button type="button" class="btn btn-primary btn-sm" onclick=(window.location.assign("#showNamespacesRepos"))>Toggle</button>-->
+			<!--</div>-->
+		<!--</div>					-->
+	<!--</div>-->
+	
+	<div align="center"><center><h4 style="margin-top: 20px; "> All Containers and Tools in BioContainers ({{num_results}}!!!)</h4></center></div>
+			
+	<div class="col-lg-4">
+		<div class="row">
+			<div class="col-lg-6"></div>
+		</div>
+	</div>						
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-header">
+		<div class="panel-body">
+			<div class="wrap">
+				<form class="form">
+					<div class="input-group custom-search-form">
+						<input placeholder="Search..." type="text" class="form-control" ng-model="filter.$" placeholder="filter">
+						<div class="input-group-btn">
+							<button class="btn btn-default" name="submit" id="submit" ng-model="filter.$" placeholder="filter">
+								<i class="fa fa-search"></i>
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>					
+	</div>
+	<div class="panel-body"> 
+		<div class="panel-body">	
+			<div class="wrap">
+				<div id='content'>
+					<table class="table" si-table>
+						<tr>
+							<th sort-by="name">Container</th>
+							<th sort-by="description">Description</th>
+							<th sort-by="domain + name">Real Name</th>
+							<th sort-by="lastModified | date:'yyyy-MM-dd'">Last Modified</th>
+							<th sort-by="start_count">Starred/Starts</th>
+							<th sort-by="number_pull">Popularity</th>
+							<th sort-by="domain">Registry Link</th>
+						</tr>
+						<tr si-sortable="single" ng-repeat="container in namespacesList | filter:filter">
+							<td ng-if="container.domain == 'biodckr/'">
+								<a ng-href="#showImages?domain=dockerhub&repository={{container.name}}&starred={{container.start_count}}">{{ container.name }}</a>
+							</td>
+							<td ng-if="container.domain == 'quay.io/biocontainers/'">
+								<a ng-href="#showImages?domain=quay&repository={{container.name}}&starred={{container.start_count}}&modified={{container.lastModified}}">{{ container.name }}</a>
+							</td>
+							<td>{{ container.description }}</td>
+							<td>{{ container.domain + container.name }}</td>
+							<td>{{ container.lastModified | date:'yyyy-MM-dd'}}</td>
+							<td align="center" ng-if="container.start_count == true"><i class="fa fa-star icon-d icon-d" aria-hidden="true"></i></td>
+							<td ng-if="container.start_count == false"></td>
+							<td  style="text-align: center; valign: middle; ">
+								<donut width="20" radius="5" height="20" ng-model="container.number_pull">
+								</donut>
+							</td>
+							<td ng-if="container.domain == 'biodckr/'">
+								<a ng-href="https://hub.docker.com/r/biodckr/{{ container.name}}" target="_blank">
+									<img src="../includes/images/docker.png" width="50" />
+								</a>
+							</td>
+							<td ng-if="container.domain == 'quay.io/biocontainers/'">
+								<a ng-href="https://quay.io/organization/biocontainers/{{ container.name }}" target="_blank">
+									<img src="../includes/images/quay.png" width="50" />
+								</a>
+							</td>
+						</tr>
+						<tfoot>
+						<tr>
+							<td colspan="5">
+								<si-table-pagination limit="20" />
+							</td>
+						</tr>
+						</tfoot>
+					</table>
+				</div>
+			 </div>
+		</div>
+	</div>	
+</div>
+		
+		
