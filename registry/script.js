@@ -166,7 +166,7 @@ app.controller('ImagesController', function($scope,$http,$location,$window,$cook
             $scope.repo.description  = data.description;
             $scope.repo.imagesList   = [];
             $scope.repo.domain       = "quay";
-            $scope.repo.url          = "https://quay.io/organization/biocontainers" + $scope.repository;
+            $scope.repo.url          = "https://quay.io/repository/biocontainers/" + $scope.repository;
             $scope.repo.command      = "docker pull quay.io/biocontainers/" + $scope.repository;
             githubYaml               = "";
             $scope.repo.typeDockerFile = "Yaml";
