@@ -47,10 +47,6 @@ app.config(function (hljsServiceProvider) {
 
 app.config(function($routeProvider) {
 	$routeProvider
-		.when('/', {
-			templateUrl : 'pages/home.html',
-			controller  : 'MainController'
-		})
 		.when('/showNamespaces', {
 			templateUrl : 'pages/showNamespaces.html',
 			controller  : 'NamespacesController'
@@ -58,7 +54,11 @@ app.config(function($routeProvider) {
 		.when('/showImages', {
 			templateUrl : 'pages/showImages.html',
 			controller  : 'ImagesController'
-		});
+		})
+        .when('/', {
+            templateUrl : 'pages/home.html',
+            controller  : 'MainController'
+        });
 });
 
 app.controller('MainController', ['$scope','$route','$window','$cookies','$location',function($scope,$route,$window,$cookies,$location) {
