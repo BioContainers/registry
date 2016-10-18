@@ -1,26 +1,24 @@
 <div class="row">
-	<!--<div class="col-lg-4">-->
-		<!--<div class="row">-->
-			<!--<div class="col-lg-1">-->
-			<!--</div>-->
-			<!--<div class="col-lg-5">-->
-				<!--<button type="button" class="btn btn-primary btn-sm" onclick=(window.location.assign("#showNamespacesRepos"))>Toggle</button>-->
-			<!--</div>-->
-		<!--</div>					-->
-	<!--</div>-->
 	
-	<div align="center"><center><h4 style="margin-top: 20px; "> All Containers and Tools in BioContainers ({{num_results}}!!!)</h4></center></div>
-			
+	<div align="center" style="text-align: center;"><h4 style="margin-top: 20px; "> All Containers and Tools in BioContainers ({{num_results}} !!!)</h4>
+	</div>
+
 	<div class="col-lg-4">
-		<div class="row">
-			<div class="col-lg-6"></div>
+        <div class="row">
+            <div class="col-lg-6">
+
+            </div>
 		</div>
-	</div>						
+	</div>
 </div>
 
 <div class="panel panel-default">
 	<div class="panel-header">
 		<div class="panel-body">
+            <div align="center">
+				<cal-heatmap ng-if="heatmap.showDataDensity" config="heatmap.config">
+
+				</cal-heatmap></div>
 			<div class="wrap">
 				<form class="form">
 					<div class="input-group custom-search-form">
@@ -58,7 +56,7 @@
 							</td>
 							<td>{{ container.description }}</td>
 							<td>{{ container.domain + container.name }}</td>
-							<td>{{ container.lastModified | date:'yyyy-MM-dd'}}</td>
+							<td>{{ container.lastModified}}</td>
 							<td align="center" ng-if="container.start_count == true"><i class="fa fa-star icon-d icon-d" aria-hidden="true"></i></td>
 							<td ng-if="container.start_count == false"></td>
 							<td  style="text-align: center; valign: middle; ">

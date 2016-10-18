@@ -15,7 +15,6 @@
     "tests"
   ],
   "dependencies": {
-    "zeroclipboard": "~2.1.5",
     "angular": "~1.5.x",
     "si-table": "^0.2.3"
   }
