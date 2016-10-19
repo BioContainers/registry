@@ -55,9 +55,7 @@
 							<td>{{ container.lastModified}}</td>
 							<td align="center" ng-if="container.start_count == true"><i class="fa fa-star icon-d icon-d" aria-hidden="true"></i></td>
 							<td ng-if="container.start_count == false"></td>
-							<td  style="text-align: center; valign: middle; ">
-								<donut width="20" radius="5" height="20" ng-model="container.number_pull">
-								</donut>
+							<td  style="text-align: center; valign: middle; "><donut width="20" radius="5" height="20" ng-model="container.number_pull"></donut>
 							</td>
 							<td ng-if="container.domain == 'biodckr/'">
 								<a ng-href="https://hub.docker.com/r/biodckr/{{ container.name}}" target="_blank">
@@ -72,7 +70,7 @@
 						</tr>
 						<tfoot>
 						<tr>
-							<td colspan="5">
+							<td colspan="5" align="center">
 								<si-table-pagination limit="15" />
 							</td>
 						</tr>
@@ -80,40 +78,20 @@
 					</table>
 				</div>
 			 </div>
-			<!--<div class="wrap">-->
-				<!--<div class="panel panel-info">-->
-					<!--<div class="panel-heading">Containers Update Statistics</div>-->
-					<!--<div class="panel-body">-->
-						<!--<cal-heatmap ng-if="heatmap.showDataDensity" config="heatmap.config">-->
-					<!--</cal-heatmap>-->
-					<!--</div>-->
-				<!--</div>-->
-				<!--<div class="panel panel-success">-->
-					<!--<div class="panel-heading">Github Update Statistics</div>-->
-					<!--<div class="panel-body">-->
-						<!--<cal-heatmap ng-if="heatmap.showDataDensity" config="heatmap.config">-->
-						<!--</cal-heatmap>-->
-					<!--</div>-->
-				<!--</div>-->
-			<!--</div>-->
-			<div class="row">
-				<div class="col-md-6">
-					<div class="panel panel-info">
-						<div class="panel-heading">Containers Update Statistics</div>
-						<div class="panel-body">
-							<cal-heatmap ng-if="heatmap.showDataDensity" config="heatmap.config"></cal-heatmap>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6">
-					<div class="panel panel-success">
-						<div class="panel-heading">GitHub Issues Statistics</div>
-						<div class="panel-body">
-							<cal-heatmap ng-if="githubheatmap.showDataDensity" config="githubheatmap.config"></cal-heatmap>
-						</div>
-					</div>
+			<div class="panel panel-info">
+				<div class="panel-heading">Containers Update Statistics</div>
+				<div class="panel-body" align="center">
+					<cal-heatmap ng-if="heatmap.showDataDensity" config="heatmap.config"></cal-heatmap>
 				</div>
 			</div>
+			<div class="panel panel-success">
+				<div class="panel-heading">GitHub Issues Statistics</div>
+				<div class="panel-body" align="center">
+					<cal-heatmap ng-if="githubheatmap.showDataDensity" config="githubheatmap.config"></cal-heatmap>
+				</div>
+			</div>
+
+
 
 		</div>
 	</div>	

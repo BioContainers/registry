@@ -21,6 +21,9 @@ var QUAY_REOPSITORY_URL    = "https://quay.io/api/v1/repository/";
 var QUAY_REPOSITORY        = "biocontainers/";
 var BIO_TOOLS_URL          = "https://dev.bio.tools/api/tool/";
 var GITHUB_ACTIVITY_URL    = "https://api.github.com/repos/";
+var ANNOTATIONS_TOKEN      = "6879-29624520768d1f0c9fff7fc901f453f2";
+var ANNOTATIONS            = "https://hypothes.is/api/search";
+
 
 var app = angular.module('DockerWebUI', ['ngCookies','ngRoute', 'siTable','ngDonut', 'hljs', 'ngProgress', 'calHeatmap', 'angularMoment']);
 
@@ -75,7 +78,10 @@ app.controller('MainController', ['$scope','$route','$window','$cookies','$locat
         $scope.namespacesList=[];
         results=[];
         $scope.num_results = 0;
-        urls  = [GITHUB_ACTIVITY_URL + "biocontainers/containers/issues?state=all", GITHUB_ACTIVITY_URL + "biocontainers/specs/issues?state=all"];
+        urls  = [GITHUB_ACTIVITY_URL + "biocontainers/containers/issues?state=all&per_page=100",
+                 GITHUB_ACTIVITY_URL + "biocontainers/specs/issues?state=all&per_page=100",
+                 GITHUB_ACTIVITY_URL + "biocontainers/specs/issues/comments?per_page=100",
+                 GITHUB_ACTIVITY_URL + "biocontainers/containers/issues/comments?per_page=100"];
         retrieveDockerHub(CROSS_PROXY + DOCKERHUB_ORGANIZATION, $http, $scope, $filter);
         retrieveQuayIO(  QUAY_ORGANIZATION, $http, $scope, $filter);
         retrieveGitHubIssues( urls, $http, $scope, $filter, $q);
@@ -103,6 +109,7 @@ function retrieveGitHubIssues(url, $http, $scope, $filter, $q){
                     $scope.githubdates.push(createAt);
                     $scope.githubdates.push(modifiedAt);
                     $scope.githubdates.push(closeAt);
+
                 })
             });
             $scope.githubDatesMap = {};
@@ -117,8 +124,9 @@ function retrieveGitHubIssues(url, $http, $scope, $filter, $q){
                 displayLegend: false,
                 domain: "year", //hour|day|week|month|year
                 range:1,
-                cellSize:8,
-                itemName: "container update",
+                colLimit: 4,
+                cellSize:20,
+                itemName: "Number of Issues and Comment",
                 data: $scope.githubDatesMap,
                 subDomainTextFormat: null
             };
@@ -173,8 +181,9 @@ function retrieveQuayIO( url , $http, $scope, $filter){
             displayLegend: false,
             domain: "year", //hour|day|week|month|year
             range:1,
-            cellSize:8,
-            itemName: "container update",
+            colLimit: 4,
+            cellSize:20,
+            itemName: "Container Update",
             data: $scope.dates,
             subDomainTextFormat: null
         };
