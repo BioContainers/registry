@@ -1,0 +1,23 @@
+{
+  "name": "angular-social",
+  "version": "1.0.0",
+  "main": [
+    "angular-social.js",
+    "angular-social.css"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "angular": ">= 1.3.0"
+  },
+  "homepage": "https://github.com/esvit/angular-social",
+  "_release": "1.0.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.0.0",
+    "commit": "bddc5e2d05bb7a1b6cacea8da11ab11c77768062"
+  },
+  "_source": "https://github.com/esvit/angular-social.git",
+  "_target": "^1.0.0",
+  "_originalSource": "angular-social",
+  "_direct": true
+}

@@ -1,0 +1,29 @@
+/* Facebook */
+.ng-social-facebook {
+    @btn-color: #3b5998;
+
+    .ng-social-button {
+        padding-left:19px;
+        background: @btn-color;
+        .linear-gradient(lighten(@btn-color, 10%), @btn-color);
+        color:#fff;
+        border-color: darken(@btn-color, 20%);
+
+        &:hover {
+          border-color: darken(@btn-color, 10%);
+          .linear-gradient(@btn-color, darken(@btn-color, 10%));
+        }
+    }
+    .ng-social-icon {
+        background-image:url('images/facebook.png');
+        background-position:3px 3px;
+    }
+    .ng-social-counter {
+        background: mix(@btn-color, #fff, 10%);
+        border-color: @btn-color;
+
+        &:after {
+            border-right-color: mix(@btn-color, #fff, 10%);
+        }
+    }
+}

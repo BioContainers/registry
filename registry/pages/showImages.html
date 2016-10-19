@@ -26,7 +26,21 @@
                                         <img ng-if="repo.domain == 'quay'" class="img-circle img-responsive" alt=""   src="includes/images/quay.png"
                                              width="200" height="200" style="padding-top: 30px;border-radius:0%">
                                     </figure>
+                                    <div style="padding-top: 10px; align-content: center">
+                                        <ul ng-social-buttons
+                                            data-url="repo.url"
+                                            data-title="repo.repoName"
+                                            data-description="repo.description">
+                                            <li class="ng-social-facebook"></li>
+                                            <li class="ng-social-google-plus"></li>
+                                            <li class="ng-social-twitter"></li>
+                                            <li class="ng-social-github" user="biocontainers" repository="containers"></li>
+                                            <li class="ng-social-github-forks" user="biocontainers" repository="containers">Forks</li>
+                                        </ul>
+                                    </div>
+
                                 </div>
+
                                 <div class="col-xs-12 col-sm-8">
 									<ul class="list-group">
 										<li class="list-group-item">{{repo.repoName}}</li>

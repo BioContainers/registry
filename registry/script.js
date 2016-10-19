@@ -25,7 +25,7 @@ var ANNOTATIONS_TOKEN      = "6879-29624520768d1f0c9fff7fc901f453f2";
 var ANNOTATIONS            = "https://hypothes.is/api/search";
 
 
-var app = angular.module('DockerWebUI', ['ngCookies','ngRoute', 'siTable','ngDonut', 'hljs', 'ngProgress', 'calHeatmap', 'angularMoment']);
+var app = angular.module('DockerWebUI', ['ngCookies','ngRoute', 'siTable','ngDonut', 'hljs', 'ngProgress', 'calHeatmap', 'angularMoment', 'ngSocial']);
 
 angular.module('DockerWebUI')
     .factory('timeoutHttpIntercept', function ($rootScope, $q) {
