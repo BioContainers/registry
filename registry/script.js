@@ -20,6 +20,7 @@ var QUAY_ORGANIZATION      = "https://quay.io/api/v1/repository?namespace=biocon
 var QUAY_REOPSITORY_URL    = "https://quay.io/api/v1/repository/";
 var QUAY_REPOSITORY        = "biocontainers/";
 var BIO_TOOLS_URL          = "https://dev.bio.tools/api/tool/";
+var GITHUB_ACTIVITY_URL    = "https://api.github.com/repos/";
 
 var app = angular.module('DockerWebUI', ['ngCookies','ngRoute', 'siTable','ngDonut', 'hljs', 'ngProgress', 'calHeatmap', 'angularMoment']);
 
@@ -60,7 +61,7 @@ app.config(function($routeProvider) {
         });
 });
 
-app.controller('MainController', ['$scope','$route','$window','$cookies','$location', '$http','$filter','ngProgressFactory', 'moment',function($scope,$route,$window,$cookies,$location, $http, $filter,ngProgressFactory , moment) {
+app.controller('MainController', ['$scope','$route','$window','$cookies','$location', '$http','$filter','ngProgressFactory', '$q',function($scope,$route,$window,$cookies,$location, $http, $filter,ngProgressFactory , $q) {
     $scope.dates = {};
 
     if(DOCKERHUB_ORGANIZATION === undefined) {
@@ -74,16 +75,66 @@ app.controller('MainController', ['$scope','$route','$window','$cookies','$locat
         $scope.namespacesList=[];
         results=[];
         $scope.num_results = 0;
-        retrieveDockerHub(CROSS_PROXY + DOCKERHUB_ORGANIZATION, $http, $scope, $filter, moment);
-        retrieveQuayIO(  QUAY_ORGANIZATION, $http, $scope, $filter, moment);
+        urls  = [GITHUB_ACTIVITY_URL + "biocontainers/containers/issues?state=all", GITHUB_ACTIVITY_URL + "biocontainers/specs/issues?state=all"];
+        retrieveDockerHub(CROSS_PROXY + DOCKERHUB_ORGANIZATION, $http, $scope, $filter);
+        retrieveQuayIO(  QUAY_ORGANIZATION, $http, $scope, $filter);
+        retrieveGitHubIssues( urls, $http, $scope, $filter, $q);
         console.log($scope.num_results)
     }
     $scope.progressbar = ngProgressFactory.createInstance();
     $scope.progressbar.start();
 }]);
 
+function retrieveGitHubIssues(url, $http, $scope, $filter, $q){
+    var deferred = $q.defer();
+    var urlCalls = [];
+    angular.forEach(urls, function(url) {
+        urlCalls.push($http({method:"GET", url: url}));
+    });
+    $q.all(urlCalls).then(
+        function(results) {
+            //deferred.resolve(JSON.stringify(results))
+            $scope.githubdates = []
+            angular.forEach(results, function(result){
+                angular.forEach(result.data, function(issue){
+                    createAt   = $filter('jsonDate')(issue.created_at,'dd/MM/yyyy');
+                    modifiedAt = $filter('jsonDate')(issue.updated_at,'dd/MM/yyyy');
+                    closeAt    = $filter('jsonDate')(issue.close_at,'dd/MM/yyyy');
+                    $scope.githubdates.push(createAt);
+                    $scope.githubdates.push(modifiedAt);
+                    $scope.githubdates.push(closeAt);
+                })
+            });
+            $scope.githubDatesMap = {};
+            for(var i = 0; i< $scope.githubdates.length; i++) {
+                var num = new Date($scope.githubdates[i]).getTime()/1000;
+                if(!isNaN(num)) {
+                    $scope.githubDatesMap[num.toString()] = $scope.githubDatesMap[num.toString()] ? $scope.githubDatesMap[num.toString()]+1 : 1;
+                }
+            }
+            $scope.githubheatmap = {};
+            $scope.githubheatmap.config = {
+                displayLegend: false,
+                domain: "year", //hour|day|week|month|year
+                range:1,
+                cellSize:8,
+                itemName: "container update",
+                data: $scope.githubDatesMap,
+                subDomainTextFormat: null
+            };
+            $scope.githubheatmap.showDataDensity = true
 
-function retrieveDockerHub( url , $http, $scope, $filter, moment){
+        },
+        function(errors) {
+            deferred.reject(errors);
+        },
+        function(updates) {
+            deferred.update(updates);
+        });
+    return deferred.promise;
+}
+
+function retrieveDockerHub( url , $http, $scope, $filter){
 	$http({method: "GET", url: url}).success(function(data){
 		$scope.num_results= $scope.num_results + data.count;
 		angular.forEach(data.results, function(result){
@@ -96,12 +147,12 @@ function retrieveDockerHub( url , $http, $scope, $filter, moment){
 			$scope.namespacesList.push({domain: "biodckr/", name: result.name, description: result.description, lastModified: dateM, number_pull: [result.pull_count, 15000], start_count:starred})
 		});
 		if(data.next != null){
-			retrieveDockerHub(CROSS_PROXY + data.next, $http, $scope, $filter, moment)
+			retrieveDockerHub(CROSS_PROXY + data.next, $http, $scope, $filter)
 		}
 	}).error(function(data){console.log("Unable to request the data")});
 }
 
-function retrieveQuayIO( url , $http, $scope, $filter, moment){
+function retrieveQuayIO( url , $http, $scope, $filter){
 	$http({method: "GET", url: url, headers: {
         'Authorization': "Bearer "+ "XRYLsxvQqmQLpP7RrajpFdiZntveNEyiffXyibK0"}}).success(function(data){
 		$scope.num_results= $scope.num_results + data.repositories.length;
@@ -117,13 +168,15 @@ function retrieveQuayIO( url , $http, $scope, $filter, moment){
                 $scope.dates[num.toString()] = $scope.dates[num.toString()] ? $scope.dates[num.toString()]+1 : 1;
             }
         }
-
         $scope.heatmap = {};
         $scope.heatmap.config = {
+            displayLegend: false,
             domain: "year", //hour|day|week|month|year
             range:1,
-            cellSize:15,
-            data: $scope.dates
+            cellSize:8,
+            itemName: "container update",
+            data: $scope.dates,
+            subDomainTextFormat: null
         };
         $scope.progressbar.complete();
         $scope.heatmap.showDataDensity = true

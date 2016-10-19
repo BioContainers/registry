@@ -54,6 +54,11 @@
 						<div hljs hljs-source="repo.dockerFile"></div>
 					</div>
 
+                    <div ng-if="repo.dockerFile.length > 0" class="bs-callout bs-callout-danger">
+                        <h4>{{repo.typeDockerFile}}  Information</h4>
+                        <div hljs hljs-source="repo.dockerFile"></div>
+                    </div>
+
 					<div class="bs-callout bs-callout-danger">
 						<h4>Docker Images</h4>
                         <table class="table" si-table>

@@ -15,10 +15,6 @@
 <div class="panel panel-default">
 	<div class="panel-header">
 		<div class="panel-body">
-            <div align="center">
-				<cal-heatmap ng-if="heatmap.showDataDensity" config="heatmap.config">
-
-				</cal-heatmap></div>
 			<div class="wrap">
 				<form class="form">
 					<div class="input-group custom-search-form">
@@ -77,13 +73,48 @@
 						<tfoot>
 						<tr>
 							<td colspan="5">
-								<si-table-pagination limit="20" />
+								<si-table-pagination limit="15" />
 							</td>
 						</tr>
 						</tfoot>
 					</table>
 				</div>
 			 </div>
+			<!--<div class="wrap">-->
+				<!--<div class="panel panel-info">-->
+					<!--<div class="panel-heading">Containers Update Statistics</div>-->
+					<!--<div class="panel-body">-->
+						<!--<cal-heatmap ng-if="heatmap.showDataDensity" config="heatmap.config">-->
+					<!--</cal-heatmap>-->
+					<!--</div>-->
+				<!--</div>-->
+				<!--<div class="panel panel-success">-->
+					<!--<div class="panel-heading">Github Update Statistics</div>-->
+					<!--<div class="panel-body">-->
+						<!--<cal-heatmap ng-if="heatmap.showDataDensity" config="heatmap.config">-->
+						<!--</cal-heatmap>-->
+					<!--</div>-->
+				<!--</div>-->
+			<!--</div>-->
+			<div class="row">
+				<div class="col-md-6">
+					<div class="panel panel-info">
+						<div class="panel-heading">Containers Update Statistics</div>
+						<div class="panel-body">
+							<cal-heatmap ng-if="heatmap.showDataDensity" config="heatmap.config"></cal-heatmap>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="panel panel-success">
+						<div class="panel-heading">GitHub Issues Statistics</div>
+						<div class="panel-body">
+							<cal-heatmap ng-if="githubheatmap.showDataDensity" config="githubheatmap.config"></cal-heatmap>
+						</div>
+					</div>
+				</div>
+			</div>
+
 		</div>
 	</div>	
 </div>
