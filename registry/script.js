@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-var DOCKERHUB_ORGANIZATION = "https://hub.docker.com/v2/repositories/biodckr/";
+var DOCKERHUB_ORGANIZATION = "https://hub.docker.com/v2/repositories/biocontainers/";
 var CROSS_PROXY            = "https://crossorigin.me/";
 var QUAY_ORGANIZATION      = "https://quay.io/api/v1/repository?namespace=biocontainers&popularity=true&last_modified=true";
 var QUAY_REOPSITORY_URL    = "https://quay.io/api/v1/repository/";
@@ -114,7 +114,9 @@ function retrieveGitHubIssues(url, $http, $scope, $filter, $q){
             });
             $scope.githubDatesMap = {};
             for(var i = 0; i< $scope.githubdates.length; i++) {
-                var num = new Date($scope.githubdates[i]).getTime()/1000;
+                var parts =$scope.githubdates[i].split('/');
+                var dateNumber = new Date(parts[2]+"-"+parts[1]+"-"+parts[0]).getTime()/1000;
+                var num = Math.floor(dateNumber);
                 if(!isNaN(num)) {
                     $scope.githubDatesMap[num.toString()] = $scope.githubDatesMap[num.toString()] ? $scope.githubDatesMap[num.toString()]+1 : 1;
                 }
@@ -151,8 +153,8 @@ function retrieveDockerHub( url , $http, $scope, $filter){
 		       starred = true
             }
             dateM = $filter('jsonDate')(result.last_updated,'dd/MM/yyyy');
-			$scope.dictionary["biodckr/" + result.name] = {domain: "biodckr/", name: result.name, description: result.description, lastModified: dateM, number_pull: [result.pull_count, 15000], start_count:starred}
-			$scope.namespacesList.push({domain: "biodckr/", name: result.name, description: result.description, lastModified: dateM, number_pull: [result.pull_count, 15000], start_count:starred})
+			$scope.dictionary["biocontainers/" + result.name] = {domain: "biocontainers/", name: result.name, description: result.description, lastModified: dateM, number_pull: [result.pull_count, 15000], start_count:starred}
+			$scope.namespacesList.push({domain: "biocontainers/", name: result.name, description: result.description, lastModified: dateM, number_pull: [result.pull_count, 15000], start_count:starred})
 		});
 		if(data.next != null){
 			retrieveDockerHub(CROSS_PROXY + data.next, $http, $scope, $filter)
@@ -171,7 +173,10 @@ function retrieveQuayIO( url , $http, $scope, $filter){
         });
 
         for(var i = 0; i< $scope.namespacesList.length; i++) {
-            var num = new Date($scope.namespacesList[i].lastModified).getTime()/1000;
+            var parts =$scope.namespacesList[i].lastModified.split('/');
+            var dateNumber = new Date(parts[2]+"-"+parts[1]+"-"+parts[0]).getTime()/1000;
+            //var dateNumber = new Date($scope.namespacesList[i].lastModified).getTime()/1000;
+            var num = Math.floor(dateNumber);
             if(!isNaN(num)) {
                 $scope.dates[num.toString()] = $scope.dates[num.toString()] ? $scope.dates[num.toString()]+1 : 1;
             }
@@ -216,8 +221,8 @@ app.controller('ImagesController', function($scope,$http,$location,$window,$cook
             $scope.repo.dockerFile   = "";
             $scope.repo.imagesList   = [];
             $scope.repo.domain       = "docker";
-            $scope.repo.command      = "docker pull biodckr/" + $scope.repository;
-            $scope.repo.url          = "https://hub.docker.com/r/biodckr/" + $scope.repository;
+            $scope.repo.command      = "docker pull biocontainers/" + $scope.repository;
+            $scope.repo.url          = "https://hub.docker.com/r/biocontainers/" + $scope.repository;
             $scope.repo.typeDockerFile = "DockerFile";
 
             $http({method: "GET", url: dockerFile}).success(function(data){

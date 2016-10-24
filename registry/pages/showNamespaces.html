@@ -44,7 +44,7 @@
 							<th sort-by="domain">Registry Link</th>
 						</tr>
 						<tr si-sortable="single" ng-repeat="container in namespacesList | filter:filter">
-							<td ng-if="container.domain == 'biodckr/'">
+							<td ng-if="container.domain == 'biocontainers/'">
 								<a ng-href="#showImages?domain=dockerhub&repository={{container.name}}&starred={{container.start_count}}">{{ container.name }}</a>
 							</td>
 							<td ng-if="container.domain == 'quay.io/biocontainers/'">
@@ -57,8 +57,8 @@
 							<td ng-if="container.start_count == false"></td>
 							<td  style="text-align: center; valign: middle; "><donut width="20" radius="5" height="20" ng-model="container.number_pull"></donut>
 							</td>
-							<td ng-if="container.domain == 'biodckr/'">
-								<a ng-href="https://hub.docker.com/r/biodckr/{{ container.name}}" target="_blank">
+							<td ng-if="container.domain == 'biocontainers/'">
+								<a ng-href="https://hub.docker.com/r/biocontainers/{{ container.name}}" target="_blank">
 									<img src="includes/images/docker.png" width="50" />
 								</a>
 							</td>
