@@ -1,0 +1,28 @@
+.aspect-row-img{
+    max-width: 100px;
+    max-height: 100px;
+}
+
+.aspect-row-item{
+    padding-bottom: 10px;
+}
+.aspect-row{
+    padding-top: 10px;
+    padding-bottom: 30px;
+}
+
+.aspect-row-img:hover {
+	opacity: 0.6;
+}
+.aspect-row-img {
+	-webkit-transition: all 0.2s ease-in 0.0s;
+	-moz-transition: all 0.2s ease-in 0.0s;
+	-o-transition: all 0.2s ease-in 0.0s;
+	transition: all 0.2s ease-in 0.0s;
+}
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}

@@ -1,0 +1,63 @@
+span.glyphicon {
+    font-size: 1.7em;
+    margin-top: -2px;
+}
+
+.improve-this-page .glyphicon {
+    font-size: 1.2em;
+}
+.tutorials-togglebox .glyphicon {
+    font-size: 1.5em;
+}
+
+.tutorials-togglebox {
+    cursor: pointer;
+    background-color: rgba(100,100,100,0.15);
+    border-radius: 4px;
+    height: 30px;
+}
+
+.tutorials-togglebox-icon {
+    padding-right: 10px;
+    padding-left: 10px;
+    display: block;
+    float: left;
+    padding-top: 4px;
+}
+
+.tutorials-togglebox-text{
+    font-weight: bold;
+    display: block;
+    float: left;
+    padding-top: 4px;
+}
+
+.tutorials-highlight {
+    min-height:50px;
+    display: table;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.tutorials-highlight-text {
+    vertical-align: middle;
+    display: table-cell;
+    padding-left: 7px;
+}
+.tutorials-highlight-child{
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 50px;
+    height: 50px;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.highlight pre, .tutorials pre {
+    background: none;
+    border: none;
+}
+
+.link-box {
+    padding-bottom: 13px;
+    height: 44px;
+}

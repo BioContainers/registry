@@ -1,0 +1,352 @@
+
+* {
+    -webkit-box-sizing: border-box;
+    /* Safari/Chrome, other WebKit */
+    
+    -moz-box-sizing: border-box;
+    /* Firefox, other Gecko */
+    
+    box-sizing: border-box;
+    /* Opera/IE 8+ */
+}
+
+.Menu {
+    width: 250px;
+    position: fixed;
+    height: 100%;
+    top: 0px;
+    left: -250px;
+    color: #ffffff;
+    z-index: 2;
+    background-color: rgba(174, 167, 164, 0.5);
+}
+
+.logoDiv {
+    margin: 10px 0px 0px 0px;
+    height: 50px;
+    padding-left: 20px;
+    vertical-align: middle;
+    border-bottom: 1px solid rgba(247, 247, 247, 0.1);
+}
+.logoDivName {
+    margin-top: 12px;
+    margin-left: 20px;
+    float: left;
+}
+#logoImg {
+    height: 40px;
+    width: 40px;
+    float: left;
+    font-weight: bold;
+}
+
+.list {
+    clear: both;
+    width: 250px;
+    height: 100%;
+    overflow-y: auto;
+    background-color: #162E34;
+}
+.item-heading {
+    display: block;
+    color: #ffffff;
+    width: 80%;
+    margin-left: 5%;
+    text-decoration: none;
+    font-size: 16px;
+    height: 30px;
+    line-height: 12.25px;
+    padding-bottom: 7px;
+    padding-left: 4px;
+    padding-right: 21px;
+    padding-top: 15px;
+    position: relative;
+    text-align: left;
+
+}
+p {
+    padding: 0px;
+    margin: 0px;
+}
+.item {
+    display: block;
+    color: rgba(255, 255, 255, .5);
+    width: 80%;
+    margin-left: 10%;
+    text-decoration: none;
+    font-size: 14px;
+    height: 28px;
+    line-height: 12.25px;
+    padding-bottom: 7px;
+    padding-left: 4px;
+    padding-right: 21px;
+    padding-top: 15px;
+    position: relative;
+    text-align: left;
+}
+.item:hover {
+    color: #ffffff;
+    text-decoration: none;
+}
+.navbar-div {
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: 8px;
+}
+.navbar-div li {
+    float: left;
+    margin-left: 6px;
+    list-style: none;
+}
+
+/*
+ * Globals
+ */
+
+/* Links */
+a,
+a:focus,
+a:hover {
+  color: #fff;
+}
+
+/* Custom default button */
+.btn-default,
+.btn-default:hover,
+.btn-default:focus {
+  color: #333;
+  text-shadow: none; /* Prevent inheritence from `body` */
+  background-color: #fff;
+  border: 1px solid #fff;
+}
+
+
+/*
+ * Base structure
+ */
+
+html,
+body {
+  height: 100%;
+  background-color: #1A2434;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 1px 3px rgba(0,0,0,.5);
+  background-image: url("/img/bg/dna_med.jpg");
+    background-attachment: fixed;
+    background-position: center; 
+}
+
+@media (max-height: 563) and (max-width: 1000px) {
+    body {
+        background-image: url("/img/bg/dna_low.jpg");
+    }
+}
+
+/* Extra markup and styles for table-esque vertical and horizontal centering */
+.site-wrapper {
+  display: table;
+  width: 100%;
+  height: 100%; /* For at least Firefox */
+  min-height: 100%;
+  -webkit-box-shadow: inset 0 0 100px rgba(0,0,0,.5);
+          box-shadow: inset 0 0 100px rgba(0,0,0,.5);
+}
+.site-wrapper-inner {
+  display: table-cell;
+  vertical-align: top;
+}
+.cover-container {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+/* Padding for spacing */
+.inner {
+  /*padding: 30px;*/
+}
+
+
+/*
+ * Header
+ */
+.masthead-brand {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.masthead-nav > li {
+  display: inline-block;
+}
+.masthead-nav > li + li {
+  margin-left: 20px;
+}
+.masthead-nav > li > a {
+  padding-right: 0;
+  padding-left: 0;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff; /* IE8 proofing */
+  color: rgba(255,255,255,.75);
+  border-bottom: 2px solid transparent;
+}
+.masthead-nav > li > a:hover,
+.masthead-nav > li > a:focus {
+  background-color: transparent;
+  border-bottom-color: #a9a9a9;
+  border-bottom-color: rgba(255,255,255,.25);
+}
+.masthead-nav > .active > a,
+.masthead-nav > .active > a:hover,
+.masthead-nav > .active > a:focus {
+  color: #fff;
+  border-bottom-color: #fff;
+}
+
+@media (min-width: 768px) {
+  .masthead-brand {
+    float: left;
+  }
+  .masthead-nav {
+    float: right;
+  }
+}
+
+
+/*
+ * Cover
+ */
+
+.cover {
+  padding: 0 20px;
+}
+.cover .btn-lg {
+  padding: 10px 20px;
+  font-weight: bold;
+}
+
+
+/*
+ * Footer
+ */
+
+.mastfoot {
+  color: #999; /* IE8 proofing */
+  color: rgba(255,255,255,.5);
+}
+
+
+/*
+ * Affix and center
+ */
+
+@media (min-width: 768px) {
+  /* Pull out the header and footer */
+  .masthead {
+    position: fixed;
+    top: 0;
+  }
+  .mastfoot {
+    position: fixed;
+    bottom: 0;
+  }
+  /* Start the vertical centering */
+  .site-wrapper-inner {
+    vertical-align: middle;
+  }
+  /* Handle the widths */
+  .masthead,
+  .mastfoot,
+  .cover-container {
+    width: 100%; /* Must be percentage or pixels for horizontal alignment */
+  }
+}
+
+@media (min-width: 992px) {
+  .masthead,
+  .mastfoot,
+  .cover-container {
+    width: 700px;
+  }
+}
+
+.withLove {
+  overflow: hidden;
+  text-align: center;
+  /*padding-bottom: 2em;*/
+  cursor: default;
+  /*color: #616c84;*/
+  color: white;
+  padding-bottom: 10px;
+}
+
+@media screen and (max-height: 600px) {
+  #getStarted {
+    margin-bottom: 50px;
+  }
+}
+.withLove * {
+  display: inline-block;
+}
+.withLove .alpha,
+.withLove .omega {
+  width: 40%;
+}
+.withLove .alpha {
+  text-align: right;
+}
+.withLove .omega {
+  text-align: left;
+}
+.withLove .heart {
+  margin: 0 -2px;
+  position: relative;
+  z-index: 3;
+  -webkit-animation: throb 1.33s ease-in-out infinite;
+  animation: throb 1.33s ease-in-out infinite;
+}
+.withLove .heart path {
+  fill: #ff005d;
+}
+@media screen and (min-width: 300px) {
+  .withLove .heart {
+    width: 30px;
+    height: 30px;
+    top: .66em;
+  }
+}
+@media screen and (min-width: 460px) {
+  .withLove .heart {
+    top: .8em;
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@-webkit-keyframes throb {
+  0% {
+    -webkit-transform: scale(1);
+  }
+
+  50% {
+    -webkit-transform: scale(0.8);
+  }
+
+  100% {
+    -webkit-transform: scale(1);
+  }
+}
+
+@keyframes throb {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(0.8);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
