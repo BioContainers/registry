@@ -132,14 +132,14 @@ body {
   color: #fff;
   text-align: center;
   text-shadow: 0 1px 3px rgba(0,0,0,.5);
-  background-image: url("/img/bg/dna_med.jpg");
+  background-image: url("http://biocontainers.pro/docs/img/bg/dna_med.jpg");
     background-attachment: fixed;
     background-position: center; 
 }
 
 @media (max-height: 563) and (max-width: 1000px) {
     body {
-        background-image: url("/img/bg/dna_low.jpg");
+        background-image: url("http://biocontainers.pro/docs/img/bg/dna_low.jpg");
     }
 }
 
