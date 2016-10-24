@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Comet</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="shortcut icon" type='image/x-icon' href="/img/favicon.ico">	
+	<link rel="stylesheet" type="text/css" href="/css/external/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/normalize.css">
+	<link rel="stylesheet" type="text/css" href="/css/font-awesome/css/font-awesome.min.css">
+
+	<link rel="stylesheet" type="text/css" href="/css/solarized_dark.css">
+	<link rel="stylesheet" type="text/css" href="/css/tutorials.css">
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/css/toc.css">
+
+	
+		<link rel="stylesheet" href="/css/tutorials.css">
+	
+		<link rel="stylesheet" href="/css/solarized_dark.css">
+	
+
+	<!-- needed for tutorial specific css -->
+	
+</head>
+<body>	
+	
+
+	<!--
+	<div class="container" id="main-container">
+		<div class="topNavbar">
+			<div class="navbar-div" id="logo">
+			<a class="logoLink" href="/">BIOJS</a>
+			</div>
+			<div class="navbar-div" id="navbar-links2">
+				<li>
+			
+			</div>
+		</div>
+	-->
+
+
+    <div id="biojs-menu">
+<div class="Menu">
+        <div class="list">
+            <div class="logoDiv">
+                <img src="/img/logo.png" id="logoImg">
+                <div class="logoDivName">BioContainers Edu.</div>
+            </div>
+
+
+        <span class="item-heading"> Basics </span>
+			
+	
+				<a class="item " href="/series/101/10_intro.html">Intro</a>
+			
+	
+				<a class="item " href="/series/101/15_what_is_biocontainers.html">BioContainers?</a>
+			
+	
+				<a class="item " href="/series/101/20_getting_started.html">Getting started</a>
+			
+	
+				<a class="item " href="/series/101/30_docker-nutshell.html">Docker in NutShell</a>
+			
+	
+				<a class="item " href="/series/101/35_biocontainers-architecture.html">BioContainers Architecture</a>
+			
+	
+				<a class="item " href="/series/101/40_running-example.html">BioContainer example</a>
+			
+	
+				<a class="item " href="/series/101/60_biocontainers-registry.html">Registry UI</a>
+			
+		
+
+        <span class="item-heading"> Developer tutorial </span>
+			
+	
+				<a class="item " href="/series/developer-manual/10_biocontainers-dockerfile.html">DockerFile Template</a>
+			
+	
+				<a class="item " href="/series/developer-manual/20_best-practices.html">Best Practices</a>
+			
+	
+				<a class="item " href="/series/developer-manual/30_biocontainers-input-output.html">Input/Outpout</a>
+			
+	
+				<a class="item " href="/series/developer-manual/35_deploy_new_project.html">Deploy to DockerHub</a>
+			
+		
+
+        <span class="item-heading"> BioContainers FAQS </span>
+			
+	
+				<a class="item " href="/series/faqs/manually-remove-dockerboot.html">Remove boot2docker</a>
+			
+		
+
+        <span class="item-heading"> Containers Examples </span>
+			
+	
+				<a class="item " href="/series/containers-examples/10_DIAUmpire.html">DiaUmpire</a>
+			
+	
+				<a class="item item-active" href="/series/containers-examples/20_comet.html">Comet</a>
+			
+		
+    </div>
+</div>
+
+	</div>
+
+	<div id="biojs-main-content">
+		
+		<div class="heading row">
+   
+  <div class="col-md-6 col-xs-7 col-lg-5" id="contentTitleCell">
+	  <span class="contentTitle">Comet </span>
+
+	  <a class="gitStar" style="width:150px;" href="https://github.com/biocontainers/edu/blob/master/series/containers-examples/20_comet.md" target="_blank"><span class="glyphicon glyphicon-pencil" style="font-size:14px;" ></span> Improve this page</a>
+  </div>
+
+	<div class="col-xs-2 col-md-3">
+		<div id="biojs-iconnav-glyphs">
+	  <a class="git" href="https://github.com/biocontainers/" target="_blank"><i class="fa fa-github-alt"></i></a>
+
+	  <a class="git"  href="http://biocontainers.pro" target="_blank"><i class="fa fa-home"></i></a>
+	  <a class="git hidden-xs hidden-sm" href="https://kiwiirc.com/client/irc.freenode.net/biocontainers" target="_blank"><i class="fa fa-weixin"></i></a>
+	  <a class="git hidden-xs hidden-sm" id="bookmark-link" href="#"><i class="fa fa-bookmark"></i></a>
+
+  </div>	
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function() {
+    $('#bookmark-link').click(function() {
+        if (window.sidebar && window.sidebar.addPanel) { // Mozilla Firefox Bookmark
+            window.sidebar.addPanel(document.title,window.location.href,'');
+        } else if(window.external && ('AddFavorite' in window.external)) { // IE Favorite
+            window.external.AddFavorite(location.href,document.title); 
+        } else if(window.opera && window.print) { // Opera Hotlist
+            this.title=document.title;
+            return true;
+        } else { // webkit - safari/chrome
+            alert('Press ' + (navigator.userAgent.toLowerCase().indexOf('mac') != - 1 ? 'Command/Cmd' : 'CTRL') + ' + D to bookmark this page.');
+        }
+    });
+});
+</script>
+
+	  <a class="gitStar hidden-xs hidden-sm" style="width:150px;" id="biojs-iconnav-help" href="https://gitter.im/biocontainers/Lobby" target="_blank"><span class="glyphicon glyphicon-bullhorn" style="font-size:17px;" ></span> Get help</a>
+
+  </div>	
+  <div class="col-md-2 col-lg-2 hidden-xs hidden-sm" id="social-media-share">
+
+    <!-- share it: twitter, google -->
+    <div style="height:25px"> <a href="https://twitter.com/share" class="twitter-share-button" style="width: 40px">Tweet</a>
+
+      <script>
+        ! function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0],
+                    p = /^http:/.test(d.location) ? 'http' : 'https';
+                if (!d.getElementById(id)) {
+                    js = d.createElement(s);
+                    js.id = id;
+                    js.src = p + '://platform.twitter.com/widgets.js';
+                    fjs.parentNode.insertBefore(js, fjs);
+                }
+            }(document, 'script', 'twitter-wjs');
+      </script>
+      <script src="https://apis.google.com/js/platform.js" async defer></script>
+	  <div class="share-google-button">
+      	<div class="g-plus" data-action="share" data-annotation="bubble"
+      data-align="right"></div>
+	  </div>
+    </div>
+
+    </div>
+	
+
+    <div class="author col-md-2 col-xs-2 hidden-xs">
+			<div class="tutorial-item"><span class="glyphicon glyphicon-calendar" style="font-size:14px;margin-bottom: 2px;"></span> 24 Oct 2016</div>
+	        
+			
+	        <div class="tutorial-item"><span class="glyphicon glyphicon-time" style="font-size:14px;margin-bottom: 2px;"></span> 5 minutes </div>
+	        
+	</div>
+
+</div>
+
+<div class="pullButton pullButton-mob">
+	<i class="fa fa-bars fa-2x"></i>
+</div>
+
+
+<div class="containerBody">
+	<!--
+    <div class="leftPanel">
+
+		
+
+    </div>
+	-->
+    <div class="rightPanel">
+
+
+
+        <div class="static-content">
+
+            <div id="explanation" style="display:none">
+                <div style="display:block"><div class="tutorials-highlight" style="display:block;"><span class="glyphicon glyphicon-check" style="float:left;display:block;margin-right:20px"></span><div class="tutorials-highlight-text">
+<p>We will use this icon to mark check points.
+A check point is a way for you to check how you are doing.</p>
+</div></div></div>
+
+<div style="display:block"><div class="tutorials-highlight" style="display:block;"><span class="glyphicon glyphicon-minus-sign" style="float:left;display:block;margin-right:20px"></span><div class="tutorials-highlight-text">
+<p>For most of the steps in this tutorial we will
+provide the code as it should look after the task. It is tempting, we
+know, but please, please, do not go for the “copy&amp;paste” way.</p>
+</div></div></div>
+
+<div style="display:block"><div class="tutorials-highlight" style="display:block;"><span class="glyphicon glyphicon-road" style="float:left;display:block;margin-right:20px"></span><div class="tutorials-highlight-text">
+<p>We will use this icon to challenge you
+with additional code-related tasks so you can go further at your own
+pace. No inline answer will be provide for those challenges but we will
+give you some guidelines and tips. By the way, within the instructions
+we will use <em>an italic font</em> to refer to variables and pieces of code.</p>
+</div></div></div>
+
+<div style="display:block"><div class="tutorials-highlight" style="display:block;"><span class="glyphicon glyphicon-bell" style="float:left;display:block;margin-right:20px"></span><div class="tutorials-highlight-text">
+<p>We will use this icon to ask you some questions related to the task your are working on.</p>
+</div></div></div>
+
+<div style="display:block"><div class="tutorials-highlight" style="display:block;"><span class="glyphicon glyphicon-info-sign" style="float:left;display:block;margin-right:20px"></span><div class="tutorials-highlight-text">
+<p>Additional info and resources - this is not essential to complete the tutorial, but very interesting.</p>
+</div></div></div>
+
+<div style="display:block"><div class="tutorials-highlight" style="display:block;"><span class="glyphicon glyphicon-gift" style="float:left;display:block;margin-right:20px"></span><div class="tutorials-highlight-text">
+<p>Tips that might help you on this task.</p>
+</div></div></div>
+
+<div style="display:block"><div class="tutorials-highlight" style="display:block;"><span class="glyphicon glyphicon-hand-up" style="float:left;display:block;margin-right:20px"></span><div class="tutorials-highlight-text">
+<p>If you are following this tutorial as part of a workshop, do not hesitate to
+raise your hand and share any questions or comments you may have.
+If you are doing it by your own, you still can raise your hand in our
+mailing list, just join our <a href="https://groups.google.com/forum/#!forum/biojs">Google Group</a>.</p>
+</div></div></div>
+
+
+            </div>
+
+            <div class="clearfix"> </div>
+
+<!--
+
+-->
+            <h2 id="run-a-comet-search-engine">Run a Comet search engine</h2>
+
+<p>Let’s run a a proteomics search engine to identified proteins using <a href="http://comet-ms.sourceforge.net/">Comet</a>.</p>
+
+<div class="alert alert-warning "> <a href="#" class="close" data-dismiss="alert">&times;</a>
+                    <span class="glyphicon glyphicon-warning-sign" style="font-size:22px"></span> &nbsp; Proteomics data analysis is dominated by database-based search engines strategies.
+Amount Search Engines, Comet is one of the most popular nowadays. 
+We are going to show how to run a simple analysis protocol using the <a href="https://github.com/BioContainers/containers/tree/master/Comet">BioContainers Comet</a> database
+search engine. </div>
+
+<h2 id="get-the-docker-container">Get the docker container</h2>
+
+<pre><code>$ docker pull biodckr/comet
+</code></pre>
+
+<p>Some insides into this commandline:</p>
+
+<ol>
+  <li>The <a href="/biodocker-registry/">biodocker registry</a> <strong>biodckr</strong> contains all the BioDocker deployed containers ready to be use. </li>
+  <li><strong>docker pull</strong> download the latest container of Comet</li>
+</ol>
+
+<p>If the user wants to download an specific version of the comet biodcoker container it can be done by providing the current corrsponding tag. </p>
+
+<pre><code>$ docker pull biodckr/comet --tag="2016012" 
+</code></pre>
+
+<h2 id="run-the-docker-container">Run the Docker Container</h2>
+
+<blockquote>
+  <p><strong>Note</strong>: First thing to do is to arrange the necessary <a href="/biodocker-input-output/">files to run your data</a>. 
+For this pipeline we are going to need converted raw files from some mass spectrometry analysis and a protein
+database in FASTA format. This are the files we are using for this tutorial:</p>
+</blockquote>
+
+<ul>
+  <li><a href="">b1930_293T_proteinID_10A_QE3_122212.mzXML</a></li>
+  <li><a href="">b1931_293T_proteinID_11A_QE3_122212.mzXML</a></li>
+  <li><a href="">database.fa</a></li>
+</ul>
+
+<p>I’m placing all these files inside a folder called /home/user/workspace/</p>
+
+<h3 id="print-comet-a-new-parameter-file">Print Comet a new parameter file:</h3>
+
+<pre><code>$ docker run -v /home/user/workspace/:/data/ biodckr/comet comet -p
+</code></pre>
+
+<p>Some notes about this commandline:</p>
+
+<ol>
+  <li>To have access to files inside the container, and vice-versa, we need to map a local folder inside the container,
+that way all files inside this mapped folder will be visible and accessible to us and to the container.</li>
+  <li>This is possible using the <strong>parameter -v</strong> and passing the complete path from our folder that we wish to map inside the container. In this case we are mapping /home/user/workspace into /data/, a pre-existent folder inside the container.</li>
+  <li><strong>biodckr/comet</strong> is the name of the container we pulled from BioDocker. </li>
+  <li>The <strong>comet</strong> right after is the name of the program inside the container we are running.</li>
+</ol>
+
+<p>After running this command you will see a new file in the folder called comet.params.new,
+let’s rename it to comet.params and edit some of the options.
+In this case I will just change two parameters:
+database_name = /data/database.fa
+decoy_search = 1</p>
+
+<blockquote>
+  <p><strong>Note</strong>: Remember that the files inside the container are actually inside a folder called /data/, 
+so that’s how we are going to pass the file location to the programs.</p>
+</blockquote>
+
+<h3 id="start-the-database-search">Start the database search:</h3>
+
+<pre><code>    $ docker run -v /home/felipe/workspace/:/data/ biodckr/comet comet -Pcomet.params b1930_293T_proteinID_10A_QE3_122212.mzXML b1931_293T_proteinID_11A_QE3_122212.mzXML
+</code></pre>
+
+<p>If everything went well you should see two new files on your folder; b1930_293T_proteinID_10A_QE3_122212.pep.xml and b1931_293T_proteinID_11A_QE3_122212.pep.xml</p>
+
+<h2 id="other-interesting-options">Other interesting options</h2>
+
+<p>Simple bash interactive script:</p>
+
+<pre><code>$ docker run -t -i ubuntu /bin/bash
+root@af8bae53bdd3:/#
+</code></pre>
+
+<p>In this example:</p>
+
+<ol>
+  <li>docker run runs a container.</li>
+  <li>ubuntu is the image you would like to run.</li>
+  <li>-t flag assigns a pseudo-tty or terminal inside the new container.</li>
+  <li>-i flag allows you to make an interactive connection by grabbing the standard in (STDIN) of the container.</li>
+  <li>/bin/bash launches a Bash shell inside our container.</li>
+</ol>
+
+<p>The container launches. We can see there is a command prompt inside it:</p>
+
+<pre><code>root@af8bae53bdd3:/#
+</code></pre>
+
+<p>Let’s try running some commands inside the container:</p>
+
+<pre><code>root@af8bae53bdd3:/# ls
+bin boot dev etc home lib lib64 media mnt opt proc root run sbin srv sys tmp usr var
+</code></pre>
+
+<p>In this example:</p>
+
+<ol>
+  <li>ls displays the directory listing of the root directory of a typical Linux file system.</li>
+</ol>
+
+<p>Now, you can play around inside this container. When completed, run the exit command or enter Ctrl-D to exit the interactive shell.</p>
+
+<pre><code>root@af8bae53bdd3:/# exit
+</code></pre>
+
+<blockquote>
+  <p>Note: As with our previous container, once the Bash shell process has finished, the container stops.</p>
+</blockquote>
+
+<h3 id="start-a-daemonized-hello-world">Start a daemonized Hello world</h3>
+
+<p>Let’s create a container that runs as a daemon.</p>
+
+<pre><code>$ docker run -d ubuntu /bin/sh -c "while true; do echo hello world; sleep 1; done"
+1e5535038e285177d5214659a068137486f96ee5c2e85a4ac52dc83f2ebe4147
+</code></pre>
+
+<p>In this example:</p>
+
+<ol>
+  <li>docker run runs the container.</li>
+  <li>-d flag runs the container in the background (to daemonize it).</li>
+  <li>ubuntu is the image you would like to run.</li>
+</ol>
+
+<p>Finally, we specify a command to run: <strong>/bin/sh -c “while true; do echo hello world; sleep 1; done”</strong></p>
+
+<p>In the output, we do not see hello world but a long string:</p>
+
+<p>1e5535038e285177d5214659a068137486f96ee5c2e85a4ac52dc83f2ebe4147</p>
+
+<p>This long string is called a container ID. It uniquely identifies a container so we can work with it.</p>
+
+<blockquote>
+  <p>Note: The container ID is a bit long and unwieldy. Later, we will cover the short ID and ways to name our containers to make working with them easier.</p>
+</blockquote>
+
+<p>We can use this container ID to see what’s happening with our hello world daemon.</p>
+
+<p>First, let’s make sure our container is running. Run the <strong>docker ps</strong> command. The docker ps command queries the Docker daemon for information about all the containers it knows about.</p>
+
+<pre><code>$ docker ps
+CONTAINER ID  IMAGE         COMMAND               CREATED        STATUS       PORTS NAMES
+1e5535038e28  ubuntu  /bin/sh -c 'while tr  2 minutes ago  Up 1 minute        insane_babbage
+</code></pre>
+
+<p>In this example, we can see our daemonized container. The docker ps returns some useful information:</p>
+
+<ol>
+  <li>1e5535038e28 is the shorter variant of the container ID.</li>
+  <li>ubuntu is the used image.</li>
+  <li>the command, status, and assigned name insane_babbage.</li>
+</ol>
+
+<blockquote>
+  <p>Note: Docker automatically generates names for any containers started. We’ll see how to specify your own names a bit later.</p>
+</blockquote>
+
+<p>Now, we know the container is running. But is it doing what we asked it to do? To see this we’re going to look inside the container using the docker logs command.</p>
+
+<p>Let’s use the container name insane_babbage.</p>
+
+<pre><code>$ docker logs insane_babbage
+hello world
+hello world
+hello world
+. . .
+</code></pre>
+
+<p>In this example:</p>
+
+<ol>
+  <li>docker logs looks inside the container and returns hello world.</li>
+</ol>
+
+<h2 id="command-resume">Command Resume</h2>
+
+<p>So far, you launched your first containers using the docker run command. You ran an interactive container that ran in the foreground. You also ran a detached container that ran in the background. In the process you learned about several Docker commands:</p>
+
+<ul>
+  <li><strong>docker run</strong>  - Run a docker container </li>
+  <li><strong>dcoker pull</strong> - Download the container from Biodocker Hub</li>
+  <li><strong>docker ps</strong>   - Lists containers.</li>
+  <li><strong>docker logs</strong> - Shows us the standard output of a container.</li>
+  <li><strong>docker stop</strong> - Stops running containers.</li>
+</ul>
+
+<p>Now, you have the basis learn more about Docker <a href="https://docs.docker.com/engine/userguide/containers/usingdocker/">Go to “Run a simple application“</a></p>
+
+
+           <div id="lower-link-box" class="link-box">
+				 
+				<a href="/series/containers-examples/10_DIAUmpire.html" class="btn btn-primary previous-link">Previous</a>
+				 
+				
+
+				<br />	
+			</div>
+
+		</div>
+	</div>
+
+<!-- temporaroy removed 
+
+-->
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+	// load highlighted code blocks
+    $('pre code').each(function(i, block) {
+      hljs.highlightBlock(block);
+    });
+	jQuery(".collapsible").each(function(i,e){
+		collapseStuff(e,"Hide the code", "Display the code");
+	});
+	/*
+	DO NOT show the explanation
+	collapseStuff("#explanation","Hide the icon explanation", "Display the icon explanation");
+	jQuery("#explanation").css("display", "block");
+	*/
+});
+function collapseStuff(e, textHidden, textDisplayed){
+	var divHigh = $(e);
+	var children = divHigh.children();
+	children.hide();
+	var toggleBox = document.createElement("div");
+	toggleBox.className = "tutorials-togglebox";
+	divHigh.prepend(toggleBox);
+	var awesomeIcon = document.createElement("span");
+	var awesomeText= document.createElement("span");
+	awesomeIcon.className = "tutorials-togglebox-icon glyphicon glyphicon-chevron-down";
+	awesomeText.textContent = "Display the code";
+	awesomeText.className = "tutorials-togglebox-text";
+	toggleBox.appendChild(awesomeIcon);
+	toggleBox.appendChild(awesomeText);
+	awesomeText.textContent = textDisplayed;
+	$(toggleBox).click(function(){
+		var codeBox = children;
+		var text = divHigh.children().first();
+		if( codeBox.css("display") == "none" ){
+			codeBox.show(700);
+			awesomeText.textContent = textHidden;
+			awesomeIcon.className = "tutorials-togglebox-icon glyphicon glyphicon-chevron-up";
+		}else{
+			codeBox.hide(500);
+			awesomeText.textContent = textDisplayed;
+			awesomeIcon.className = "tutorials-togglebox-icon glyphicon glyphicon-chevron-down";
+		}
+	});
+};
+</script>
+
+<script src="/js/highlight.min.js"></script>
+
+	</div>
+		
+		</div>
+		<!--
+		<div class="footer">
+			<div class="improve-this-page">
+				<span class="glyphicon glyphicon-pencil"></span> <a href="https://github.com/biojs/edu/blob/master/series/containers-examples/20_comet.md">Improve this page</a>
+			</div>
+
+			<div id="privacy-notice-less" class="privacy-policy">
+				Privacy Policy.
+			</div>
+			<div id="privacy-notice-more"  class="privacy-policy" style="display:none">
+				This website uses Google Analytics to collect anonymous visiting stats.<br />
+				By visiting this site you agree to the <a href="https://www.google.com/analytics/terms/us.html">data processing agreement</a> by Google.<br />
+				If you do not agree, <a href="http://www.usa.gov/optout-instructions.shtml">opt out</a>.
+			</div>
+		
+		</div>
+		-->
+
+
+	<script type="text/javascript" src="/js/jquery.min.js"></script>
+	<script type="text/javascript" src="/js/highlight.min.js"></script>
+	<script type="text/javascript" src="/js/jquery-scrollspy.js"></script>
+	<script type="text/javascript" src="/js/bottom.js"></script>
+	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+
+			<script type="text/javascript">
+	        $(document).ready(function() {
+        			$('.color').each(function(i) {
+        				var position = $(this).position();
+        				console.log(position);
+        				console.log('min: ' + position.top + ' / max: ' + parseInt(position.top + $(this).height()));
+        				$(this).scrollspy({
+        					min: position.top,
+        					max: position.top + $(this).height(),
+        					onEnter: function(element, position) {
+        						if(console) console.log('entering ' +  element.id);
+        						$("body").css('background-color', element.id);
+        					},
+        					onLeave: function(element, position) {
+        						if(console) console.log('leaving ' +  element.id);
+        					//	$('body').css('background-color','#eee');
+        					}
+        				});
+        			});
+        		});
+        	</script>
+	<script type="text/javascript">
+
+		/*
+		$(window).scroll(function(){
+    		$(".topNavbar").css({"top": ($(window).scrollTop()) + "px"});        
+    		if ($(window).scrollTop() > 140){
+	    		$(".leftPanel").css({"top": ($(window).scrollTop()) -140 + "px"});
+			}
+    	});
+    	*/
+
+		$('.pullButton').click(function(e){
+			$("#biojs-menu").css("display","block");
+			$("#biojs-main-content").css("margin-left","220px");
+			$(".pullButton").removeClass("pullButton-mob");
+			e.stopPropagation();
+			return false;
+		});
+
+		$(window).click(function(){
+			closeMenu();
+		});
+		$('.Menu').click(function(){
+			closeMenu();
+		});
+
+		function closeMenu(){
+			if(isMobile()){
+				$("#biojs-menu").css("display","none");
+				$(".pullButton").addClass("pullButton-mob");
+				$("#biojs-main-content").css("margin-left","0px");
+			}
+		}
+		function isMobile(){
+			return $(window).width() <= 600;
+		}
+
+	</script>
+
+
+	
+
+
+	<script>hljs.initHighlightingOnLoad();</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-51509688-5', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>

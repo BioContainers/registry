@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Input/Outpout</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="shortcut icon" type='image/x-icon' href="/img/favicon.ico">	
+	<link rel="stylesheet" type="text/css" href="/css/external/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/normalize.css">
+	<link rel="stylesheet" type="text/css" href="/css/font-awesome/css/font-awesome.min.css">
+
+	<link rel="stylesheet" type="text/css" href="/css/solarized_dark.css">
+	<link rel="stylesheet" type="text/css" href="/css/tutorials.css">
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/css/toc.css">
+
+	
+		<link rel="stylesheet" href="/css/tutorials.css">
+	
+		<link rel="stylesheet" href="/css/solarized_dark.css">
+	
+
+	<!-- needed for tutorial specific css -->
+	
+</head>
+<body>	
+	
+
+	<!--
+	<div class="container" id="main-container">
+		<div class="topNavbar">
+			<div class="navbar-div" id="logo">
+			<a class="logoLink" href="/">BIOJS</a>
+			</div>
+			<div class="navbar-div" id="navbar-links2">
+				<li>
+			
+			</div>
+		</div>
+	-->
+
+
+    <div id="biojs-menu">
+<div class="Menu">
+        <div class="list">
+            <div class="logoDiv">
+                <img src="/img/logo.png" id="logoImg">
+                <div class="logoDivName">BioContainers Edu.</div>
+            </div>
+
+
+        <span class="item-heading"> Basics </span>
+			
+	
+				<a class="item " href="/series/101/10_intro.html">Intro</a>
+			
+	
+				<a class="item " href="/series/101/15_what_is_biocontainers.html">BioContainers?</a>
+			
+	
+				<a class="item " href="/series/101/20_getting_started.html">Getting started</a>
+			
+	
+				<a class="item " href="/series/101/30_docker-nutshell.html">Docker in NutShell</a>
+			
+	
+				<a class="item " href="/series/101/35_biocontainers-architecture.html">BioContainers Architecture</a>
+			
+	
+				<a class="item " href="/series/101/40_running-example.html">BioContainer example</a>
+			
+	
+				<a class="item " href="/series/101/60_biocontainers-registry.html">Registry UI</a>
+			
+		
+
+        <span class="item-heading"> Developer tutorial </span>
+			
+	
+				<a class="item " href="/series/developer-manual/10_biocontainers-dockerfile.html">DockerFile Template</a>
+			
+	
+				<a class="item " href="/series/developer-manual/20_best-practices.html">Best Practices</a>
+			
+	
+				<a class="item item-active" href="/series/developer-manual/30_biocontainers-input-output.html">Input/Outpout</a>
+			
+	
+				<a class="item " href="/series/developer-manual/35_deploy_new_project.html">Deploy to DockerHub</a>
+			
+		
+
+        <span class="item-heading"> BioContainers FAQS </span>
+			
+	
+				<a class="item " href="/series/faqs/manually-remove-dockerboot.html">Remove boot2docker</a>
+			
+		
+
+        <span class="item-heading"> Containers Examples </span>
+			
+	
+				<a class="item " href="/series/containers-examples/10_DIAUmpire.html">DiaUmpire</a>
+			
+	
+				<a class="item " href="/series/containers-examples/20_comet.html">Comet</a>
+			
+		
+    </div>
+</div>
+
+	</div>
+
+	<div id="biojs-main-content">
+		
+		<div class="heading row">
+   
+  <div class="col-md-6 col-xs-7 col-lg-5" id="contentTitleCell">
+	  <span class="contentTitle">Input/Outpout </span>
+
+	  <a class="gitStar" style="width:150px;" href="https://github.com/biocontainers/edu/blob/master/series/developer-manual/30_biocontainers-input-output.md" target="_blank"><span class="glyphicon glyphicon-pencil" style="font-size:14px;" ></span> Improve this page</a>
+  </div>
+
+	<div class="col-xs-2 col-md-3">
+		<div id="biojs-iconnav-glyphs">
+	  <a class="git" href="https://github.com/biocontainers/" target="_blank"><i class="fa fa-github-alt"></i></a>
+
+	  <a class="git"  href="http://biocontainers.pro" target="_blank"><i class="fa fa-home"></i></a>
+	  <a class="git hidden-xs hidden-sm" href="https://kiwiirc.com/client/irc.freenode.net/biocontainers" target="_blank"><i class="fa fa-weixin"></i></a>
+	  <a class="git hidden-xs hidden-sm" id="bookmark-link" href="#"><i class="fa fa-bookmark"></i></a>
+
+  </div>	
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function() {
+    $('#bookmark-link').click(function() {
+        if (window.sidebar && window.sidebar.addPanel) { // Mozilla Firefox Bookmark
+            window.sidebar.addPanel(document.title,window.location.href,'');
+        } else if(window.external && ('AddFavorite' in window.external)) { // IE Favorite
+            window.external.AddFavorite(location.href,document.title); 
+        } else if(window.opera && window.print) { // Opera Hotlist
+            this.title=document.title;
+            return true;
+        } else { // webkit - safari/chrome
+            alert('Press ' + (navigator.userAgent.toLowerCase().indexOf('mac') != - 1 ? 'Command/Cmd' : 'CTRL') + ' + D to bookmark this page.');
+        }
+    });
+});
+</script>
+
+	  <a class="gitStar hidden-xs hidden-sm" style="width:150px;" id="biojs-iconnav-help" href="https://gitter.im/biocontainers/Lobby" target="_blank"><span class="glyphicon glyphicon-bullhorn" style="font-size:17px;" ></span> Get help</a>
+
+  </div>	
+  <div class="col-md-2 col-lg-2 hidden-xs hidden-sm" id="social-media-share">
+
+    <!-- share it: twitter, google -->
+    <div style="height:25px"> <a href="https://twitter.com/share" class="twitter-share-button" style="width: 40px">Tweet</a>
+
+      <script>
+        ! function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0],
+                    p = /^http:/.test(d.location) ? 'http' : 'https';
+                if (!d.getElementById(id)) {
+                    js = d.createElement(s);
+                    js.id = id;
+                    js.src = p + '://platform.twitter.com/widgets.js';
+                    fjs.parentNode.insertBefore(js, fjs);
+                }
+            }(document, 'script', 'twitter-wjs');
+      </script>
+      <script src="https://apis.google.com/js/platform.js" async defer></script>
+	  <div class="share-google-button">
+      	<div class="g-plus" data-action="share" data-annotation="bubble"
+      data-align="right"></div>
+	  </div>
+    </div>
+
+    </div>
+	
+
+    <div class="author col-md-2 col-xs-2 hidden-xs">
+			<div class="tutorial-item"><span class="glyphicon glyphicon-calendar" style="font-size:14px;margin-bottom: 2px;"></span> 24 Oct 2016</div>
+	        
+			<!--<div class="tutorial-item">Contributor(s): Yassset Perez-Riverol</div>-->
+	        
+			
+	        <div class="tutorial-item"><span class="glyphicon glyphicon-time" style="font-size:14px;margin-bottom: 2px;"></span> 5 minutes </div>
+	        
+	</div>
+
+</div>
+
+<div class="pullButton pullButton-mob">
+	<i class="fa fa-bars fa-2x"></i>
+</div>
+
+
+<div class="containerBody">
+	<!--
+    <div class="leftPanel">
+
+		
+
+    </div>
+	-->
+    <div class="rightPanel">
+
+
+
+        <div class="static-content">
+
+            <div id="explanation" style="display:none">
+                <div style="display:block"><div class="tutorials-highlight" style="display:block;"><span class="glyphicon glyphicon-check" style="float:left;display:block;margin-right:20px"></span><div class="tutorials-highlight-text">
+<p>We will use this icon to mark check points.
+A check point is a way for you to check how you are doing.</p>
+</div></div></div>
+
+<div style="display:block"><div class="tutorials-highlight" style="display:block;"><span class="glyphicon glyphicon-minus-sign" style="float:left;display:block;margin-right:20px"></span><div class="tutorials-highlight-text">
+<p>For most of the steps in this tutorial we will
+provide the code as it should look after the task. It is tempting, we
+know, but please, please, do not go for the “copy&amp;paste” way.</p>
+</div></div></div>
+
+<div style="display:block"><div class="tutorials-highlight" style="display:block;"><span class="glyphicon glyphicon-road" style="float:left;display:block;margin-right:20px"></span><div class="tutorials-highlight-text">
+<p>We will use this icon to challenge you
+with additional code-related tasks so you can go further at your own
+pace. No inline answer will be provide for those challenges but we will
+give you some guidelines and tips. By the way, within the instructions
+we will use <em>an italic font</em> to refer to variables and pieces of code.</p>
+</div></div></div>
+
+<div style="display:block"><div class="tutorials-highlight" style="display:block;"><span class="glyphicon glyphicon-bell" style="float:left;display:block;margin-right:20px"></span><div class="tutorials-highlight-text">
+<p>We will use this icon to ask you some questions related to the task your are working on.</p>
+</div></div></div>
+
+<div style="display:block"><div class="tutorials-highlight" style="display:block;"><span class="glyphicon glyphicon-info-sign" style="float:left;display:block;margin-right:20px"></span><div class="tutorials-highlight-text">
+<p>Additional info and resources - this is not essential to complete the tutorial, but very interesting.</p>
+</div></div></div>
+
+<div style="display:block"><div class="tutorials-highlight" style="display:block;"><span class="glyphicon glyphicon-gift" style="float:left;display:block;margin-right:20px"></span><div class="tutorials-highlight-text">
+<p>Tips that might help you on this task.</p>
+</div></div></div>
+
+<div style="display:block"><div class="tutorials-highlight" style="display:block;"><span class="glyphicon glyphicon-hand-up" style="float:left;display:block;margin-right:20px"></span><div class="tutorials-highlight-text">
+<p>If you are following this tutorial as part of a workshop, do not hesitate to
+raise your hand and share any questions or comments you may have.
+If you are doing it by your own, you still can raise your hand in our
+mailing list, just join our <a href="https://groups.google.com/forum/#!forum/biojs">Google Group</a>.</p>
+</div></div></div>
+
+
+            </div>
+
+            <div class="clearfix"> </div>
+
+<!--
+
+-->
+            <h1 id="using-input--and-output-files">Using input  and Output files</h1>
+
+<p>In many cases the software you are using requires an input or an output file to work.
+This can be achieved using a container image, but it requires that you change the way how you execute
+the docker daemon.</p>
+
+<p>The first step is to have a specific folder in your computer to serve as a shared folder between your system and the container. In this case let’s place a file called prot.fa inside a folder called <code>/home/user/docker/</code>.</p>
+
+<p>The <code>/home/user/docker/</code> folder will be mapped inside the container, that way this can server as a gateway for files, both the input and the output files will be placed there. </p>
+
+<p>After setting the folder and necessary files inside we can execute the image we want. In the example bellow we are running an image built from an example container:</p>
+
+<pre><code>$ docker run -v /home/user/docker/:/data/ biodckr/program -input /data/prot.fa -output /data/result.txt`
+</code></pre>
+
+<p>Our local path <code>/home/user/docker/</code> will map inside the container into a folder called <code>/data/</code> and the software will have access to the file. After the processing is done the result file will be saved on the same place and we can have it outside the container in the same folder.
+In this scenario, the only difference is the use of the parameter <code>-v</code> when running the image, this parameter tells the docker daemon that when are mapping something from the host system internally.</p>
+
+
+           <div id="lower-link-box" class="link-box">
+				 
+				<a href="/series/developer-manual/20_best-practices.html" class="btn btn-primary previous-link">Previous</a>
+				 
+				
+					<a href="/series/developer-manual/35_deploy_new_project.html" class="btn btn-primary next-link pull-right">Next</a>
+				
+
+				<br />	
+			</div>
+
+		</div>
+	</div>
+
+<!-- temporaroy removed 
+
+-->
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+	// load highlighted code blocks
+    $('pre code').each(function(i, block) {
+      hljs.highlightBlock(block);
+    });
+	jQuery(".collapsible").each(function(i,e){
+		collapseStuff(e,"Hide the code", "Display the code");
+	});
+	/*
+	DO NOT show the explanation
+	collapseStuff("#explanation","Hide the icon explanation", "Display the icon explanation");
+	jQuery("#explanation").css("display", "block");
+	*/
+});
+function collapseStuff(e, textHidden, textDisplayed){
+	var divHigh = $(e);
+	var children = divHigh.children();
+	children.hide();
+	var toggleBox = document.createElement("div");
+	toggleBox.className = "tutorials-togglebox";
+	divHigh.prepend(toggleBox);
+	var awesomeIcon = document.createElement("span");
+	var awesomeText= document.createElement("span");
+	awesomeIcon.className = "tutorials-togglebox-icon glyphicon glyphicon-chevron-down";
+	awesomeText.textContent = "Display the code";
+	awesomeText.className = "tutorials-togglebox-text";
+	toggleBox.appendChild(awesomeIcon);
+	toggleBox.appendChild(awesomeText);
+	awesomeText.textContent = textDisplayed;
+	$(toggleBox).click(function(){
+		var codeBox = children;
+		var text = divHigh.children().first();
+		if( codeBox.css("display") == "none" ){
+			codeBox.show(700);
+			awesomeText.textContent = textHidden;
+			awesomeIcon.className = "tutorials-togglebox-icon glyphicon glyphicon-chevron-up";
+		}else{
+			codeBox.hide(500);
+			awesomeText.textContent = textDisplayed;
+			awesomeIcon.className = "tutorials-togglebox-icon glyphicon glyphicon-chevron-down";
+		}
+	});
+};
+</script>
+
+<script src="/js/highlight.min.js"></script>
+
+	</div>
+		
+		</div>
+		<!--
+		<div class="footer">
+			<div class="improve-this-page">
+				<span class="glyphicon glyphicon-pencil"></span> <a href="https://github.com/biojs/edu/blob/master/series/developer-manual/30_biocontainers-input-output.md">Improve this page</a>
+			</div>
+
+			<div id="privacy-notice-less" class="privacy-policy">
+				Privacy Policy.
+			</div>
+			<div id="privacy-notice-more"  class="privacy-policy" style="display:none">
+				This website uses Google Analytics to collect anonymous visiting stats.<br />
+				By visiting this site you agree to the <a href="https://www.google.com/analytics/terms/us.html">data processing agreement</a> by Google.<br />
+				If you do not agree, <a href="http://www.usa.gov/optout-instructions.shtml">opt out</a>.
+			</div>
+		
+		</div>
+		-->
+
+
+	<script type="text/javascript" src="/js/jquery.min.js"></script>
+	<script type="text/javascript" src="/js/highlight.min.js"></script>
+	<script type="text/javascript" src="/js/jquery-scrollspy.js"></script>
+	<script type="text/javascript" src="/js/bottom.js"></script>
+	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+
+			<script type="text/javascript">
+	        $(document).ready(function() {
+        			$('.color').each(function(i) {
+        				var position = $(this).position();
+        				console.log(position);
+        				console.log('min: ' + position.top + ' / max: ' + parseInt(position.top + $(this).height()));
+        				$(this).scrollspy({
+        					min: position.top,
+        					max: position.top + $(this).height(),
+        					onEnter: function(element, position) {
+        						if(console) console.log('entering ' +  element.id);
+        						$("body").css('background-color', element.id);
+        					},
+        					onLeave: function(element, position) {
+        						if(console) console.log('leaving ' +  element.id);
+        					//	$('body').css('background-color','#eee');
+        					}
+        				});
+        			});
+        		});
+        	</script>
+	<script type="text/javascript">
+
+		/*
+		$(window).scroll(function(){
+    		$(".topNavbar").css({"top": ($(window).scrollTop()) + "px"});        
+    		if ($(window).scrollTop() > 140){
+	    		$(".leftPanel").css({"top": ($(window).scrollTop()) -140 + "px"});
+			}
+    	});
+    	*/
+
+		$('.pullButton').click(function(e){
+			$("#biojs-menu").css("display","block");
+			$("#biojs-main-content").css("margin-left","220px");
+			$(".pullButton").removeClass("pullButton-mob");
+			e.stopPropagation();
+			return false;
+		});
+
+		$(window).click(function(){
+			closeMenu();
+		});
+		$('.Menu').click(function(){
+			closeMenu();
+		});
+
+		function closeMenu(){
+			if(isMobile()){
+				$("#biojs-menu").css("display","none");
+				$(".pullButton").addClass("pullButton-mob");
+				$("#biojs-main-content").css("margin-left","0px");
+			}
+		}
+		function isMobile(){
+			return $(window).width() <= 600;
+		}
+
+	</script>
+
+
+	
+
+
+	<script>hljs.initHighlightingOnLoad();</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-51509688-5', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>
