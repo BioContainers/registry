@@ -80,7 +80,7 @@
         <span class="item-heading"> Developer tutorial </span>
 			
 	
-				<a class="item " href="/docs/developer-manual/biocotainers-dockerfile/">DockerFile Template</a>
+				<a class="item " href="/docs/developer-manual/biocotainers-dockerfile/">Dockerfile Template</a>
 			
 	
 				<a class="item " href="/docs/developer-manual/best-practices/">Best Practices</a>
@@ -182,7 +182,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	
 
     <div class="author col-md-2 col-xs-2 hidden-xs">
-			<div class="tutorial-item"><span class="glyphicon glyphicon-calendar" style="font-size:14px;margin-bottom: 2px;"></span> 24 Oct 2016</div>
+			<div class="tutorial-item"><span class="glyphicon glyphicon-calendar" style="font-size:14px;margin-bottom: 2px;"></span> 25 Oct 2016</div>
 	        
 			
 	        <div class="tutorial-item"><span class="glyphicon glyphicon-time" style="font-size:14px;margin-bottom: 2px;"></span> 5 minutes </div>
@@ -258,25 +258,25 @@ mailing list, just join our <a href="https://groups.google.com/forum/#!forum/bio
 
 -->
             <div class="alert alert-warning "> <a href="#" class="close" data-dismiss="alert">&times;</a>
-                    <span class="glyphicon glyphicon-warning-sign" style="font-size:22px"></span> &nbsp; We will run the first example with blast. The Basic Local Alignment Search Tool for comparing primary biological sequence 
+                    <span class="glyphicon glyphicon-warning-sign" style="font-size:22px"></span> &nbsp; We will run the first example with blast. The Basic Local Alignment Search Tool for comparing primary biological sequence
 information, such as the amino-acid sequences of different proteins or the nucleotides of DNA sequences.
-We chose blast becuase is one of the most used and uaseful software in bioinformatics. </div>
+We chose blast becuase is one of the most used and uaseful software in bioinformatics.</div>
 
-<p>First step to be able to run any software is to install it. This can be a difficult and challenged process starting by download 
-the software, dependencies, etc; installation of multiple packages; dealing with depencencies craches, etc. See all the steps 
+<p>First step to be able to run any software is to install it. This can be a difficult and challenged process starting by download
+the software, dependencies, etc; installation of multiple packages; dealing with depencencies craches, etc. See all the steps
 to install <code>blast</code> <a href="https://www.ncbi.nlm.nih.gov/books/NBK279671/">here</a>.  </p>
 
 <p>Here is, where <strong>BioContainers</strong> plays his major role. See how to download and “install” blast in your local machine:</p>
 
-<pre><code> $ docker pull biodckr/blast
+<pre><code> $ docker pull biocontainers/blast
 </code></pre>
 
-<p>This is the docker and containers magic, the software is distributed with all the dependencies and shared OS needed to run. </p>
+<p>This is the docker and containers magic, the software is distributed with all the dependencies and shared OS needed to run.</p>
 
 <p><img class="splashIcon" src="/docs/img/series/101/what.gif" /></p>
 
 <p>Docker allows applications to be isolated into containers with instructions for exactly what they need to survive that can be easily ported
-from machine to machine. If you have 30 Docker containers that you want to run, you can run them all on a single VM. </p>
+from machine to machine. If you have 30 Docker containers that you want to run, you can run them all on a single VM.</p>
 
 <div class="alert alert-info "> <a href="#" class="close" data-dismiss="alert">&times;</a>
                     <span class="glyphicon glyphicon-info-sign" style="font-size:22px"></span> &nbsp; In contrast (for example) to run 30 virtual machines, you’ve got to boot 30 operating systems with at least minimum resource
@@ -284,59 +284,58 @@ from machine to machine. If you have 30 Docker containers that you want to run, 
 
 <h3 id="running-blast">Running blast</h3>
 
-<pre><code> $ docker run biodckr/blast blastp -help
+<pre><code> $ docker run biocontainers/blast blastp -help
 </code></pre>
 
-<p>This will print the help page for <code>blastp</code> tool. The first part of the command <code>docker run biodckr/blast</code> enable docker 
+<p>This will print the help page for <code>blastp</code> tool. The first part of the command <code>docker run biocontainers/blast</code> enable docker
 to identified the correct container in your local registry. The second part <code>blastp -help</code> is the command that you want to
 use in the container.</p>
 
 <div class="alert alert-info "> <a href="#" class="close" data-dismiss="alert">&times;</a>
-                    <span class="glyphicon glyphicon-info-sign" style="font-size:22px"></span> &nbsp; If you want to <a href="https://docs.docker.com/engine/reference/commandline/images/">list all the containers/images</a> you have pull from public repositories and are available in your 
+                    <span class="glyphicon glyphicon-info-sign" style="font-size:22px"></span> &nbsp; If you want to <a href="https://docs.docker.com/engine/reference/commandline/images/">list all the containers/images</a> you have pull from public repositories and are available in your
  local machine, you can use the following command: <code>$ docker images</code></div>
 
-<p>First, we should download two databases: </p>
+<p>First, we should download two databases:</p>
 
 <pre><code> $ curl -O ftp://ftp.ncbi.nih.gov/refseq/M_musculus/mRNA_Prot/mouse.1.protein.faa.gz
  $ curl -O ftp://ftp.ncbi.nih.gov/refseq/D_rerio/mRNA_Prot/zebrafish.1.protein.faa.gz
- 
+
  $ gunzip *.faa.gz
 </code></pre>
 
-<p>Now, we can take the first 20 proteins from mouse to be search against  zebrafish: </p>
+<p>Now, we can take the first 20 proteins from mouse to be search against  zebrafish:</p>
 
 <pre><code> $ head -20   mouse.1.protein.faa &gt; mm-first.fa
 </code></pre>
 
-<p>No, we need to prepare the zebrafish database with <code>makeblastdb</code> for the search: </p>
+<p>No, we need to prepare the zebrafish database with <code>makeblastdb</code> for the search:</p>
 
-<pre><code> $ docker run -v /Users/yperez/workplace:/data/ biodckr/blast makeblastdb -in zebrafish.1.protein.faa -dbtype prot
+<pre><code> $ docker run -v /Users/yperez/workplace:/data/ biocontainers/blast makeblastdb -in zebrafish.1.protein.faa -dbtype prot
 </code></pre>
 
 <div class="alert alert-info "> <a href="#" class="close" data-dismiss="alert">&times;</a>
                     <span class="glyphicon glyphicon-info-sign" style="font-size:22px"></span> &nbsp; Here, we explain multiples concepts in the same command. The most important component is <code>-v /Users/yperez/workplace:/data/</code>. This command creates a symbolic link
  between the <code>workplace</code> where the downloaded files are store and the <code>/data/</code> inside the container. You can <a href="/developer-manual/biocontainers-input-output/">check here</a> for more documentation.  </div>
 
-<p>No, that you know, how to run a container with all the tricks, then lets go for the final alignment: </p>
+<p>No, that you know, how to run a container with all the tricks, then lets go for the final alignment:</p>
 
-<pre><code> $ docker run -v /Users/yperez/workplace:/data/ biodckr/blast blastp -query mmfirst.fa -db zebrafish.1.protein.faa
+<pre><code> $ docker run -v /Users/yperez/workplace:/data/ biocontainers/blast blastp -query mmfirst.fa -db zebrafish.1.protein.faa
 </code></pre>
 
-<p>DONE. </p>
+<p>DONE.</p>
 
 <h3 id="final-steps">Final Steps</h3>
 
 <pre><code> $ cd /home/user/workplace
- $ docker pull biodckr/blast 
- $ docker run biodckr/blast blastp -help 
+ $ docker pull biocontainers/blast
+ $ docker run biocontainers/blast blastp -help
  $ curl -O ftp://ftp.ncbi.nih.gov/refseq/M_musculus/mRNA_Prot/mouse.1.protein.faa.gz    
- $ curl -O ftp://ftp.ncbi.nih.gov/refseq/D_rerio/mRNA_Prot/zebrafish.1.protein.faa.gz 
- $ gunzip *.faa.gz 
+ $ curl -O ftp://ftp.ncbi.nih.gov/refseq/D_rerio/mRNA_Prot/zebrafish.1.protein.faa.gz
+ $ gunzip *.faa.gz
  $ head -20   mouse.1.protein.faa &gt; mm-first.fa
- $ docker run -v /home/user/workplace:/data/ biodckr/blast makeblastdb -in zebrafish.1.protein.faa -dbtype prot
- $ docker run -v /home/user/workplace:/data/ biodckr/blast blastp -query mmfirst.fa -db zebrafish.1.protein.faa 
+ $ docker run -v /home/user/workplace:/data/ biocontainers/blast makeblastdb -in zebrafish.1.protein.faa -dbtype prot
+ $ docker run -v /home/user/workplace:/data/ biocontainers/blast blastp -query mmfirst.fa -db zebrafish.1.protein.faa
 </code></pre>
-
 
 
            <div id="lower-link-box" class="link-box">
