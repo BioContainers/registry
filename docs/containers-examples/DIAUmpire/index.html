@@ -389,9 +389,8 @@ $ mkdir /workspace/input/
 
 <p>Also note that we have to run this command individually for each <em>pep.xml</em> file.</p>
 
-<p>~~~<code>
-$ docker run -v /home/felipevl/workspace/input:/data/ biodckr/dia-umpire /usr/local/tpp/bin/xinteract -OpdEAP -PPM -drev -N/data/interact-sample_Q1.pep.xml /data/sample_Q1.pep.xml</code>
-~~~</p>
+<pre><code>$ docker run -v /home/felipevl/workspace/input:/data/ biodckr/dia-umpire /usr/local/tpp/bin/xinteract -OpdEAP -PPM -drev -N/data/interact-sample_Q1.pep.xml /data/sample_Q1.pep.xml`
+</code></pre>
 
 <p>ProteinProphet also is called from the <code>xinteract</code> command (check the <code>p</code> parameter).</p>
 
