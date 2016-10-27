@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>DiaUmpire</title>
+	<title>DIA-Umpire</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -103,7 +103,7 @@
         <span class="item-heading"> Containers Examples </span>
 			
 	
-				<a class="item item-active" href="/docs/containers-examples/DIAUmpire/">DiaUmpire</a>
+				<a class="item item-active" href="/docs/containers-examples/DIA-Umpire/">DIA-Umpire</a>
 			
 	
 				<a class="item " href="/docs/containers-examples/Comet/">Comet</a>
@@ -119,7 +119,7 @@
 		<div class="heading row">
    
   <div class="col-md-6 col-xs-7 col-lg-5" id="contentTitleCell">
-	  <span class="contentTitle">DiaUmpire </span>
+	  <span class="contentTitle">DIA-Umpire </span>
 
 	  <a class="gitStar" style="width:150px;" href="https://github.com/biocontainers/edu/blob/master/series/containers-examples/10_DIAUmpire.md" target="_blank"><span class="glyphicon glyphicon-pencil" style="font-size:14px;" ></span> Improve this page</a>
   </div>
@@ -182,7 +182,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	
 
     <div class="author col-md-2 col-xs-2 hidden-xs">
-			<div class="tutorial-item"><span class="glyphicon glyphicon-calendar" style="font-size:14px;margin-bottom: 2px;"></span> 24 Oct 2016</div>
+			<div class="tutorial-item"><span class="glyphicon glyphicon-calendar" style="font-size:14px;margin-bottom: 2px;"></span> 27 Oct 2016</div>
 	        
 			
 	        <div class="tutorial-item"><span class="glyphicon glyphicon-time" style="font-size:14px;margin-bottom: 2px;"></span> 5 minutes </div>
@@ -257,7 +257,171 @@ mailing list, just join our <a href="https://groups.google.com/forum/#!forum/bio
 <!--
 
 -->
-            <p><img src="/docsimg/series/101/download.jpeg" alt="Containers" /></p>
+            <p>In this example I am going to demonstrate the importance of Docker through the use of a complex and powerful pipeline called DIA-Umpire. In this example I will demonstrate how to download, run and obtain the results from the DIA-Umpire pipeline.</p>
+
+<h2 id="what-do-we-have">What do we have</h2>
+
+<p>The DIA-Umpire container has the following programs installed:</p>
+
+<ul>
+  <li>
+    <p>DIA-Umpire v1.4256</p>
+  </li>
+  <li>
+    <p>TPP v4.8.0</p>
+  </li>
+  <li>
+    <p>Comet v2015010</p>
+  </li>
+</ul>
+
+<h2 id="what-do-you-need">What do you need</h2>
+
+<p>Before start, you will need Docker installed on your computer. There are several ways to run Docker, go to the official <a href="https://docs.docker.com/installation/">website</a> and follow the instructions on how to install it.
+In order to make this analysis you will need:</p>
+
+<ul>
+  <li>converted raw files.</li>
+  <li>a fasta file for the database search.</li>
+  <li>parameter files for the pipeline (see below)</li>
+</ul>
+
+<h2 id="getting-the-container">Getting the container</h2>
+
+<p>The first step is to download the DIA-Umpire image that is available in the BioDocker repositories:</p>
+
+<pre><code>$ docker pull biodckr/dia-umpire
+</code></pre>
+
+<p>This command will download the container to your machine. Now we need to set up a folder to be our work space, and inside this folder, create another folder called <code>input</code>:</p>
+
+<pre><code>$ mkdir /workspace/
+$ mkdir /workspace/input/
+</code></pre>
+
+<p>The workspace folder will be where we are going to execute all commands from now on.</p>
+
+<h2 id="getting-the-parameter-files">Getting the parameter files</h2>
+
+<p>To run the pipeline we need some parameter files from the different program we will run. Go to the <a href="https://github.com/BioDocker/containers/tree/master/DIA-Umpire/1.4256/input">DIA-Umpire repository</a>, download all 4 files there, and place them inside the <code>input</code> folder.</p>
+
+<h3 id="a-note-about-sharing-folders-with-containers">a note about sharing folders with containers</h3>
+
+<p>During the steps below we are going to use a specific docker parameter that allows us to map folders from our computer inside the containers. That way, the software inside the containers can have access to files in this specific folder and vice-versa. This is how we pass parameter files and retrieve results. Check <a href="https://github.com/BioDocker/biodocker/wiki/Using-input--and-Output-files">here</a> for a more detailed explanation.</p>
+
+<h2 id="run-dia-umpire-signal-extraction">1) Run DIA-Umpire Signal Extraction</h2>
+
+<ul>
+  <li>
+    <p>Open the diaumpire.se_params parameter file and set the values you need.</p>
+  </li>
+  <li>
+    <p>Define how much memory you will allow DIA-Umpire to use by setting the <code>-Xmx8G</code> parameter (see below). In this example I’m giving 8Gb to the program execution.</p>
+  </li>
+</ul>
+
+<p>The analysis starts by running the DIA-Umpire program with our converted raw file, the command can look scary at first because it looks big, but this is because we are mapping folders inside the container, check the command below and then lets take a look at it in detail:</p>
+
+<pre><code>$ docker run -v /home/felipevl/workspace/input:/data/ biodckr/dia-umpire java -jar -Xmx8G /home/biodocker/bin/DIA-Umpire/DIA_Umpire_SE.jar /data/sample.mzXML /data/diaumpire.se_params
+</code></pre>
+
+<h3 id="explaining-the-command">explaining the command</h3>
+
+<p><code>docker run</code>: is the command to execute the docker program`.</p>
+
+<p><code>-v /home/felipevl/workspace/input:/data/</code>: this docker parameter is telling to the container that we have a folder called <code>input/</code> that must be mapped inside, into a folder called <code>/data/</code>. That way, inside the container, a folder called <code>/data/</code> will be created automatically and it will share file with our folder called <code>input</code>/.</p>
+
+<p>Have in mind that the container do not see the folder <code>/home/felipevl/workspace/input</code>, that’s how we see the files, inside the container they will be at <code>/data/</code>.</p>
+
+<p><code>biodckr/dia-umpire java -jar -Xmx8G DIA_Umpire_SE.jar /data/sample.mzXML /data/diaumpire.se_params</code>: this last part tells that we want to execute our biodckr/dia-umpire container and, inside the container, we want to run the those commands to execute our program.</p>
+
+<p>If everything goes OK you should see several new files in the input folder and the <code>Job complete</code> message in your terminal.</p>
+
+<h2 id="converting-mgf-files-to-mzxml">2) Converting mgf files to mzXML</h2>
+
+<p>The Analysis will generate several files, between them the ones we need to continue with the pipeline, that is, the <code>.mgf</code> files. The fist step create 3 new files:</p>
+
+<ul>
+  <li>
+    <p><code>sample_Q1.mgf</code></p>
+  </li>
+  <li>
+    <p><code>sample_Q2.mgf</code></p>
+  </li>
+  <li>
+    <p><code>sample_Q3.mgf</code></p>
+  </li>
+</ul>
+
+<p>Now we need to convert those files to a format compatible with Comet:</p>
+
+<pre><code>$ docker run -v /home/felipevl/workspace/input:/data/ biodckr/dia-umpire /usr/local/tpp/bin/msconvert --mzXML /data/*.mgf -o /data/
+</code></pre>
+
+<p>this command uses a program called msconvert, from the ProteoWizard library, present in the TPP installation. This will create a new .mzXML file for each .mgf file we have. Don’t forget to always use the internal path <code>/data/</code> to save the files to the correct place.</p>
+
+<h2 id="run-a-database-search-with-comet">3) Run a Database Search with Comet</h2>
+
+<p>Having all the files in the correct format we can now run the database search using Comet. Don’t forget to adjust the <em>comet.params</em> file with the desired values.</p>
+
+<pre><code>$ docker run -v /home/felipevl/workspace/input:/data/ biodckr/dia-umpire comet.2015010.linux.exe -P/data/comet.params /data/sample_Q1.mzXML /data/sample_Q2.mzXML /data/sample_Q3.mzXML
+</code></pre>
+
+<h2 id="run-peptideprophet-and-proteinprophet-from-tpp-xinteract-on-comet-results">4) Run PeptideProphet and ProteinProphet from TPP Xinteract on Comet Results</h2>
+
+<p>Comet analysis will result in a <em>pep.xml</em> file for each <code>mzXML</code> we have. In these case we ave now:</p>
+
+<ul>
+  <li>
+    <p><code>sample_Q1.pep.xml</code></p>
+  </li>
+  <li>
+    <p><code>sample_Q2.pep.xml</code></p>
+  </li>
+  <li>
+    <p><code>sample_Q3.pep.xml</code></p>
+  </li>
+</ul>
+
+<p>Now we have to run the TPP program called PeptideProphet <code>xinteract</code> with  in order to combine theses results.</p>
+
+<p>In the next step when we run <code>ProteinProphet</code>, the program is expecting to see files beginning with <em>interact-</em>, so in these case we are naming our results using this prefix. Note that the parameters defined here for <code>xinteract</code> and <code>PeptideProphet</code> were selected because of the files I have and how the analysis was done. You will have to check the program documentation to set the appropriate parameters for your files.</p>
+
+<p>Also note that we have to run this command individually for each <em>pep.xml</em> file.</p>
+
+<p>~~~<code>
+$ docker run -v /home/felipevl/workspace/input:/data/ biodckr/dia-umpire /usr/local/tpp/bin/xinteract -OpdEAP -PPM -drev -N/data/interact-sample_Q1.pep.xml /data/sample_Q1.pep.xml</code>
+~~~</p>
+
+<p>ProteinProphet also is called from the <code>xinteract</code> command (check the <code>p</code> parameter).</p>
+
+<p>After running the above command, you should see a message like this:</p>
+
+<pre><code>QUIT - the job is incomplete
+</code></pre>
+
+<p>You can actually ignore this. What happens here is that TPP analysis looks for a cgi script inside the web interface installation folder and one dependency may not be installed. The error appears after the PeptideProfet and ProteinProphet ends the processing.</p>
+
+<p>Take a look at the <code>input/</code> folder, you will see that now we have some new <em>.pep.xml</em> and <em>.prot.xml</em> files too.</p>
+
+<h2 id="run-dia-umpire-quantification-analysis">5) Run DIA-Umpire Quantification Analysis</h2>
+
+<p>finally, the last part!</p>
+
+<p>We need now to run DIA-Umpire again, but this time using the quantification module. Before running, check the diaumpire.quant_params file, and set the correct values for you.</p>
+
+<pre><code>$ docker run -v /home/felipevl/workspace/input:/data/ biodckr/dia-umpire java -jar -Xmx8G /home/biodocker/bin/DIA-Umpire/DIA_Umpire_Quant.jar /data/diaumpire.quant_params
+</code></pre>
+
+<p>The analysis will end with a message like this:</p>
+
+<p><code>Job done</code></p>
+
+<p>And you will notice that now you have 3 more files called PeptideSummary and ProtSummary in .xls format. These are the final results from the pipeline.</p>
+
+<h2 id="final-remarks">Final Remarks</h2>
+
+<p>This example shows how powerful docker can be. We downloaded a fully designed pipeline with all the necessary files and settings ready to use. This will allow people with difficulties in dealing with infrastructure and software configuration to go directly to the analysis step.</p>
 
 
            <div id="lower-link-box" class="link-box">
