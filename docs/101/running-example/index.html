@@ -124,7 +124,7 @@
 	<div id="biojs-main-content">
 		
 		<div class="heading row">
-   
+
   <div class="col-md-6 col-xs-7 col-lg-5" id="contentTitleCell">
 	  <span class="contentTitle">BioContainer example </span>
 
@@ -139,7 +139,7 @@
 	  <a class="git hidden-xs hidden-sm" href="https://kiwiirc.com/client/irc.freenode.net/biocontainers" target="_blank"><i class="fa fa-weixin"></i></a>
 	  <a class="git hidden-xs hidden-sm" id="bookmark-link" href="#"><i class="fa fa-bookmark"></i></a>
 
-  </div>	
+  </div>
 
 <script type="text/javascript">
 document.addEventListener("DOMContentLoaded", function() {
@@ -147,7 +147,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (window.sidebar && window.sidebar.addPanel) { // Mozilla Firefox Bookmark
             window.sidebar.addPanel(document.title,window.location.href,'');
         } else if(window.external && ('AddFavorite' in window.external)) { // IE Favorite
-            window.external.AddFavorite(location.href,document.title); 
+            window.external.AddFavorite(location.href,document.title);
         } else if(window.opera && window.print) { // Opera Hotlist
             this.title=document.title;
             return true;
@@ -160,7 +160,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	  <a class="gitStar hidden-xs hidden-sm" style="width:150px;" id="biojs-iconnav-help" href="https://gitter.im/biocontainers/Lobby" target="_blank"><span class="glyphicon glyphicon-bullhorn" style="font-size:17px;" ></span> Get help</a>
 
-  </div>	
+  </div>
   <div class="col-md-2 col-lg-2 hidden-xs hidden-sm" id="social-media-share">
 
     <!-- share it: twitter, google -->
@@ -186,10 +186,10 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
     </div>
-	
+
 
     <div class="author col-md-2 col-xs-2 hidden-xs">
-			<div class="tutorial-item"><span class="glyphicon glyphicon-calendar" style="font-size:14px;margin-bottom: 2px;"></span> 25 Oct 2016</div>
+			<div class="tutorial-item"><span class="glyphicon glyphicon-calendar" style="font-size:14px;margin-bottom: 2px;"></span> 03 Feb 2017</div>
 	        
 			
 	        <div class="tutorial-item"><span class="glyphicon glyphicon-time" style="font-size:14px;margin-bottom: 2px;"></span> 5 minutes </div>
@@ -265,9 +265,9 @@ mailing list, just join our <a href="https://groups.google.com/forum/#!forum/bio
 
 -->
             <div class="alert alert-warning "> <a href="#" class="close" data-dismiss="alert">&times;</a>
-                    <span class="glyphicon glyphicon-warning-sign" style="font-size:22px"></span> &nbsp; We will run the first example with blast. The Basic Local Alignment Search Tool for comparing primary biological sequence
+                    <span class="glyphicon glyphicon-warning-sign" style="font-size:22px"></span> &nbsp; We will run the first example with BLAST. The Basic Local Alignment Search Tool for comparing primary biological sequence
 information, such as the amino-acid sequences of different proteins or the nucleotides of DNA sequences.
-We chose blast becuase is one of the most used and uaseful software in bioinformatics.</div>
+We chose BLAST becuase is one of the most sommon and useful software in bioinformatics.</div>
 
 <p>First step to be able to run any software is to install it. This can be a difficult and challenged process starting by download
 the software, dependencies, etc; installation of multiple packages; dealing with depencencies craches, etc. See all the steps
@@ -289,7 +289,7 @@ from machine to machine. If you have 30 Docker containers that you want to run, 
                     <span class="glyphicon glyphicon-info-sign" style="font-size:22px"></span> &nbsp; In contrast (for example) to run 30 virtual machines, you’ve got to boot 30 operating systems with at least minimum resource
  requirements available before factoring the hypervisor for them to run on with the base OS.</div>
 
-<h3 id="running-blast">Running blast</h3>
+<h3 id="running-blast">Running BLAST</h3>
 
 <pre><code> $ docker run biocontainers/blast blastp -help
 </code></pre>
@@ -302,64 +302,77 @@ use in the container.</p>
                     <span class="glyphicon glyphicon-info-sign" style="font-size:22px"></span> &nbsp; If you want to <a href="https://docs.docker.com/engine/reference/commandline/images/">list all the containers/images</a> you have pull from public repositories and are available in your
  local machine, you can use the following command: <code>$ docker images</code></div>
 
-<p>First, we should download two databases:</p>
+<p>For this example let’s try something practical, suppose that we are molecular biologists studying <a href="https://en.wikipedia.org/wiki/PRNP">prion proteins</a>, and we want to find out if the zebrafish, a model organism, has a prion protein similar to the human form.</p>
 
-<pre><code> $ curl -O ftp://ftp.ncbi.nih.gov/refseq/M_musculus/mRNA_Prot/mouse.1.protein.faa.gz
- $ curl -O ftp://ftp.ncbi.nih.gov/refseq/D_rerio/mRNA_Prot/zebrafish.1.protein.faa.gz
+<p>1) Downloading the human prion sequence</p>
 
- $ gunzip *.faa.gz
+<p>We can grab the huma prion FASTA sequence from UniProt:</p>
+
+<pre><code>$ wget http://www.uniprot.org/uniprot/P04156.fasta
 </code></pre>
 
-<p>Now, we can take the first 20 proteins from mouse to be search against  zebrafish:</p>
+<p>2) Downloading the zebrafish database</p>
 
-<pre><code> $ head -20   mouse.1.protein.faa &gt; mm-first.fa
+<p>Now, lets download and unpack our database, from NCBI</p>
+
+<pre><code>$ curl -O ftp://ftp.ncbi.nih.gov/refseq/D_rerio/mRNA_Prot/zebrafish.1.protein.faa.gz
+$ gunzip zebrafish.1.protein.faa.gz
+
+3) Preparing the database
+
+We need to prepare the zebrafish database with `makeblastdb` for the search, but first we need to make our files available inside the containers. The docker daemon has a parameter called volume (-v), it allows us to map a folder from our operating system inside the container, that way all files in that folder will be visible inside the container, and the BLAST results will also be available to us, outside the container. In the example below, I'm mapping the folder /Users/yperez/workplace (my computer) into /data/ (the container). When running the command on your computer, you should use the correct paths for your files.
+
 </code></pre>
-
-<p>No, we need to prepare the zebrafish database with <code>makeblastdb</code> for the search:</p>
 
 <pre><code> $ docker run -v /Users/yperez/workplace:/data/ biocontainers/blast makeblastdb -in zebrafish.1.protein.faa -dbtype prot
 </code></pre>
+
+<p>The programs log will be displayed on the terminal, indicating if the program finished correctly. Also, you will see some new files on your local folder, those are part of the BLAST database.</p>
 
 <div class="alert alert-info "> <a href="#" class="close" data-dismiss="alert">&times;</a>
                     <span class="glyphicon glyphicon-info-sign" style="font-size:22px"></span> &nbsp; Here, we explain multiples concepts in the same command. The most important component is <code>-v /Users/yperez/workplace:/data/</code>. This command creates a symbolic link
  between the <code>workplace</code> where the downloaded files are store and the <code>/data/</code> inside the container. You can <a href="/developer-manual/biocontainers-input-output/">check here</a> for more documentation.  </div>
 
-<p>No, that you know, how to run a container with all the tricks, then lets go for the final alignment:</p>
+<p>No, that you know how to run a container with all the tricks, then lets go for the final alignments:</p>
 
-<pre><code> $ docker run -v /Users/yperez/workplace:/data/ biocontainers/blast blastp -query mmfirst.fa -db zebrafish.1.protein.faa
+<pre><code> $ docker run -v /Users/yperez/workplace:/data/ biocontainers/blast blastp -query P04156.fasta -db zebrafish.1.protein.faa -out results.txt
 </code></pre>
 
-<p>DONE.</p>
+<p>The results will be saved on the results.txt file, then you can proceed to analyse the matches. By looking the list of the best hits we can observe that zebrafish has a few predicted proteins matching to the human prion with better scores than the 
+predicted prion protein (score:33.9, e-value: 0.22). That’s interesting isn’t ? </p>
 
-<h3 id="final-steps">Final Steps</h3>
+<p>Now that you have enough information to start comparing sequences using BLAST, you can move your analysis even further.</p>
+
+<p>We hope that this short example can provide some light on how important and easy it is to run containerized software.</p>
+
+<h3 id="summary">Summary</h3>
 
 <pre><code> $ cd /home/user/workplace
  $ docker pull biocontainers/blast
  $ docker run biocontainers/blast blastp -help
- $ curl -O ftp://ftp.ncbi.nih.gov/refseq/M_musculus/mRNA_Prot/mouse.1.protein.faa.gz    
+ $ wget http://www.uniprot.org/uniprot/P04156.fasta    
  $ curl -O ftp://ftp.ncbi.nih.gov/refseq/D_rerio/mRNA_Prot/zebrafish.1.protein.faa.gz
- $ gunzip *.faa.gz
- $ head -20   mouse.1.protein.faa &gt; mm-first.fa
- $ docker run -v /home/user/workplace:/data/ biocontainers/blast makeblastdb -in zebrafish.1.protein.faa -dbtype prot
- $ docker run -v /home/user/workplace:/data/ biocontainers/blast blastp -query mmfirst.fa -db zebrafish.1.protein.faa
+ $ gunzip zebrafish.1.protein.faa.gz
+ $ docker run -v /Users/yperez/workplace:/data/ biocontainers/blast makeblastdb -in zebrafish.1.protein.faa -dbtype prot
+ $ docker run -v /Users/yperez/workplace:/data/ biocontainers/blast blastp -query P04156.fasta -db zebrafish.1.protein.faa -out results.txt
 </code></pre>
 
 
            <div id="lower-link-box" class="link-box">
-				 
-				<a href="/101/biocontainers-architecture/" class="btn btn-primary previous-link">Previous</a>
-				 
 				
-					<a href="/101/biocontainers-registry/" class="btn btn-primary next-link pull-right">Next</a>
+				<a href="/docs/101/biocontainers-architecture/" class="btn btn-primary previous-link">Previous</a>
+				
+				
+					<a href="/docs/101/biocontainers-registry/" class="btn btn-primary next-link pull-right">Next</a>
 				
 
-				<br />	
+				<br />
 			</div>
 
 		</div>
 	</div>
 
-<!-- temporaroy removed 
+<!-- temporaroy removed
 
 -->
 
