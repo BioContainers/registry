@@ -50,7 +50,7 @@
 							<td ng-if="container.domain == 'quay.io/biocontainers/'">
 								<a ng-href="#showImages?domain=quay&repository={{container.name}}&starred={{container.start_count}}&modified={{container.lastModified}}">{{ container.name }}</a>
 							</td>
-							<td>{{ container.description }}</td>
+							<td><div ng-bind-html="container.description"></div></td>
 							<td>{{ container.domain + container.name }}</td>
 							<td>{{ container.lastModified}}</td>
 							<td align="center" ng-if="container.start_count == true"><i class="fa fa-star icon-d icon-d" aria-hidden="true"></i></td>

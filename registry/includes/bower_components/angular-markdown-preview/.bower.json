@@ -1,0 +1,28 @@
+{
+  "name": "angular-markdown-preview",
+  "version": "0.1.3",
+  "main": "markdown_preview.js",
+  "ignore": [
+    "test",
+    ".*",
+    "karma*"
+  ],
+  "dependencies": {
+    "marked": "~0.2.9"
+  },
+  "devDependencies": {
+    "angular": "1.2.6",
+    "angular-mocks": "1.2.6"
+  },
+  "homepage": "https://github.com/evgenyneu/angular-markdown-preview",
+  "_release": "0.1.3",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.1.3",
+    "commit": "336b861c211dbc42d6c49be560c3de697d133e0c"
+  },
+  "_source": "https://github.com/evgenyneu/angular-markdown-preview.git",
+  "_target": "^0.1.3",
+  "_originalSource": "angular-markdown-preview",
+  "_direct": true
+}

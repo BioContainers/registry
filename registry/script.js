@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-var DOCKERHUB_ORGANIZATION = "https://hub.docker.com/v2/repositories/biocontainers/";
-var CROSS_PROXY            = "https://crossorigin.me/";
+var DOCKERHUB_ORGANIZATION  = "https://hub.docker.com/v2/repositories/biocontainers/";
+//var CROSS_PROXY           = "https://crossorigin.me/";
+var CROSS_PROXY             = "https://cors.now.sh/";
+
 var QUAY_ORGANIZATION      = "https://quay.io/api/v1/repository?namespace=biocontainers&popularity=true&last_modified=true";
 var QUAY_REOPSITORY_URL    = "https://quay.io/api/v1/repository/";
 var QUAY_REPOSITORY        = "biocontainers/";
@@ -25,7 +27,8 @@ var ANNOTATIONS_TOKEN      = "6879-29624520768d1f0c9fff7fc901f453f2";
 var ANNOTATIONS            = "https://hypothes.is/api/search";
 
 
-var app = angular.module('DockerWebUI', ['ngCookies','ngRoute', 'siTable','ngDonut', 'hljs', 'ngProgress', 'calHeatmap', 'angularMoment', 'ngSocial']);
+var app = angular.module('DockerWebUI', ['ngCookies','ngRoute', 'siTable','ngDonut', 'hljs',
+    'ngProgress', 'calHeatmap', 'angularMoment', 'ngSocial', 'ng-showdown']);
 
 angular.module('DockerWebUI')
     .factory('timeoutHttpIntercept', function ($rootScope, $q) {
@@ -39,11 +42,10 @@ angular.module('DockerWebUI')
         return function (input, format){ return (input) ? $filter('date')(input, format):'';};
     }]);
 
-// app.config(['ngClipProvider', function(ngClipProvider) { ngClipProvider.setPath("includes/bower_components/zeroclipboard/dist/ZeroClipboard.swf"); }]);
-
 app.config(function($httpProvider){
 	delete $httpProvider.defaults.headers.common['X-Requested-With'];
 });
+
 
 app.config(function (hljsServiceProvider) {
     hljsServiceProvider.setOptions({
@@ -82,10 +84,10 @@ app.controller('MainController', ['$scope','$route','$window','$cookies','$locat
                  GITHUB_ACTIVITY_URL + "biocontainers/specs/issues?state=all&per_page=100",
                  GITHUB_ACTIVITY_URL + "biocontainers/specs/issues/comments?per_page=100",
                  GITHUB_ACTIVITY_URL + "biocontainers/containers/issues/comments?per_page=100"];
-        retrieveDockerHub(CROSS_PROXY + DOCKERHUB_ORGANIZATION, $http, $scope, $filter);
+        retrieveDockerHub(CROSS_PROXY + DOCKERHUB_ORGANIZATION, $http, $scope, $filter, $q);
         retrieveQuayIO(  QUAY_ORGANIZATION, $http, $scope, $filter);
         retrieveGitHubIssues( urls, $http, $scope, $filter, $q);
-        console.log($scope.num_results)
+        //console.log($scope.num_results)
     }
     $scope.progressbar = ngProgressFactory.createInstance();
     $scope.progressbar.start();
@@ -144,22 +146,55 @@ function retrieveGitHubIssues(url, $http, $scope, $filter, $q){
     return deferred.promise;
 }
 
-function retrieveDockerHub( url , $http, $scope, $filter){
-	$http({method: "GET", url: url}).success(function(data){
-		$scope.num_results= $scope.num_results + data.count;
-		angular.forEach(data.results, function(result){
-		    starred = false;
-		    if(result.star_count > 0){
-		       starred = true
-            }
+// function retrieveDockerHub( url , $http, $scope, $filter){
+// 	$http({method: "GET", url: url}).success(function(data){
+// 		$scope.num_results= $scope.num_results + data.count;
+// 		angular.forEach(data.results, function(result){
+// 		    starred = false;
+// 		    if(result.star_count > 0){
+// 		       starred = true
+//             }
+//             dateM = $filter('jsonDate')(result.last_updated,'dd/MM/yyyy');
+// 			$scope.dictionary["biocontainers/" + result.name] = {domain: "biocontainers/", name: result.name, description: parseHTML(result.description), lastModified: dateM, number_pull: [result.pull_count, 15000], start_count:starred}
+// 			$scope.namespacesList.push({domain: "biocontainers/", name: result.name, description: parseHTML(result.description), lastModified: dateM, number_pull: [result.pull_count, 15000], start_count:starred})
+// 		});
+// 		if(data.next != null){
+// 			retrieveDockerHub(CROSS_PROXY + data.next, $http, $scope, $filter)
+// 		}
+// 	}).error(function(data){console.log("Unable to request the data")});
+// }
+
+
+function loadAll(url, $scope, $filter, $http, deferred) {
+    $http.get(url).then(function(data) {
+        debugger;
+        console.log('private http.get().then()');
+        console.log(data);
+        angular.forEach(data.data.results, function(result){
+            starred = false;
             dateM = $filter('jsonDate')(result.last_updated,'dd/MM/yyyy');
-			$scope.dictionary["biocontainers/" + result.name] = {domain: "biocontainers/", name: result.name, description: result.description, lastModified: dateM, number_pull: [result.pull_count, 15000], start_count:starred}
-			$scope.namespacesList.push({domain: "biocontainers/", name: result.name, description: result.description, lastModified: dateM, number_pull: [result.pull_count, 15000], start_count:starred})
-		});
-		if(data.next != null){
-			retrieveDockerHub(CROSS_PROXY + data.next, $http, $scope, $filter)
-		}
-	}).error(function(data){console.log("Unable to request the data")});
+            $scope.dictionary["biocontainers/" + result.name] = {domain: "biocontainers/", name: result.name, description: parseHTML(result.description), lastModified: dateM, number_pull: [result.pull_count, 15000], start_count:starred}
+            $scope.namespacesList.push({domain: "biocontainers/", name: result.name, description: parseHTML(result.description), lastModified: dateM, number_pull: [result.pull_count, 15000], start_count:starred})
+            $scope.num_results = $scope.num_results + 1;
+        });
+        if(data.data.next) {
+            url=data.data.next;
+            loadAll(CROSS_PROXY + url, $scope, $filter, $http, deferred);
+        }
+    },function(errors) {
+        deferred.reject(errors);
+
+    },function(updates) {
+        deferred.update(updates);
+
+    });
+    return deferred.promise;
+}
+
+function retrieveDockerHub( url , $http, $scope, $filter, $q){
+    var deferred = $q.defer();
+    deferred.promise = loadAll(url, $scope, $filter, $http, deferred);
+    return deferred.promise;
 }
 
 function retrieveQuayIO( url , $http, $scope, $filter){
@@ -168,8 +203,8 @@ function retrieveQuayIO( url , $http, $scope, $filter){
 		$scope.num_results= $scope.num_results + data.repositories.length;
 		angular.forEach(data.repositories, function(result){
 		    dateM = $filter('jsonDate')(result.last_modified * 1000,'dd/MM/yyyy');
-			$scope.dictionary["quay.io/biocontainers/" + result.name] = {domain: "quay.io/biocontainers/", name: result.name, description: result.description, lastModified: dateM, number_pull: [result.popularity, 50], start_count:result.is_starred}
-			$scope.namespacesList.push({domain: "quay.io/biocontainers/", name: result.name, description: result.description, lastModified: dateM, number_pull: [result.popularity, 50], start_count:result.is_starred})
+			$scope.dictionary["quay.io/biocontainers/" + result.name] = {domain: "quay.io/biocontainers/", name: result.name, description: parseHTML(result.description), lastModified: dateM, number_pull: [result.popularity, 50], start_count:result.is_starred}
+			$scope.namespacesList.push({domain: "quay.io/biocontainers/", name: result.name, description: parseHTML(result.description), lastModified: dateM, number_pull: [result.popularity, 50], start_count:result.is_starred})
         });
 
         for(var i = 0; i< $scope.namespacesList.length; i++) {
@@ -214,7 +249,7 @@ app.controller('ImagesController', function($scope,$http,$location,$window,$cook
         $http({method: "GET", url: repoURL}).success(function(data){
             $scope.repo.starred = $location.search()['starred'];
             $scope.repo.repoName     = data.name;
-            $scope.repo.description  = data.description;
+            $scope.repo.description  = parseHTML(data.description);
             $scope.repo.star_count   = data.star_count;
             $scope.repo.pull_count   = data.pull_count;
             $scope.repo.last_updated = data.last_updated;
@@ -241,7 +276,7 @@ app.controller('ImagesController', function($scope,$http,$location,$window,$cook
         $http({method: "GET", url: repoURL, headers: {
             'Authorization': "Bearer "+ "XRYLsxvQqmQLpP7RrajpFdiZntveNEyiffXyibK0"}}).success(function(data){
             $scope.repo.repoName     = $scope.repository;
-            $scope.repo.description  = data.description;
+            $scope.repo.description  = parseHTML(data.description);
             $scope.repo.imagesList   = [];
             $scope.repo.domain       = "quay";
             $scope.repo.url          = "https://quay.io/repository/biocontainers/" + $scope.repository;
@@ -287,6 +322,20 @@ app.controller('ImagesController', function($scope,$http,$location,$window,$cook
 
     });
 });
+
+function parseHTML(input){
+    converter = new showdown.Converter();
+    html = converter.makeHtml(input);
+    if(html != null){
+        var iFrameArr= html.match("<blockquote>(.|\n)*?<\/blockquote>");
+        if(iFrameArr != null && iFrameArr[0] != null){
+            html = iFrameArr[0];
+            html = html.replace(/<\/?[^>]+(>|$)/g, "");
+        }
+    }else
+        html = input
+    return html;
+}
 
 
 function parseDate(dateString, moment) {
