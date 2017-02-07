@@ -19,17 +19,13 @@ Webpage from the BioDocker repository
 
 Links:
 -------
-Web Page              : http://biodocker.github.io/
+Web Page              : http://biocontainers.pro/
 
-Project Definition    : https://github.com/BioDocker/biodocker
+Project Definition    : https://github.com/BioContainers/specs
 
-Contribution Rules    : https://github.com/BioDocker/biodocker/blob/master/CONTRIBUTING.md
+Contribution Rules    : https://github.com/BioContainers/specs/blob/master/CONTRIBUTING.md
 
-Wiki of the project   : https://github.com/BioDocker/biodocker/wiki
-
-Containers            : https://github.com/BioDocker/containers
-
-Containers Development: https://github.com/BioDocker/sandbox
+Containers            : https://github.com/BioContainers/containers
 
 Email                 : biodockers@gmail.com
 
