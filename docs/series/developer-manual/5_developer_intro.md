@@ -1,4 +1,13 @@
 
+---
+title: 'Developer Intro'
+layout: series_item
+series: 'developer-manual'
+permalink: /developer-manual/developer-intro/
+estimated-time: 5
+---
+
+# BioContainers dockerfile template
 
 * [Git](https://github.com) is a version control system that will keep track of the changes you have made in code. [Full Introduction for Bioinformatics](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004947)
 
