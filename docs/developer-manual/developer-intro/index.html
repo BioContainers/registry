@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Docker in NutShell</title>
+	<title>Developer Intro</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -61,16 +61,13 @@
 				<a class="item " href="/docs/101/what_is_biocontainers/">BioContainers?</a>
 			
 	
-				<a class="item " href="/docs/101/getting_started/">Getting started</a>
-			
-	
-				<a class="item item-active" href="/docs/101/docker-nutshell/">Docker in NutShell</a>
-			
-	
-				<a class="item " href="/docs/101/biocontainers-architecture/">BioContainers Architecture</a>
+				<a class="item " href="/docs/101/getting_started/">User Getting started</a>
 			
 	
 				<a class="item " href="/docs/101/running-example/">BioContainer example</a>
+			
+	
+				<a class="item " href="/docs/101/biocontainers-architecture/">BioContainers Architecture</a>
 			
 	
 				<a class="item " href="/docs/101/biocontainers-registry/">Registry UI</a>
@@ -91,9 +88,15 @@
 	
 				<a class="item " href="/docs/developer-manual/deploy-dockerhub/">Deploy to DockerHub</a>
 			
+	
+				<a class="item item-active" href="/docs/developer-manual/developer-intro/">Developer Intro</a>
+			
 		
 
         <span class="item-heading"> BioContainers FAQS </span>
+			
+	
+				<a class="item " href="/docs/faqs/docker-nutshell/">Docker in NutShell</a>
 			
 	
 				<a class="item " href="/docs/faqs/manually-remove-dockerboot/">Remove boot2docker</a>
@@ -126,9 +129,9 @@
 		<div class="heading row">
 
   <div class="col-md-6 col-xs-7 col-lg-5" id="contentTitleCell">
-	  <span class="contentTitle">Docker in NutShell </span>
+	  <span class="contentTitle">Developer Intro </span>
 
-	  <a class="gitStar" style="width:150px;" href="https://github.com/biocontainers/edu/blob/master/series/101/30_docker-nutshell.md" target="_blank"><span class="glyphicon glyphicon-pencil" style="font-size:14px;" ></span> Improve this page</a>
+	  <a class="gitStar" style="width:150px;" href="https://github.com/biocontainers/edu/blob/master/series/developer-manual/5_developer_intro.md" target="_blank"><span class="glyphicon glyphicon-pencil" style="font-size:14px;" ></span> Improve this page</a>
   </div>
 
 	<div class="col-xs-2 col-md-3">
@@ -189,10 +192,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     <div class="author col-md-2 col-xs-2 hidden-xs">
-			<div class="tutorial-item"><span class="glyphicon glyphicon-calendar" style="font-size:14px;margin-bottom: 2px;"></span> 25 Oct 2016</div>
+			<div class="tutorial-item"><span class="glyphicon glyphicon-calendar" style="font-size:14px;margin-bottom: 2px;"></span> 08 Feb 2017</div>
 	        
 			
-	        <div class="tutorial-item"><span class="glyphicon glyphicon-time" style="font-size:14px;margin-bottom: 2px;"></span> 15 minutes </div>
+	        <div class="tutorial-item"><span class="glyphicon glyphicon-time" style="font-size:14px;margin-bottom: 2px;"></span> 5 minutes </div>
 	        
 	</div>
 
@@ -264,137 +267,23 @@ mailing list, just join our <a href="https://groups.google.com/forum/#!forum/bio
 <!--
 
 -->
-            <h1 id="docker-in-nutshell">Docker in NutShell</h1>
-
-<p>Docker is an open platform for developing, shipping, and running applications. Docker is designed to deliver your applications faster. With Docker you can separate your applications from your
-infrastructure.</p>
-
-<p>Docker does this by combining kernel containerization features with workflows and tooling that help you manage
-and deploy your applications. At its core, Docker provides a way to run almost any application securely isolated
-in a container. The isolation and security allow you to run many containers simultaneously on your host.</p>
-
-<p>Docker’s container-based platform allows for highly portable workloads. Docker containers can run on a developer’s
-local host, on physical or virtual machines in a data center, or in the Cloud.</p>
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/aLipr7tTuA4" frameborder="0" allowfullscreen=""></iframe>
-
-<h2 id="what-are-the-major-docker-components">What are the major Docker components?</h2>
-
-<p>Docker has two major components:</p>
+            <h1 id="biocontainers-dockerfile-template">BioContainers dockerfile template</h1>
 
 <ul>
-  <li><a href="https://docs.docker.com/engine/quickstart/">Docker Engine</a>: the open source containerization platform.</li>
-  <li><a href="https://hub.docker.com">Docker Hub</a>: our Software-as-a-Service platform for sharing and managing Docker containers.</li>
+  <li><a href="https://github.com">Git</a> is a version control system that will keep track of the changes you have made in code. <a href="http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004947">Full Introduction for Bioinformatics</a></li>
 </ul>
 
-<h2 id="what-is-dockers-architecture">What is Docker’s architecture?</h2>
+<p>I f you want to fresh up your <code>git</code> skills, check out the <a href="http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004947">Full Introduction for Bioinformatics</a> or <a href="https://try.github.io/levels/1/challenges/1">15 minutes interactive lesson</a> by Codeschool.</p>
 
-<p>Docker uses a client-server architecture. The Docker client talks to the Docker daemon, which does the heavy lifting of building,
-running, and distributing your Docker containers. Both the Docker client and the daemon can run on the same system, or you can connect a Docker client to a remote Docker daemon.</p>
-
-<h3 id="how-does-a-docker-image-work">How does a Docker image work?</h3>
-
-<p>We’ve already seen that Docker images are read-only templates from which Docker containers are launched.
-Each image consists of a series of layers. Docker makes use of union file systems to combine these layers into a single image.
-Union file systems allow files and directories of separate file systems, known as branches, to be transparently overlaid,
-forming a single coherent file system.</p>
-
-<p>One of the reasons Docker is so lightweight is because of these layers. When you change a Docker image—for example,
-update an application to a new version— a new layer gets built. Thus, rather than replacing the whole image or entirely rebuilding,
-as you may do with a virtual machine, only that layer is added or updated. Now you don’t need to distribute a whole new image,
-just the update, making distributing Docker images faster and simpler.</p>
-
-<p>Every image starts from a <strong>Base image</strong>, for example ubuntu, a base Ubuntu image, or fedora, a base Fedora image.
-You can also use images of your own as the basis for a new image.</p>
-
-<p>Docker images are then built from these base images using a simple, descriptive set of steps we call instructions.
-Each instruction creates a new layer in our image. Instructions include actions like:</p>
-
-<ul>
-  <li>Run a command</li>
-  <li>Add a file or directory</li>
-  <li>Create an environment variable</li>
-  <li>What process to run when launching a container from this image</li>
-</ul>
-
-<p>These instructions are stored in a file called a Dockerfile. A <strong>Dockerfile</strong> is a text based script that contains instructions and commands for building the image from the base image. Docker reads this Dockerfile when you request a build of an image, executes the instructions, and returns a final image.</p>
-
-<pre><code>
-# Base Image
-FROM biocontainers/biocontainers:latest
-
-# Metadata
-LABEL base.image="biocontainers:latest"
-LABEL version="3"
-LABEL software="Comet"
-LABEL software.version="2016012"
-LABEL description="an open source tandem mass spectrometry sequence database search tool"
-LABEL website="http://comet-ms.sourceforge.net/"
-LABEL documentation="http://comet-ms.sourceforge.net/parameters/parameters_2016010/"
-LABEL license="http://comet-ms.sourceforge.net/"
-LABEL tags="Proteomics"
-
-# Maintainer
-MAINTAINER Felipe da Veiga Leprevost &lt;felipe@leprevost.com.br&gt;
-
-USER biodocker
-
-RUN ZIP=comet_binaries_2016012.zip &amp;&amp; \
-  wget https://github.com/BioDocker/software-archive/releases/download/Comet/$ZIP -O /tmp/$ZIP &amp;&amp; \
-  unzip /tmp/$ZIP -d /home/biodocker/bin/Comet/ &amp;&amp; \
-  chmod -R 755 /home/biodocker/bin/Comet/* &amp;&amp; \
-  rm /tmp/$ZIP
-
-RUN mv /home/biodocker/bin/Comet/comet_binaries_2016012/comet.2016012.linux.exe /home/biodocker/bin/Comet/comet
-
-ENV PATH /home/biodocker/bin/Comet:$PATH
-
-WORKDIR /data/
-
-CMD ["comet"]
-
-</code></pre>
-
-<h3 id="how-does-a-container-work">How does a container work?</h3>
-
-<p>A container consists of an operating system, user-added files, and meta-data. As we’ve seen, each container is built from an image.
-That image tells Docker what the container holds, what process to run when the container is launched, and a variety of other
-configuration data. The Docker image is read-only.</p>
-
-<p>When Docker runs a container from an image, it adds a read-write layer on top of the image
-(using a union file system as we saw earlier) in which your application can then run.</p>
-
-<p>When you run a container, either by using the docker binary or via the API, the Docker client tells
-the Docker daemon to run a container.</p>
-
-<pre><code>$ docker run -i -t ubuntu /bin/bash
-</code></pre>
-
-<blockquote>
-  <p>The Docker Engine client is launched using the docker binary with the run option running a new container. The bare minimum the
-Docker client needs to tell the Docker daemon to run the container is:</p>
-</blockquote>
-
-<blockquote>
-  <p>What Docker image to build the container from, for example: <strong>ubuntu</strong>
-The command you want to run inside the container when it is launched, for example: <strong>/bin/bash</strong></p>
-</blockquote>
-
-<h2 id="references">References:</h2>
-
-<ul>
-  <li><a href="https://docs.docker.com/engine/understanding-docker/">Understand Docker Architecture</a></li>
-  <li><a href="https://www.youtube.com/watch?v=pGYAg7TMmp0">Docker Tutorial - What is Docker &amp; Docker Containers, Images, etc?</a></li>
-  <li><a href="https://www.digitalocean.com/community/tutorials/the-docker-ecosystem-an-introduction-to-common-components">Docker Ecosystem</a></li>
-</ul>
+<div style="display:block"><div class="tutorials-highlight" style="display:block;"><span class="glyphicon glyphicon-info-sign" style="float:left;display:block;margin-right:20px"></span><div class="tutorials-highlight-text">
+<p>If you want to fresh up your <code>git</code> skills, check out the <a href="http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004947">Full Introduction for Bioinformatics</a> or <a href="https://try.github.io/levels/1/challenges/1">15 minutes interactive lesson</a> by Codeschool.</p>
+</div></div></div>
 
 
            <div id="lower-link-box" class="link-box">
 				
-				<a href="/docs/101/getting_started/" class="btn btn-primary previous-link">Previous</a>
+				<a href="/docs/developer-manual/deploy-dockerhub/" class="btn btn-primary previous-link">Previous</a>
 				
-				
-					<a href="/docs/101/biocontainers-architecture/" class="btn btn-primary next-link pull-right">Next</a>
 				
 
 				<br />
@@ -461,7 +350,7 @@ function collapseStuff(e, textHidden, textDisplayed){
 		<!--
 		<div class="footer">
 			<div class="improve-this-page">
-				<span class="glyphicon glyphicon-pencil"></span> <a href="https://github.com/biojs/edu/blob/master/series/101/30_docker-nutshell.md">Improve this page</a>
+				<span class="glyphicon glyphicon-pencil"></span> <a href="https://github.com/biojs/edu/blob/master/series/developer-manual/5_developer_intro.md">Improve this page</a>
 			</div>
 
 			<div id="privacy-notice-less" class="privacy-policy">
