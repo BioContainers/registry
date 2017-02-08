@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Getting started</title>
+	<title>User Getting started</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -61,16 +61,13 @@
 				<a class="item " href="/docs/101/what_is_biocontainers/">BioContainers?</a>
 			
 	
-				<a class="item item-active" href="/docs/101/getting_started/">Getting started</a>
-			
-	
-				<a class="item " href="/docs/101/docker-nutshell/">Docker in NutShell</a>
-			
-	
-				<a class="item " href="/docs/101/biocontainers-architecture/">BioContainers Architecture</a>
+				<a class="item item-active" href="/docs/101/getting_started/">User Getting started</a>
 			
 	
 				<a class="item " href="/docs/101/running-example/">BioContainer example</a>
+			
+	
+				<a class="item " href="/docs/101/biocontainers-architecture/">BioContainers Architecture</a>
 			
 	
 				<a class="item " href="/docs/101/biocontainers-registry/">Registry UI</a>
@@ -94,6 +91,9 @@
 		
 
         <span class="item-heading"> BioContainers FAQS </span>
+			
+	
+				<a class="item " href="/docs/faqs/docker-nutshell/">Docker in NutShell</a>
 			
 	
 				<a class="item " href="/docs/faqs/manually-remove-dockerboot/">Remove boot2docker</a>
@@ -126,7 +126,7 @@
 		<div class="heading row">
 
   <div class="col-md-6 col-xs-7 col-lg-5" id="contentTitleCell">
-	  <span class="contentTitle">Getting started </span>
+	  <span class="contentTitle">User Getting started </span>
 
 	  <a class="gitStar" style="width:150px;" href="https://github.com/biocontainers/edu/blob/master/series/101/20_getting_started.md" target="_blank"><span class="glyphicon glyphicon-pencil" style="font-size:14px;" ></span> Improve this page</a>
   </div>
@@ -189,7 +189,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     <div class="author col-md-2 col-xs-2 hidden-xs">
-			<div class="tutorial-item"><span class="glyphicon glyphicon-calendar" style="font-size:14px;margin-bottom: 2px;"></span> 25 Oct 2016</div>
+			<div class="tutorial-item"><span class="glyphicon glyphicon-calendar" style="font-size:14px;margin-bottom: 2px;"></span> 08 Feb 2017</div>
 	        
 			
 	        <div class="tutorial-item"><span class="glyphicon glyphicon-time" style="font-size:14px;margin-bottom: 2px;"></span> 5 minutes </div>
@@ -266,25 +266,32 @@ mailing list, just join our <a href="https://groups.google.com/forum/#!forum/bio
 -->
             <h4 id="this-page-will-help-you-prepare-your-computer-for-biocontainers">This page will help you prepare your computer for BioContainers</h4>
 
-<p>You will need to work in a terminal using <strong><code>docker</code></strong> and <strong><code>git</code></strong>.</p>
+<p>You will need to work in a terminal using <strong><code>docker</code></strong> .</p>
+
+<div style="display:block"><div class="tutorials-highlight" style="display:block;"><span class="glyphicon glyphicon-info-sign" style="float:left;display:block;margin-right:20px"></span><div class="tutorials-highlight-text">
+<p>We will provide mainly examples using <strong>docker</strong>, the Bicontainers team is working in examples and documentation based on <strong>rkt</strong>.</p>
+</div></div></div>
 
 <ul>
-  <li><a href="https://github.com">Git</a> is a version control system that will keep track of the changes you have made in code. <a href="http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004947">Full Introduction for Bioinformatics</a></li>
   <li><a href="https://www.docker.com/">Docker</a> is the world’s leading platform for software containerization. Docker includes multiple tools and components such as:
  <a href="https://docs.docker.com/">docker</a>, <a href="https://docs.docker.com/engine/installation/">docker engine</a>, <a href="https://docs.docker.com/docker-hub/">docker hub</a>.</li>
 </ul>
 
 <div style="display:block"><div class="tutorials-highlight" style="display:block;"><span class="glyphicon glyphicon-check" style="float:left;display:block;margin-right:20px"></span><div class="tutorials-highlight-text">
-<p>Open your terminal of choice and check whether you have both commands (<code>docker</code>, <code>git</code>) installed. You should run these without
+<p>Open your terminal of choice and check whether you have the command (<code>docker</code>) installed. You should run these without
 any error.</p>
 
-<pre><code>git help
-docker help
+<pre><code>docker help
 </code></pre>
 
 </div></div></div>
 
 <p>If your machine is already set up, continue to the <a href="/101/modularity">tutorial</a>.</p>
+
+<div style="display:block"><div class="tutorials-highlight" style="display:block;"><span class="glyphicon glyphicon-info-sign" style="float:left;display:block;margin-right:20px"></span><div class="tutorials-highlight-text">
+<p>The following sections provided a short summary of Howto install <strong>docker</strong>, if these steps do not work for you please refer to the
+full documentation in <a href="https://docs.docker.com/">docker</a>. You can also get in contact with us using <a href="https://github.com/BioContainers/specs">Specifications Issues</a>.</p>
+</div></div></div>
 
 <p>Otherwise, choose your operating system below to learn more:</p>
 
@@ -293,10 +300,6 @@ docker help
   <li><a href="#linux"><strong>Linux</strong></a></li>
   <li><a href="#windows"><strong>Windows</strong></a></li>
 </ul>
-
-<div style="display:block"><div class="tutorials-highlight" style="display:block;"><span class="glyphicon glyphicon-info-sign" style="float:left;display:block;margin-right:20px"></span><div class="tutorials-highlight-text">
-<p>If you want to fresh up your <code>git</code> skills, check out the <a href="http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004947">Full Introduction for Bioinformatics</a> or <a href="https://try.github.io/levels/1/challenges/1">15 minutes interactive lesson</a> by Codeschool.</p>
-</div></div></div>
 
 <div style="display:block"><div class="tutorials-highlight" style="display:block;"><span class="glyphicon glyphicon-bell" style="float:left;display:block;margin-right:20px"></span><div class="tutorials-highlight-text">
 <p>What does <code>docker</code> stand for?</p>
@@ -375,13 +378,17 @@ log in to <a href="https://forums.docker.com/c/docker-for-windows">Docker for Wi
 
 <p>Click Finish on the setup complete dialog to launch Docker.</p>
 
+<p>More Links:</p>
+
+<p>-</p>
+
 
            <div id="lower-link-box" class="link-box">
 				
 				<a href="/docs/101/what_is_biocontainers/" class="btn btn-primary previous-link">Previous</a>
 				
 				
-					<a href="/docs/101/docker-nutshell/" class="btn btn-primary next-link pull-right">Next</a>
+					<a href="/docs/101/running-example/" class="btn btn-primary next-link pull-right">Next</a>
 				
 
 				<br />
