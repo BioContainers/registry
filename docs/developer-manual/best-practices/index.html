@@ -67,7 +67,7 @@
 				<a class="item " href="/docs/101/running-example/">BioContainer example</a>
 			
 	
-				<a class="item " href="/docs/101/biocontainers-architecture/">BioContainers Architecture</a>
+				<a class="item " href="/docs/101/biocontainers-architecture/">BioContainers Arch</a>
 			
 	
 				<a class="item " href="/docs/101/biocontainers-registry/">Registry UI</a>
@@ -75,6 +75,9 @@
 		
 
         <span class="item-heading"> Developer tutorial </span>
+			
+	
+				<a class="item " href="/docs/developer-manual/developer-intro/">Developer Intro</a>
 			
 	
 				<a class="item " href="/docs/developer-manual/biocotainers-dockerfile/">Dockerfile Template</a>
@@ -89,7 +92,7 @@
 				<a class="item " href="/docs/developer-manual/deploy-dockerhub/">Deploy to DockerHub</a>
 			
 	
-				<a class="item " href="/docs/developer-manual/developer-intro/">Developer Intro</a>
+				<a class="item " href="/docs/developer-manual/contributing/">Contributing</a>
 			
 		
 
@@ -97,6 +100,9 @@
 			
 	
 				<a class="item " href="/docs/faqs/docker-nutshell/">Docker in NutShell</a>
+			
+	
+				<a class="item " href="/docs/faqs/rkt-vs-docker/">rkt vs docker</a>
 			
 	
 				<a class="item " href="/docs/faqs/manually-remove-dockerboot/">Remove boot2docker</a>
@@ -192,7 +198,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     <div class="author col-md-2 col-xs-2 hidden-xs">
-			<div class="tutorial-item"><span class="glyphicon glyphicon-calendar" style="font-size:14px;margin-bottom: 2px;"></span> 03 Feb 2017</div>
+			<div class="tutorial-item"><span class="glyphicon glyphicon-calendar" style="font-size:14px;margin-bottom: 2px;"></span> 08 Feb 2017</div>
 	        
 			
 	        <div class="tutorial-item"><span class="glyphicon glyphicon-time" style="font-size:14px;margin-bottom: 2px;"></span> 5 minutes </div>
@@ -452,6 +458,30 @@ You should avoid installing or using sudo since it has unpredictable TTY and sig
 
 <ul>
   <li>Images should be based on the latest LTS image available (Ubuntu 12.04 and 14.04) or to one of our images</li>
+</ul>
+
+<h2 id="using-the-biocontainers-base-image">Using the BioContainers base image</h2>
+
+<p>BioContainers project is using a custom base image for most of its containers. The image is based on Ubuntu Trusty 14.04 LTS
+and its going to be updated frequently.</p>
+
+<h2 id="image-name-and-versions">Image name and versions</h2>
+
+<p><a href="https://github.com/Biocontainers/containers/blob/master/base/Dockerfile">biodckr/biodocker:latest</a></p>
+
+<h2 id="core-software-and-packages">Core Software and Packages</h2>
+<ul>
+  <li>curl</li>
+  <li>fuse</li>
+  <li>git</li>
+  <li>wget</li>
+  <li>zip</li>
+  <li>openjdk-7-jre</li>
+  <li>build-essential</li>
+  <li>python</li>
+  <li>python-dev</li>
+  <li>python-pip</li>
+  <li>zlib1g-dev</li>
 </ul>
 
 <h2 id="sources-and-useful-links">Sources and Useful Links</h2>

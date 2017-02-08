@@ -67,7 +67,7 @@
 				<a class="item " href="/docs/101/running-example/">BioContainer example</a>
 			
 	
-				<a class="item " href="/docs/101/biocontainers-architecture/">BioContainers Architecture</a>
+				<a class="item " href="/docs/101/biocontainers-architecture/">BioContainers Arch</a>
 			
 	
 				<a class="item " href="/docs/101/biocontainers-registry/">Registry UI</a>
@@ -75,6 +75,9 @@
 		
 
         <span class="item-heading"> Developer tutorial </span>
+			
+	
+				<a class="item " href="/docs/developer-manual/developer-intro/">Developer Intro</a>
 			
 	
 				<a class="item " href="/docs/developer-manual/biocotainers-dockerfile/">Dockerfile Template</a>
@@ -89,7 +92,7 @@
 				<a class="item " href="/docs/developer-manual/deploy-dockerhub/">Deploy to DockerHub</a>
 			
 	
-				<a class="item " href="/docs/developer-manual/developer-intro/">Developer Intro</a>
+				<a class="item " href="/docs/developer-manual/contributing/">Contributing</a>
 			
 		
 
@@ -97,6 +100,9 @@
 			
 	
 				<a class="item item-active" href="/docs/faqs/docker-nutshell/">Docker in NutShell</a>
+			
+	
+				<a class="item " href="/docs/faqs/rkt-vs-docker/">rkt vs docker</a>
 			
 	
 				<a class="item " href="/docs/faqs/manually-remove-dockerboot/">Remove boot2docker</a>
@@ -383,6 +389,23 @@ Docker client needs to tell the Docker daemon to run the container is:</p>
 The command you want to run inside the container when it is launched, for example: <strong>/bin/bash</strong></p>
 </blockquote>
 
+<h3 id="dockerhub-automated-builds">DockerHub Automated Builds</h3>
+
+<p>DockerHub provides limited resources for automated builds. Sometimes, depending on how your program compiles, you may end up having problems trying to build your image. Last time we checked, DockerHub is providing the following resources:</p>
+
+<ul>
+  <li>2 hours</li>
+  <li>2 GB RAM</li>
+  <li>1 CPU</li>
+  <li>30 GB Disk Space</li>
+</ul>
+
+<p>If you want to containerize your software, make sure that you are not using more than provided or else the image will not be available through the Docker Registry.</p>
+
+<h2 id="how-to-avoid-timeouts">How to avoid Timeouts</h2>
+
+<p>One of the problems are are facing with some images is the <code>TimeOut</code> error. This happens when the compilation time takes more than 2 hours. In order to avoid this, one strategy is to break your build in separate Dockerfile recipes, and then use the <code>FROM</code> command to import them.</p>
+
 <h2 id="references">References:</h2>
 
 <ul>
@@ -395,7 +418,7 @@ The command you want to run inside the container when it is launched, for exampl
            <div id="lower-link-box" class="link-box">
 				
 				
-					<a href="/docs/faqs/manually-remove-dockerboot/" class="btn btn-primary next-link pull-right">Next</a>
+					<a href="/docs/faqs/rkt-vs-docker/" class="btn btn-primary next-link pull-right">Next</a>
 				
 
 				<br />

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Input/Outpout</title>
+	<title>rkt vs docker</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -86,7 +86,7 @@
 				<a class="item " href="/docs/developer-manual/best-practices/">Best Practices</a>
 			
 	
-				<a class="item item-active" href="/docs/developer-manual/biocontainers-input-output/">Input/Outpout</a>
+				<a class="item " href="/docs/developer-manual/biocontainers-input-output/">Input/Outpout</a>
 			
 	
 				<a class="item " href="/docs/developer-manual/deploy-dockerhub/">Deploy to DockerHub</a>
@@ -102,7 +102,7 @@
 				<a class="item " href="/docs/faqs/docker-nutshell/">Docker in NutShell</a>
 			
 	
-				<a class="item " href="/docs/faqs/rkt-vs-docker/">rkt vs docker</a>
+				<a class="item item-active" href="/docs/faqs/rkt-vs-docker/">rkt vs docker</a>
 			
 	
 				<a class="item " href="/docs/faqs/manually-remove-dockerboot/">Remove boot2docker</a>
@@ -135,9 +135,9 @@
 		<div class="heading row">
 
   <div class="col-md-6 col-xs-7 col-lg-5" id="contentTitleCell">
-	  <span class="contentTitle">Input/Outpout </span>
+	  <span class="contentTitle">rkt vs docker </span>
 
-	  <a class="gitStar" style="width:150px;" href="https://github.com/biocontainers/edu/blob/master/series/developer-manual/30_biocontainers-input-output.md" target="_blank"><span class="glyphicon glyphicon-pencil" style="font-size:14px;" ></span> Improve this page</a>
+	  <a class="gitStar" style="width:150px;" href="https://github.com/biocontainers/edu/blob/master/series/faqs/40_rkt_vs_docker.md" target="_blank"><span class="glyphicon glyphicon-pencil" style="font-size:14px;" ></span> Improve this page</a>
   </div>
 
 	<div class="col-xs-2 col-md-3">
@@ -198,12 +198,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     <div class="author col-md-2 col-xs-2 hidden-xs">
-			<div class="tutorial-item"><span class="glyphicon glyphicon-calendar" style="font-size:14px;margin-bottom: 2px;"></span> 24 Oct 2016</div>
-	        
-			<!--<div class="tutorial-item">Contributor(s): Yassset Perez-Riverol</div>-->
+			<div class="tutorial-item"><span class="glyphicon glyphicon-calendar" style="font-size:14px;margin-bottom: 2px;"></span> 08 Feb 2017</div>
 	        
 			
-	        <div class="tutorial-item"><span class="glyphicon glyphicon-time" style="font-size:14px;margin-bottom: 2px;"></span> 5 minutes </div>
+	        <div class="tutorial-item"><span class="glyphicon glyphicon-time" style="font-size:14px;margin-bottom: 2px;"></span> 15 minutes </div>
 	        
 	</div>
 
@@ -275,31 +273,35 @@ mailing list, just join our <a href="https://groups.google.com/forum/#!forum/bio
 <!--
 
 -->
-            <h1 id="using-input--and-output-files">Using input  and Output files</h1>
+            <p><code>rkt</code> is a next-generation container manager for Linux clusters. Differently from the docker daemon, <code>rkt</code> is a single binary currently available on CoreOS and Kubernetes only, it’s designed for modern Linux clusters environments.</p>
 
-<p>In many cases the software you are using requires an input or an output file to work.
-This can be achieved using a container image, but it requires that you change the way how you execute
-the docker daemon.</p>
+<p>It is also possible to run Docker-based images with <code>rkt</code>. Since there is no signature verification, the only difference relies on the running sintaxe:</p>
 
-<p>The first step is to have a specific folder in your computer to serve as a shared folder between your system and the container. In this case let’s place a file called prot.fa inside a folder called <code>/home/user/docker/</code>.</p>
+<p>To reference a Docker image, use the <code>docker://</code> prefix when fetching or running images.</p>
 
-<p>The <code>/home/user/docker/</code> folder will be mapped inside the container, that way this can server as a gateway for files, both the input and the output files will be placed there. </p>
+<p><code># rkt --insecure-options=image run docker://biocontainers/comet</code></p>
 
-<p>After setting the folder and necessary files inside we can execute the image we want. In the example bellow we are running an image built from an example container:</p>
+<p>According to the original documentation :</p>
 
-<pre><code>$ docker run -v /home/user/docker/:/data/ biodckr/program -input /data/prot.fa -output /data/result.txt`
-</code></pre>
+<blockquote>
+  <p>This behaves similarly to the Docker client: if no specific registry is named, the Docker Hub is used by default.</p>
+</blockquote>
 
-<p>Our local path <code>/home/user/docker/</code> will map inside the container into a folder called <code>/data/</code> and the software will have access to the file. After the processing is done the result file will be saved on the same place and we can have it outside the container in the same folder.
-In this scenario, the only difference is the use of the parameter <code>-v</code> when running the image, this parameter tells the docker daemon that when are mapping something from the host system internally.</p>
+<blockquote>
+  <p>As with Docker, alternative registries can be used by specifying the registry as part of the image reference. For example, the following command will fetch an nginx Docker image hosted on quay.io:</p>
+</blockquote>
+
+<p><code># rkt --insecure-options=image fetch docker://quay.io/biocontainers/blast</code></p>
+
+<p>Since the BioContainers images have no difference from traditional ones, you can use also use <code>rkt</code> to manage and execute the containers.</p>
 
 
            <div id="lower-link-box" class="link-box">
 				
-				<a href="/docs/developer-manual/best-practices/" class="btn btn-primary previous-link">Previous</a>
+				<a href="/docs/faqs/docker-nutshell/" class="btn btn-primary previous-link">Previous</a>
 				
 				
-					<a href="/docs/developer-manual/deploy-dockerhub/" class="btn btn-primary next-link pull-right">Next</a>
+					<a href="/docs/faqs/manually-remove-dockerboot/" class="btn btn-primary next-link pull-right">Next</a>
 				
 
 				<br />
@@ -366,7 +368,7 @@ function collapseStuff(e, textHidden, textDisplayed){
 		<!--
 		<div class="footer">
 			<div class="improve-this-page">
-				<span class="glyphicon glyphicon-pencil"></span> <a href="https://github.com/biojs/edu/blob/master/series/developer-manual/30_biocontainers-input-output.md">Improve this page</a>
+				<span class="glyphicon glyphicon-pencil"></span> <a href="https://github.com/biojs/edu/blob/master/series/faqs/40_rkt_vs_docker.md">Improve this page</a>
 			</div>
 
 			<div id="privacy-notice-less" class="privacy-policy">
