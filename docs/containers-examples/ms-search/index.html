@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>User Getting started</title>
+	<title>MS Search</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -61,7 +61,7 @@
 				<a class="item " href="/docs/101/what_is_biocontainers/">BioContainers?</a>
 			
 	
-				<a class="item item-active" href="/docs/101/getting_started/">User Getting started</a>
+				<a class="item " href="/docs/101/getting_started/">User Getting started</a>
 			
 	
 				<a class="item " href="/docs/101/running-example/">BioContainer example</a>
@@ -124,7 +124,7 @@
 				<a class="item " href="/docs/containers-examples/Comet/">Comet</a>
 			
 	
-				<a class="item " href="/docs/containers-examples/ms-search/">MS Search</a>
+				<a class="item item-active" href="/docs/containers-examples/ms-search/">MS Search</a>
 			
 	
 				<a class="item " href="/docs/containers-examples/SNP-Calling/">SNP Calling</a>
@@ -147,9 +147,9 @@
 		<div class="heading row">
 
   <div class="col-md-6 col-xs-7 col-lg-5" id="contentTitleCell">
-	  <span class="contentTitle">User Getting started </span>
+	  <span class="contentTitle">MS Search </span>
 
-	  <a class="gitStar" style="width:150px;" href="https://github.com/biocontainers/edu/blob/master/series/101/20_getting_started.md" target="_blank"><span class="glyphicon glyphicon-pencil" style="font-size:14px;" ></span> Improve this page</a>
+	  <a class="gitStar" style="width:150px;" href="https://github.com/biocontainers/edu/blob/master/series/containers-examples/30_MS_search.md" target="_blank"><span class="glyphicon glyphicon-pencil" style="font-size:14px;" ></span> Improve this page</a>
   </div>
 
 	<div class="col-xs-2 col-md-3">
@@ -210,7 +210,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     <div class="author col-md-2 col-xs-2 hidden-xs">
-			<div class="tutorial-item"><span class="glyphicon glyphicon-calendar" style="font-size:14px;margin-bottom: 2px;"></span> 08 Feb 2017</div>
+			<div class="tutorial-item"><span class="glyphicon glyphicon-calendar" style="font-size:14px;margin-bottom: 2px;"></span> 09 Feb 2017</div>
 	        
 			
 	        <div class="tutorial-item"><span class="glyphicon glyphicon-time" style="font-size:14px;margin-bottom: 2px;"></span> 5 minutes </div>
@@ -285,128 +285,102 @@ mailing list, just join our <a href="https://groups.google.com/forum/#!forum/bio
 <!--
 
 -->
-            <h4 id="this-page-will-help-you-prepare-your-computer-for-biocontainers">This page will help you prepare your computer for BioContainers</h4>
+            <p>Proteomics data analysis is dominated by database-based search engines strategies. 
+Perhaps the most common protocol today is to retrieve raw data from a mass spectrometry, convert the
+raw data from binary format to a text-based format and then process it using a database search algorithm.
+The resulting data need to be statistically filtered in order to converge to a final list of identified peptides
+and proteins. Amount Search Engines, Comet (the youngest son of SEQUEST) is one of the most popular nowadays.
+Today we are going to show how to run a simple analysis protocol using the Comet database search engine followed
+by statistical analysis using PeptideProphet and ProteinProphet, two of the most known and robust processing
+algorithms for proteomics data.</p>
 
-<p>You will need to work in a terminal using <strong><code>docker</code></strong> .</p>
+<p>This pipeline is available in TPP, however several users prefer to use the individual components rather than Trans-proteomics Pipeline.  The big differential here is how we are going to do it. Instead of going through the step-by-step in how to install and configure Comet and TPP, we are going to run the pipeline using Docker containers from the BioContainers project (you can get more information on the project here).</p>
 
-<div style="display:block"><div class="tutorials-highlight" style="display:block;"><span class="glyphicon glyphicon-info-sign" style="float:left;display:block;margin-right:20px"></span><div class="tutorials-highlight-text">
-<p>We will provide mainly examples using <strong>docker</strong>, the Bicontainers team is working in examples and documentation based on <strong>rkt</strong>.</p>
-</div></div></div>
+<h2 id="installing-docker">Installing Docker</h2>
 
-<ul>
-  <li><a href="https://www.docker.com/">Docker</a> is the world’s leading platform for software containerization. Docker includes multiple tools and components such as:
- <a href="https://docs.docker.com/">docker</a>, <a href="https://docs.docker.com/engine/installation/">docker engine</a>, <a href="https://docs.docker.com/docker-hub/">docker hub</a>.</li>
-</ul>
+<p>Docker is a freely distributed software, compatible with all operating systems. If you need directions on how to install it, follow the instructions on Docker’s documentation here.</p>
 
-<div style="display:block"><div class="tutorials-highlight" style="display:block;"><span class="glyphicon glyphicon-check" style="float:left;display:block;margin-right:20px"></span><div class="tutorials-highlight-text">
-<p>Open your terminal of choice and check whether you have the command (<code>docker</code>) installed. You should run these without
-any error.</p>
+<h2 id="getting-ready">Getting ready</h2>
 
-<pre><code>docker help
-</code></pre>
-
-</div></div></div>
-
-<p>If your machine is already set up, continue to the <a href="/101/modularity">tutorial</a>.</p>
-
-<div style="display:block"><div class="tutorials-highlight" style="display:block;"><span class="glyphicon glyphicon-info-sign" style="float:left;display:block;margin-right:20px"></span><div class="tutorials-highlight-text">
-<p>The following sections provided a short summary of Howto install <strong>docker</strong>, if these steps do not work for you please refer to the
-full documentation in <a href="https://docs.docker.com/">docker</a>. You can also get in contact with us using <a href="https://github.com/BioContainers/specs">Specifications Issues</a>.</p>
-</div></div></div>
-
-<p>Otherwise, choose your operating system below to learn more:</p>
+<p>First thing to do is to arrange the necessary files. For this pipeline we are going to need converted raw files from some mass spectrometry analysis and a protein database in FASTA format.
+This are the files I’m using for this tutorial:</p>
 
 <ul>
-  <li><a href="#mac"><strong>Mac</strong></a></li>
-  <li><a href="#linux"><strong>Linux</strong></a></li>
-  <li><a href="#windows"><strong>Windows</strong></a></li>
+  <li>b1930_293T_proteinID_10A_QE3_122212.mzXML</li>
+  <li>b1931_293T_proteinID_11A_QE3_122212.mzXML</li>
+  <li>database.fa</li>
 </ul>
 
-<div style="display:block"><div class="tutorials-highlight" style="display:block;"><span class="glyphicon glyphicon-bell" style="float:left;display:block;margin-right:20px"></span><div class="tutorials-highlight-text">
-<p>What does <code>docker</code> stand for?</p>
-</div></div></div>
+<p>I’m placing all these files inside a folder called /home/felipe/workspace/</p>
 
-<p><a name="mac"></a></p>
+<h2 id="preparing-the-containers">Preparing the Containers</h2>
 
-<h3 id="mac-osx">Mac OSX</h3>
+<p>The Docker containers wee need are already available to use via Biodocker project. The main goal of this project is to provide ready-to-use containers with bioinformatics software inside. For this tutorial we are going to download 3 containers; Comet and both Prophets.
+If you are not familiar with Docker, you should read the material from the original project website. In short words, containers are analogous to virtual machines, except that they do not contain a whole operating system inside. In practical terms we have an isolated lightweight environment with a private file system. Software inside a container can be accessed through command line using the docker daemon._
+Back to the tutorial… Lets download the containers we need. Run the following commands, one by one (depending on your configuration, you may need to use sudo for executing commands with the docker daemon):</p>
 
-<p><a href="https://docs.docker.com/docker-for-mac/">On Mac</a> installing Docker can be done by installing the complete <a href="https://www.docker.com/products/docker-toolbox">Docker Toolbox</a> available in Mac and Windows. The Docker Toolbox
-contains the Docker Engine, Compose, Machine, etc.</p>
-
-<div style="display:block"><div class="tutorials-highlight" style="display:block;"><span class="glyphicon glyphicon-check" style="float:left;display:block;margin-right:20px"></span><div class="tutorials-highlight-text">
-<p>Mac Docker ToolBox can be download from <a href="https://docs.docker.com/docker-for-mac/">this page</a>. The installation provides Docker Engine, Docker CLI client, Docker Compose, and Docker Machine.</p>
-
-<pre><code>Double-click Docker.dmg to open the installer, then drag Moby the whale to the Applications folder. You will be asked to authorize Docker.app with your system password during the install process. Privileged access is needed to install networking components and links to the Docker apps.
+<pre><code>$ docker pull biocontainers/comet
+$ docker pull biocontainers/peptideprophet
+$ docker pull biocontainers/proteinprophet
 </code></pre>
 
-</div></div></div>
+<h2 id="running-comet">Running Comet</h2>
 
-<div class="alert alert-warning "> <a href="#" class="close" data-dismiss="alert">&times;</a>
-                    <span class="glyphicon glyphicon-warning-sign" style="font-size:22px"></span> &nbsp; If you are already running Docker on your machine, first read <a href="https://docs.docker.com/docker-for-mac/docker-toolbox/">Docker for Mac vs. Docker Toolbox</a> to understand the impact of this installation on your existing setup, how to set your environment for Docker for Mac, and how the two products can coexist.
-If you have a old version of docokerboot and you want to remove it, you can use the following <a href="/faqs/manually-remove-dockerboot">script</a></div>
+<p>In order to run Comet we need to print a new parameter file:</p>
 
-<p>Then installed tools can be check using these commands:</p>
-
-<pre><code>$ docker --version
-Docker version 1.12.0, build 8eab29e
-
-$docker-compose --version
-docker-compose version 1.8.0, build f3628c7
-
-$docker-machine --version
-docker-machine version 0.8.0, build b85aac1
-
+<pre><code>&gt; docker run -v /home/felipe/workspace/:/data/ biocontainers/comet comet -p
 </code></pre>
 
-<p>Installing git can be done using Homebrew:</p>
+<p>To have access to files inside the container, and vice-versa, we need to map a local folder inside the container, that way all files inside this mapped folder will be visible and accessible to us and to the container. This is possible using the parameter -v and passing the complete path from our folder that we wish to map inside the container. In this case we are mapping /home/felipe/workspace into /data/, a pre-existent folder inside the container._
+biocontainers/comet is the name of the container we pulled from BioContainers. The ‘comet’ right after is the name of the program inside the container we are running.
+After running this command you will see a new file in the folder called comet.params.new, let’s rename it to comet.params and edit some of the options.
+In this case I will just change two parameters:</p>
 
-<pre><code>brew install git
+<p><code>database_name = /data/database.fa</code></p>
+
+<p><code>decoy_search = 1</code></p>
+
+<p>Remember that the files inside the container are actually inside a folder called /data/, so that’s how we are going to pass the file location to the programs.
+Now we can start the database search:</p>
+
+<pre><code>&gt; docker run -v /home/felipe/workspace/:/data/ biocontainers/comet comet -Pcomet.params b1930_293T_proteinID_10A_QE3_122212.mzXML b1931_293T_proteinID_11A_QE3_122212.mzXML`
 </code></pre>
 
-<p>If you have problems to install docker you can receive support here:<a href="https://gitter.im/biocontainers/Lobby">BioContainers Gitter</a></p>
+<p>If everything went well you should see two new files on your folder; b1930_293T_proteinID_10A_QE3_122212.pep.xml and b1931_293T_proteinID_11A_QE3_122212.pep.xml</p>
 
-<p><a name="linux"></a></p>
+<h2 id="running-peptideprophet">Running PeptideProphet</h2>
 
-<h3 id="linux">Linux</h3>
+<p>For the next step we need to run PeptideProphet, that will overwritte the .pep.xml files we already have:</p>
 
-<p>Install <a href="https://docs.docker.com/engine/installation/">Docker in Linux</a>  in Linux can be done using the specific Linux distribution. Some of the supported distributions are:
-<a href="https://docs.docker.com/engine/installation/linux/archlinux/">Arch Linux</a>, <a href="https://docs.docker.com/engine/installation/linux/centos/">CentOS</a>, <a href="https://docs.docker.com/engine/installation/linux/cruxlinux/">CRUX Linux</a>,
-<a href="https://docs.docker.com/engine/installation/linux/debian/">Debian</a>, <a href="https://docs.docker.com/engine/installation/linux/fedora/">Fedora</a>, <a href="https://docs.docker.com/engine/installation/linux/gentoolinux/">Gentoo</a>,
-<a href="https://docs.docker.com/engine/installation/linux/oracle/">Oracle Linux</a>, <a href="https://docs.docker.com/engine/installation/linux/rhel/">Red Hat Enterprise Linux</a>, <a href="https://docs.docker.com/engine/installation/linux/SUSE/">openSUSE and SUSE Linux Enterprise</a>,
-<a href="https://docs.docker.com/engine/installation/linux/ubuntulinux/">Ubuntu</a></p>
+<pre><code>&gt; docker run -v /home/felipe/workspace/:/data/ biocontainers/peptideprophet PeptideProphet /data/b1930_293T_proteinID_10A_QE3_122212.pep.xml ZERO ACCMASS PPM INSTRWARN DECOY=DECOY_ DECOYPROBS NONPARAM`
+&gt; docker run -v /home/felipe/workspace/:/data/ biocontainers/peptideprophet PeptideProphet /data/b1931_293T_proteinID_11A_QE3_122212.pep.xml ZERO ACCMASS PPM INSTRWARN DECOY=DECOY_ DECOYPROBS NONPARAM`
+</code></pre>
 
-<div class="alert alert-warning "> <a href="#" class="close" data-dismiss="alert">&times;</a>
-                    <span class="glyphicon glyphicon-warning-sign" style="font-size:22px"></span> &nbsp; If your linux distribution is not listed above, don’t give up yet. To try out Docker on a distribution that is not listed above,
-go here: <a href="https://docs.docker.com/engine/installation/binaries/">Installation from binaries</a>.</div>
+<p>This parameters are specific to the data set I’m using, you can change them with no problems. To see all the parameters just run:</p>
 
-<p><a name="windows"></a></p>
+<pre><code>&gt; docker run biocontainers/peptideprophet PeptideProphet`
+</code></pre>
 
-<h3 id="windows">Windows</h3>
+<h2 id="running-proteinprophet">Running ProteinProphet</h2>
 
-<p>Docker for Windows is our newest offering for PCs. It runs as a native Windows application and uses Hyper-V to virtualize the Docker Engine environment and Linux kernel-specific features for the Docker daemon.</p>
+<p>Finally, for the last step, we need to run ProteinProphet:</p>
 
-<div class="alert alert-warning "> <a href="#" class="close" data-dismiss="alert">&times;</a>
-                    <span class="glyphicon glyphicon-warning-sign" style="font-size:22px"></span> &nbsp; Please read through these topics on how to get started. To give us your feedback on your experience with the app and report bugs or problems,
-log in to <a href="https://forums.docker.com/c/docker-for-windows">Docker for Windows forum</a>.</div>
+<pre><code>&gt; docker run -v /home/felipe/workspace/:/data/ biocontainers/proteinprophet ProteinProphet /data/b1930_293T_proteinID_10A_QE3_122212.pep.xml /data/b1931_293T_proteinID_11A_QE3_122212.pep.xml /data/result.prot.xml`
+</code></pre>
 
-<p>After downloading the <a href="https://download.docker.com/win/stable/InstallDocker.msi">InstallDocker.msi</a> file, you can follow the next steps:</p>
+<p>and that’s it, now you have your prot.xml file with the identified proteins.</p>
 
-<p>1- Double-click InstallDocker.msi to run the installer. It typically downloads to your Downloads folder, or you can run it from the recent downloads bar at the bottom of your web browser.</p>
+<h2 id="conclusion">Conclusion</h2>
 
-<p>2- Follow the install wizard to accept the license, authorize the installer, and proceed with the install.</p>
-
-<p>3- You will be asked to authorize Docker.app with your system password during the install process. Privileged access is needed to install networking components, links to the Docker apps, and manage the Hyper-V VMs.</p>
-
-<p>Click Finish on the setup complete dialog to launch Docker.</p>
-
+<p>Again we show how versatile BioContainers containers can be. Even complete analysis protocols like the one showed above can be managed easily without the need to install complex software or manipulating Makefiles. Please feel free to make comments and suggestions. </p>
 
 
            <div id="lower-link-box" class="link-box">
 				
-				<a href="/docs/101/what_is_biocontainers/" class="btn btn-primary previous-link">Previous</a>
+				<a href="/docs/containers-examples/Comet/" class="btn btn-primary previous-link">Previous</a>
 				
 				
-					<a href="/docs/101/running-example/" class="btn btn-primary next-link pull-right">Next</a>
+					<a href="/docs/containers-examples/SNP-Calling/" class="btn btn-primary next-link pull-right">Next</a>
 				
 
 				<br />
@@ -473,7 +447,7 @@ function collapseStuff(e, textHidden, textDisplayed){
 		<!--
 		<div class="footer">
 			<div class="improve-this-page">
-				<span class="glyphicon glyphicon-pencil"></span> <a href="https://github.com/biojs/edu/blob/master/series/101/20_getting_started.md">Improve this page</a>
+				<span class="glyphicon glyphicon-pencil"></span> <a href="https://github.com/biojs/edu/blob/master/series/containers-examples/30_MS_search.md">Improve this page</a>
 			</div>
 
 			<div id="privacy-notice-less" class="privacy-policy">

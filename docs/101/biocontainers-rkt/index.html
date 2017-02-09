@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>User Getting started</title>
+	<title>BioContainers in rkt</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -61,13 +61,13 @@
 				<a class="item " href="/docs/101/what_is_biocontainers/">BioContainers?</a>
 			
 	
-				<a class="item item-active" href="/docs/101/getting_started/">User Getting started</a>
+				<a class="item " href="/docs/101/getting_started/">User Getting started</a>
 			
 	
 				<a class="item " href="/docs/101/running-example/">BioContainer example</a>
 			
 	
-				<a class="item " href="/docs/101/biocontainers-rkt/">BioContainers in rkt</a>
+				<a class="item item-active" href="/docs/101/biocontainers-rkt/">BioContainers in rkt</a>
 			
 	
 				<a class="item " href="/docs/101/biocontainers-architecture/">BioContainers Arch</a>
@@ -147,9 +147,9 @@
 		<div class="heading row">
 
   <div class="col-md-6 col-xs-7 col-lg-5" id="contentTitleCell">
-	  <span class="contentTitle">User Getting started </span>
+	  <span class="contentTitle">BioContainers in rkt </span>
 
-	  <a class="gitStar" style="width:150px;" href="https://github.com/biocontainers/edu/blob/master/series/101/20_getting_started.md" target="_blank"><span class="glyphicon glyphicon-pencil" style="font-size:14px;" ></span> Improve this page</a>
+	  <a class="gitStar" style="width:150px;" href="https://github.com/biocontainers/edu/blob/master/series/101/30_bioContainers-images-with-rkt.md" target="_blank"><span class="glyphicon glyphicon-pencil" style="font-size:14px;" ></span> Improve this page</a>
   </div>
 
 	<div class="col-xs-2 col-md-3">
@@ -210,10 +210,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     <div class="author col-md-2 col-xs-2 hidden-xs">
-			<div class="tutorial-item"><span class="glyphicon glyphicon-calendar" style="font-size:14px;margin-bottom: 2px;"></span> 08 Feb 2017</div>
+			<div class="tutorial-item"><span class="glyphicon glyphicon-calendar" style="font-size:14px;margin-bottom: 2px;"></span> 09 Feb 2017</div>
 	        
 			
-	        <div class="tutorial-item"><span class="glyphicon glyphicon-time" style="font-size:14px;margin-bottom: 2px;"></span> 5 minutes </div>
+	        <div class="tutorial-item"><span class="glyphicon glyphicon-time" style="font-size:14px;margin-bottom: 2px;"></span> 20 minutes </div>
 	        
 	</div>
 
@@ -285,128 +285,33 @@ mailing list, just join our <a href="https://groups.google.com/forum/#!forum/bio
 <!--
 
 -->
-            <h4 id="this-page-will-help-you-prepare-your-computer-for-biocontainers">This page will help you prepare your computer for BioContainers</h4>
+            <p><code>rkt</code> is a next-generation container manager for Linux clusters. Differently from the docker daemon,
+<code>rkt</code> is a single binary currently available on CoreOS and Kubernetes only, it’s designed for modern Linux clusters environments.</p>
 
-<p>You will need to work in a terminal using <strong><code>docker</code></strong> .</p>
+<p>It is also possible to run Docker-based images with <code>rkt</code>. Since there is no signature verification, the only difference relies on the running sintaxe:</p>
 
-<div style="display:block"><div class="tutorials-highlight" style="display:block;"><span class="glyphicon glyphicon-info-sign" style="float:left;display:block;margin-right:20px"></span><div class="tutorials-highlight-text">
-<p>We will provide mainly examples using <strong>docker</strong>, the Bicontainers team is working in examples and documentation based on <strong>rkt</strong>.</p>
-</div></div></div>
+<p>To reference a Docker image, use the <code>docker://</code> prefix when fetching or running images.</p>
 
-<ul>
-  <li><a href="https://www.docker.com/">Docker</a> is the world’s leading platform for software containerization. Docker includes multiple tools and components such as:
- <a href="https://docs.docker.com/">docker</a>, <a href="https://docs.docker.com/engine/installation/">docker engine</a>, <a href="https://docs.docker.com/docker-hub/">docker hub</a>.</li>
-</ul>
-
-<div style="display:block"><div class="tutorials-highlight" style="display:block;"><span class="glyphicon glyphicon-check" style="float:left;display:block;margin-right:20px"></span><div class="tutorials-highlight-text">
-<p>Open your terminal of choice and check whether you have the command (<code>docker</code>) installed. You should run these without
-any error.</p>
-
-<pre><code>docker help
+<pre><code>&gt; rkt --insecure-options=image run docker://biocontainers/comet
 </code></pre>
 
-</div></div></div>
+<p>According to the original documentation :</p>
 
-<p>If your machine is already set up, continue to the <a href="/101/modularity">tutorial</a>.</p>
+<p>This behaves similarly to the Docker client: if no specific registry is named, the Docker Hub is used by default.
+As with Docker, alternative registries can be used by specifying the registry as part of the image reference. For example, the following command will fetch an nginx Docker image hosted on quay.io:</p>
 
-<div style="display:block"><div class="tutorials-highlight" style="display:block;"><span class="glyphicon glyphicon-info-sign" style="float:left;display:block;margin-right:20px"></span><div class="tutorials-highlight-text">
-<p>The following sections provided a short summary of Howto install <strong>docker</strong>, if these steps do not work for you please refer to the
-full documentation in <a href="https://docs.docker.com/">docker</a>. You can also get in contact with us using <a href="https://github.com/BioContainers/specs">Specifications Issues</a>.</p>
-</div></div></div>
-
-<p>Otherwise, choose your operating system below to learn more:</p>
-
-<ul>
-  <li><a href="#mac"><strong>Mac</strong></a></li>
-  <li><a href="#linux"><strong>Linux</strong></a></li>
-  <li><a href="#windows"><strong>Windows</strong></a></li>
-</ul>
-
-<div style="display:block"><div class="tutorials-highlight" style="display:block;"><span class="glyphicon glyphicon-bell" style="float:left;display:block;margin-right:20px"></span><div class="tutorials-highlight-text">
-<p>What does <code>docker</code> stand for?</p>
-</div></div></div>
-
-<p><a name="mac"></a></p>
-
-<h3 id="mac-osx">Mac OSX</h3>
-
-<p><a href="https://docs.docker.com/docker-for-mac/">On Mac</a> installing Docker can be done by installing the complete <a href="https://www.docker.com/products/docker-toolbox">Docker Toolbox</a> available in Mac and Windows. The Docker Toolbox
-contains the Docker Engine, Compose, Machine, etc.</p>
-
-<div style="display:block"><div class="tutorials-highlight" style="display:block;"><span class="glyphicon glyphicon-check" style="float:left;display:block;margin-right:20px"></span><div class="tutorials-highlight-text">
-<p>Mac Docker ToolBox can be download from <a href="https://docs.docker.com/docker-for-mac/">this page</a>. The installation provides Docker Engine, Docker CLI client, Docker Compose, and Docker Machine.</p>
-
-<pre><code>Double-click Docker.dmg to open the installer, then drag Moby the whale to the Applications folder. You will be asked to authorize Docker.app with your system password during the install process. Privileged access is needed to install networking components and links to the Docker apps.
+<pre><code>&gt; rkt --insecure-options=image fetch docker://quay.io/biocontainers/blast
 </code></pre>
 
-</div></div></div>
-
-<div class="alert alert-warning "> <a href="#" class="close" data-dismiss="alert">&times;</a>
-                    <span class="glyphicon glyphicon-warning-sign" style="font-size:22px"></span> &nbsp; If you are already running Docker on your machine, first read <a href="https://docs.docker.com/docker-for-mac/docker-toolbox/">Docker for Mac vs. Docker Toolbox</a> to understand the impact of this installation on your existing setup, how to set your environment for Docker for Mac, and how the two products can coexist.
-If you have a old version of docokerboot and you want to remove it, you can use the following <a href="/faqs/manually-remove-dockerboot">script</a></div>
-
-<p>Then installed tools can be check using these commands:</p>
-
-<pre><code>$ docker --version
-Docker version 1.12.0, build 8eab29e
-
-$docker-compose --version
-docker-compose version 1.8.0, build f3628c7
-
-$docker-machine --version
-docker-machine version 0.8.0, build b85aac1
-
-</code></pre>
-
-<p>Installing git can be done using Homebrew:</p>
-
-<pre><code>brew install git
-</code></pre>
-
-<p>If you have problems to install docker you can receive support here:<a href="https://gitter.im/biocontainers/Lobby">BioContainers Gitter</a></p>
-
-<p><a name="linux"></a></p>
-
-<h3 id="linux">Linux</h3>
-
-<p>Install <a href="https://docs.docker.com/engine/installation/">Docker in Linux</a>  in Linux can be done using the specific Linux distribution. Some of the supported distributions are:
-<a href="https://docs.docker.com/engine/installation/linux/archlinux/">Arch Linux</a>, <a href="https://docs.docker.com/engine/installation/linux/centos/">CentOS</a>, <a href="https://docs.docker.com/engine/installation/linux/cruxlinux/">CRUX Linux</a>,
-<a href="https://docs.docker.com/engine/installation/linux/debian/">Debian</a>, <a href="https://docs.docker.com/engine/installation/linux/fedora/">Fedora</a>, <a href="https://docs.docker.com/engine/installation/linux/gentoolinux/">Gentoo</a>,
-<a href="https://docs.docker.com/engine/installation/linux/oracle/">Oracle Linux</a>, <a href="https://docs.docker.com/engine/installation/linux/rhel/">Red Hat Enterprise Linux</a>, <a href="https://docs.docker.com/engine/installation/linux/SUSE/">openSUSE and SUSE Linux Enterprise</a>,
-<a href="https://docs.docker.com/engine/installation/linux/ubuntulinux/">Ubuntu</a></p>
-
-<div class="alert alert-warning "> <a href="#" class="close" data-dismiss="alert">&times;</a>
-                    <span class="glyphicon glyphicon-warning-sign" style="font-size:22px"></span> &nbsp; If your linux distribution is not listed above, don’t give up yet. To try out Docker on a distribution that is not listed above,
-go here: <a href="https://docs.docker.com/engine/installation/binaries/">Installation from binaries</a>.</div>
-
-<p><a name="windows"></a></p>
-
-<h3 id="windows">Windows</h3>
-
-<p>Docker for Windows is our newest offering for PCs. It runs as a native Windows application and uses Hyper-V to virtualize the Docker Engine environment and Linux kernel-specific features for the Docker daemon.</p>
-
-<div class="alert alert-warning "> <a href="#" class="close" data-dismiss="alert">&times;</a>
-                    <span class="glyphicon glyphicon-warning-sign" style="font-size:22px"></span> &nbsp; Please read through these topics on how to get started. To give us your feedback on your experience with the app and report bugs or problems,
-log in to <a href="https://forums.docker.com/c/docker-for-windows">Docker for Windows forum</a>.</div>
-
-<p>After downloading the <a href="https://download.docker.com/win/stable/InstallDocker.msi">InstallDocker.msi</a> file, you can follow the next steps:</p>
-
-<p>1- Double-click InstallDocker.msi to run the installer. It typically downloads to your Downloads folder, or you can run it from the recent downloads bar at the bottom of your web browser.</p>
-
-<p>2- Follow the install wizard to accept the license, authorize the installer, and proceed with the install.</p>
-
-<p>3- You will be asked to authorize Docker.app with your system password during the install process. Privileged access is needed to install networking components, links to the Docker apps, and manage the Hyper-V VMs.</p>
-
-<p>Click Finish on the setup complete dialog to launch Docker.</p>
-
+<p>Since the BioContainers images have no difference from traditional ones, you can use also use <code>rkt</code> to manage and execute the containers.</p>
 
 
            <div id="lower-link-box" class="link-box">
 				
-				<a href="/docs/101/what_is_biocontainers/" class="btn btn-primary previous-link">Previous</a>
+				<a href="/docs/101/running-example/" class="btn btn-primary previous-link">Previous</a>
 				
 				
-					<a href="/docs/101/running-example/" class="btn btn-primary next-link pull-right">Next</a>
+					<a href="/docs/101/biocontainers-architecture/" class="btn btn-primary next-link pull-right">Next</a>
 				
 
 				<br />
@@ -473,7 +378,7 @@ function collapseStuff(e, textHidden, textDisplayed){
 		<!--
 		<div class="footer">
 			<div class="improve-this-page">
-				<span class="glyphicon glyphicon-pencil"></span> <a href="https://github.com/biojs/edu/blob/master/series/101/20_getting_started.md">Improve this page</a>
+				<span class="glyphicon glyphicon-pencil"></span> <a href="https://github.com/biojs/edu/blob/master/series/101/30_bioContainers-images-with-rkt.md">Improve this page</a>
 			</div>
 
 			<div id="privacy-notice-less" class="privacy-policy">
