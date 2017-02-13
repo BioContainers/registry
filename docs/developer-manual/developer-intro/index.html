@@ -210,7 +210,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     <div class="author col-md-2 col-xs-2 hidden-xs">
-			<div class="tutorial-item"><span class="glyphicon glyphicon-calendar" style="font-size:14px;margin-bottom: 2px;"></span> 09 Feb 2017</div>
+			<div class="tutorial-item"><span class="glyphicon glyphicon-calendar" style="font-size:14px;margin-bottom: 2px;"></span> 13 Feb 2017</div>
 	        
 			
 	        <div class="tutorial-item"><span class="glyphicon glyphicon-time" style="font-size:14px;margin-bottom: 2px;"></span> 5 minutes </div>
@@ -297,11 +297,134 @@ mailing list, just join our <a href="https://groups.google.com/forum/#!forum/bio
 
 <h2 id="developing-containers">Developing containers</h2>
 
-<p>BioContainers has two major ways of creating containers: <strong>Dockefile based images</strong> and <strong>DockerFile less images</strong></p>
+<p>BioContainers has two major ways of creating containers: <strong>Dockefile based images</strong> and <strong>mulled images</strong></p>
 
 <h3 id="developing-dockerfile-based-containers">Developing Dockerfile based containers</h3>
 
-<h3 id="developing-dockerfile-less-containers">Developing Dockerfile-less containers</h3>
+<p>The first method correspond to the traditional way of creating a container. In order to do that we will need to create something
+called Dockerfile. But first, lets review each step necessary before having a Docker container.</p>
+
+<p>1) Install Docker</p>
+
+<p>Make sure that you have the docker daemon installed on your system. You can check <a href="http://biocontainers.pro/docs/101/getting_started/">here</a> for more information on how to find the proper
+guidelines for you.</p>
+
+<p>2) Have a Software to Work with</p>
+
+<p>Make sure you have a piece of software capable of being containerized. The BioContainers base image is based
+on an Ubuntu distribution, so your software and its libraries must be compatible to Linux.</p>
+
+<p>3) Read the Documentation</p>
+
+<p>For a Docker container you basically need a simple Dockerfile, but our BioContainers project is based on a series
+of specifications and guidelines, so before start creating your Dockerfile we suggest you to read our <a href="http://biocontainers.pro/docs/developer-manual/biocotainers-dockerfile/">documentation</a>
+first, there you will find out, amongst other things, how o create a Dockerfile compatible with BioContainers.</p>
+
+<p>4) Adding Things to the Container
+Once you have everything in place, you need now to figure out how to add your software to the container. There are different ways of doing this; if you software is available via apt install, you can do that and the software will be available inside the container. If that’s not your case you have a few other options:</p>
+
+<ul>
+  <li>You can push the software file inside the container using the Dockerfile directives called <code>ADD</code> or <code>COPY</code> (<a href="https://github.com/BioContainers/containers/blob/master/pia/1.1.0-SNAPSHOT/Dockerfile">example</a>).      </li>
+  <li>You can host the software somewhere on-line and download it via command line inside the container (<a href="https://github.com/BioContainers/containers/blob/master/comet/2016012/Dockerfile">example</a>).</li>
+  <li>You can you use other solutions like Conda to download your software (<a href="https://github.com/BioContainers/containers/blob/master/blast/2.2.31/Dockerfile">example</a>, also see below).</li>
+</ul>
+
+<p>5) Build the Container
+In order to build the container you need to use the docker daemon with the <code>build</code> command:</p>
+
+<pre><code>$ docker build -t &lt;name&gt; &lt;folder_with_dockerfile&gt;
+</code></pre>
+
+<p>So, if you are running this command in the same folder the Dockerfile is, we can type something like this:</p>
+
+<pre><code>$docker build -t MyApp .
+</code></pre>
+
+<p>In the following minutes you will see the log output from the docker daemon while it builds your container.</p>
+
+<p>6) Run it!, Test it!
+Once the container is ready you should test it, try to run your program using the <code>run</code> command, check if all its functionalities are in order.</p>
+
+<p>7) contribute
+If everything looks OK, you can contribute to the BioContainers project by sending us your Docekerfile. You can follow the instructions we have <a href="https://github.com/BioContainers/containers/blob/master/blast/2.2.31/Dockerfile">here</a>, and after ready, your software will be available using the docker daemon fetch command. </p>
+
+<h3 id="developing-mulled-containers">Developing mulled containers</h3>
+
+<p>BioContainers offers a very easy way to create efficient containers that are minimal in size,
+tested and not rely on writing a Dockerfile.</p>
+
+<p>The preferred way to do this is to write a <a href="https://conda.pydata.org">conda package</a>
+and submit this it the BioConda communtiy. As soon as your PR is merged and continues
+integration testing was successful, we will build you automatically a container and publish
+it at <a href="https://quay.io/organization/biocontainers">quay.io/biocontainers</a>.</p>
+
+<p>The BioConda specification <a href="https://bioconda.github.io/contributing.html">Contribution Guide</a> define how to create a recipe. In summary,
+a BioConda recipe should contain the following parts ():</p>
+
+<ul>
+  <li>Source URL is stable (details)</li>
+  <li>md5 or sha256 hash included for source download (details)</li>
+  <li>Appropriate build number (details)</li>
+  <li>.bat file for Windows removed (details)</li>
+  <li>Remove unnecessary comments (details)</li>
+  <li>Adequate tests included</li>
+  <li>Files created by the recipe follow the FSH (details)</li>
+  <li>License allows redistribution and license is indicated in meta.yaml</li>
+  <li>Package does not already exist in the defaults, r, or conda-forge channels with some
+exceptions (details)</li>
+  <li>Package is appropriate for bioconda</li>
+  <li>If the recipe installs custom wrapper scripts, usage notes should be added to <code>extra -&gt; notes</code> in the meta.yaml.</li>
+</ul>
+
+<p>Example Yaml for bowtie2:</p>
+
+<pre><code>
+package:
+  name: unicycler
+  version: 0.3.0b
+
+build:
+  number: 0
+  skip: True # [py27]
+
+source:
+  fn: unicycler_0.3.0b.tar.gz
+  url: https://github.com/rrwick/Unicycler/archive/906a3e7f314c7843bf0b4edf917593fc10baee4f.tar.gz
+  md5: 5f06d2bd8ef5065c8047421db8c7895f
+
+requirements:
+  build:
+  - python
+  - setuptools
+  - gcc
+
+  run:
+  - python
+  - libgcc
+  - spades &gt;=3.6.2
+  - pilon
+  - java-jdk
+  - bowtie2
+  - samtools &gt;=1.0
+  - blast
+  - freebayes
+
+test:
+  commands:
+    - unicycler -h
+    - unicycler_align -h
+    - unicycler_check -h
+    - unicycler_polish -h
+
+about:
+  home: https://github.com/rrwick/Unicycler
+  license: GPL-3.0
+  license_file: LICENSE
+  summary: 'Hybrid assembly pipeline for bacterial genomes'
+</code></pre>
+
+<p>When the recipe is ready a Pull Request should be created (https://bioconda.github.io/contribute-a-recipe.html#push-changes-wait-for-tests-to-pass-submit-pull-request). Finally
+the container is automatically created for the new BioConda Package.</p>
 
 
            <div id="lower-link-box" class="link-box">
