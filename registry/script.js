@@ -146,23 +146,6 @@ function retrieveGitHubIssues(url, $http, $scope, $filter, $q){
     return deferred.promise;
 }
 
-// function retrieveDockerHub( url , $http, $scope, $filter){
-// 	$http({method: "GET", url: url}).success(function(data){
-// 		$scope.num_results= $scope.num_results + data.count;
-// 		angular.forEach(data.results, function(result){
-// 		    starred = false;
-// 		    if(result.star_count > 0){
-// 		       starred = true
-//             }
-//             dateM = $filter('jsonDate')(result.last_updated,'dd/MM/yyyy');
-// 			$scope.dictionary["biocontainers/" + result.name] = {domain: "biocontainers/", name: result.name, description: parseHTML(result.description), lastModified: dateM, number_pull: [result.pull_count, 15000], start_count:starred}
-// 			$scope.namespacesList.push({domain: "biocontainers/", name: result.name, description: parseHTML(result.description), lastModified: dateM, number_pull: [result.pull_count, 15000], start_count:starred})
-// 		});
-// 		if(data.next != null){
-// 			retrieveDockerHub(CROSS_PROXY + data.next, $http, $scope, $filter)
-// 		}
-// 	}).error(function(data){console.log("Unable to request the data")});
-// }
 
 
 function loadAll(url, $scope, $filter, $http, deferred) {
@@ -274,7 +257,7 @@ app.controller('ImagesController', function($scope,$http,$location,$window,$cook
 
         repoURL    = QUAY_REOPSITORY_URL + QUAY_REPOSITORY + $scope.repository;
         $http({method: "GET", url: repoURL, headers: {
-            'Authorization': "Bearer "+ "XRYLsxvQqmQLpP7RrajpFdiZntveNEyiffXyibK0"}}).success(function(data){
+            'Authorization': "Bearer "+ "XRYLsxvQqmQLpP7RrajpFdiZntveNEyiffXyibK0", 'X-Requested-With': 'XMLHttpRequest'}}).success(function(data){
             $scope.repo.repoName     = $scope.repository;
             $scope.repo.description  = parseHTML(data.description);
             $scope.repo.imagesList   = [];
