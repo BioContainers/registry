@@ -13,11 +13,8 @@ cache:
   directories:
     - node_modules
 
-before_install:
+install:
   - npm install
-
-#install:
-#  - npm install
 
 script:
   - npm run build
