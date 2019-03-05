@@ -15,7 +15,6 @@ cache:
 
 install:
   - npm install
-  - npm i -g npm@version-number
 
 script:
   - npm run build
