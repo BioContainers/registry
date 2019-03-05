@@ -1,6 +1,7 @@
 language: node_js
 node_js:
-  - "v7.7.4"
+  - "stable"
+
 dist: trusty
 sudo: false
 
@@ -14,6 +15,7 @@ cache:
 
 install:
   - npm install
+  - npm i -g npm@version-number
 
 script:
   - npm run build
