@@ -40,7 +40,7 @@
 import Heatmap from '@/components/charts/Heatmap.vue'
 const moment = require('moment');
 export default {
-  name: 'MappingData',
+  name: 'Mappingdata',
   data () {
     return {
         QUAY_ORGANIZATION:"https://quay.io/api/v1/repository?namespace=biocontainers&popularity=true&last_modified=true",

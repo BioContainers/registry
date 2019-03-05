@@ -5,7 +5,7 @@ import Registry from '@/components/Registry'
 
 import tools from '@/components/tools'
 import NotFound from '@/components/NotFound'
-import MappingData from '@/components/MappingData'
+import MappingData from '@/components/Mappingdata'
 import Multipackage from '@/components/Multipackage'
 
 Vue.use(Router)
