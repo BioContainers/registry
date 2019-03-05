@@ -5,7 +5,7 @@ import Registry from '@/components/Registry'
 
 import tools from '@/components/tools'
 import NotFound from '@/components/NotFound'
-import MappingData from '@/components/Mappingdata'
+import Mappingdata from '@/components/Mappingdata'
 import Multipackage from '@/components/Multipackage'
 
 Vue.use(Router)
@@ -32,8 +32,8 @@ export default new Router({
     },
     {
       path: '/mappingdata',
-      name: 'MappingData',
-      component: MappingData
+      name: 'Mappingdata',
+      component: Mappingdata
     },
     {
       path: '/multipackage',

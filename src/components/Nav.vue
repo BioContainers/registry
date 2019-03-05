@@ -45,7 +45,7 @@
             menuSlect(name){
                 switch(name){
                   case 'statslink':
-                    this.$router.push({name:'MappingData'});
+                    this.$router.push({name:'Mappingdata'});
                     //this.activeName = 'index';
                   break;
 
