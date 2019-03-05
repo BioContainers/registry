@@ -1,5 +1,7 @@
 BioContainers Web
 ==============================
+[![Build Status](https://travis-ci.org/BioContainers/BioContainers.github.io.svg?branch=master)](https://travis-ci.org/BioContainers/BioContainers.github.io)
+
 
 This project contains the [main page of biocontainers](https://biocontainers.pro) and the [registry page](https://biocontainers.pro/registry).
 
