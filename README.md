@@ -1,26 +1,41 @@
-BioContainers - biocontainers.pro
-=========
+BioContainers Web
+==============================
 
-[![Join the chat at https://gitter.im/BioDocker/biodocker](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/BioDocker/biodocker?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+This project contains the [main page of biocontainers](https://biocontainers.pro) and the [registry page](https://biocontainers.pro/registry).
+
+BioContainers Tool Registry
+---------------------------------
+
+This project provides a web UI for [BioContainers](https://biocontainers.pro)
+
+* This application is written in JavaScript, and you can deploy this application easily.
+* This application doesn't store any user data.
+* You can find the necessary information simply from the Docker Registry [documentation](http://biocontainers.pro/docs/101/biocontainers-registry/).
 
 
-biocontainers.pro
---------
-Webpage from the Biocontainers repository
+How to Test
+------------------------
 
-Links:
--------
-Web Page              : http://biocontainers.pro/
+- To test the application go to **dist** directory and install `npm install -g http-server`, then use `httop-server` to test the app:
 
-Project Definition    : https://github.com/BioContainers/specs
+```
+http-server -o
+```
 
-Contribution Rules    : https://github.com/BioContainers/specs/blob/master/CONTRIBUTING.md
+We have already deployed this web-ui to our [github pages](http://worksap-ate.github.io/docker-registry-ui/#/).
 
-Containers            : https://github.com/BioContainers/containers
+- Please set your docker-registry IP at "Set Registry IP" option. 
+- And you can use the Web UI.
 
-Email                 : biodockers@gmail.com
+How to Install to your own server
+--------------------------------------
 
-License
-----------
+Download the source code and put these files to a web server.
 
-[Apache 2](http://www.apache.org/licenses/LICENSE-2.0)
+- Show all biocontainers in dockerhub and quay.io.
+- Search for containers using the **Search Box**
+    * If user wants to search in the entire hub just like the docker hub, then he can use the search option given at the top. The phrase he wants to search for will search in the entire hub.
+- Filter by word
+- Sort
+    * User can use the sort option to sort the items accorsing to the alphabetical order whether it is ascending or decending.
+- Show the containers description. 
