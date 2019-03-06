@@ -7,7 +7,7 @@ sudo: false
 
 branches:
   only:
-  - master
+  - develop
 
 cache:
   directories:
