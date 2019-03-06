@@ -23,4 +23,4 @@ deploy:
   provider: master
   skip_cleanup: true
   github_token: $GITHUB_TOKEN
-  local_dir: registry
+  local_dir: dist
