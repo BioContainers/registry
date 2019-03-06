@@ -7,3 +7,7 @@
 *.iml
 out
 gen
+
+registry/
+node_modules/
+dist/
