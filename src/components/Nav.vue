@@ -1,7 +1,7 @@
 <template>
     <div class="nav-container">
         <Menu mode="horizontal" active-name="1" @on-select="menuSlect">
-            <a class="logo" @click="gotoHome"><img src="static/logo/biocontainers-logo.png" width="40" height="40">BioContainers Registry UI</a>
+            <a class="logo" @click="gotoHome"><img src="static/logo/biocontainers-logo.png" width="40" height="40">BioContainers</a>
             <div class="menu">
                 <MenuItem name="multipackage">
                     <Icon type="ios-add-circle"></Icon>
