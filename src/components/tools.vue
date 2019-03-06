@@ -319,7 +319,7 @@ export default {
                           this.containerObj.versions.push(version_item)
 
                           for(let i=0; i < current_version.container_images.length; i++){
-                              let original_type = current_version.container_images[i].container_type == 'DOCKER'? "static/images/docker.png":"static/logo/biocontainers-logo.png"
+                              let original_type = current_version.container_images[i].container_type == 'DOCKER'? "/static/images/docker.png":"/static/logo/biocontainers-logo.png"
                               let prefix = current_version.container_images[i].container_type == 'DOCKER'? 'docker pull ': 'bioconda install '
                               var item = {
                                   tool: current_version.name,
