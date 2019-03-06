@@ -18,6 +18,11 @@ install:
 script:
   - npm run build
 
+after_script:
+  - echo 'Build happen'
+  - bash ./create_cname.sh
+  - echo 'CNAME created'
+
 deploy:
   provider: pages
   skip_cleanup: true
