@@ -20,7 +20,10 @@ script:
   - npm run build
 
 deploy:
-  provider: master
+  provider: develop
   skip_cleanup: true
   github_token: $GITHUB_TOKEN
   local_dir: dist
+  on:
+    branch: master
+
