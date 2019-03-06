@@ -11,9 +11,9 @@ import Multipackage from '@/components/Multipackage'
 Vue.use(Router)
 
 export default new Router({
-   mode: 'history',
-  //base: location.hostname.match(/localhost/)?'':'/',
-     base:'',
+  // mode: 'history',
+  base: location.hostname.match(/localhost/)?'':'/',
+  //   base:'',
   routes: [
       {
         path: '/',
