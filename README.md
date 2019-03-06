@@ -5,6 +5,7 @@ BioContainers Web
 
 This project contains the [main page of biocontainers](https://biocontainers.pro) and the [registry page](https://biocontainers.pro/registry).
 
+
 BioContainers Tool Registry
 ---------------------------------
 
@@ -42,4 +43,7 @@ Download the source code and put these files to a web server.
     * User can use the sort option to sort the items accorsing to the alphabetical order whether it is ascending or decending.
 - Show the containers description.
 
-minor
+Contributing
+--------------------
+
+Please for the master branch, create a PR and after accepting the PR your changes will be seen in biocontainers.pro
