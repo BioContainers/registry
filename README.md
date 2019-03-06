@@ -46,4 +46,4 @@ Download the source code and put these files to a web server.
 Contributing
 --------------------
 
-Please for the master branch, create a PR and after accepting the PR your changes will be seen in biocontainers.pro
+Please for the master branch, create a PR and after accepting the PR your changes will be seen in http://biocontainers.pro
