@@ -40,4 +40,6 @@ Download the source code and put these files to a web server.
 - Filter by word
 - Sort
     * User can use the sort option to sort the items accorsing to the alphabetical order whether it is ascending or decending.
-- Show the containers description. 
+- Show the containers description.
+
+minor
