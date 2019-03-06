@@ -1,6 +1,6 @@
 <template>
     <div class="nav-container">
-        <Menu mode="horizontal" active-name="1" @on-select="menuSlect">
+        <Menu mode="horizontal" active-name="1" @on-select="menuSelect">
             <a class="logo" @click="gotoHome"><img src="static/logo/biocontainers-logo.png" width="40" height="40">BioContainers</a>
             <div class="menu">
                 <MenuItem name="registry">
@@ -11,7 +11,7 @@
                     <Icon type="ios-information-circle-outline"></Icon>
                     Documentation
                 </MenuItem>
-                <Dropdown>
+                <Dropdown  @on-click="menuSelect">
                     <a href="javascript:void(0)">
                         <Icon type="ios-arrow-down"></Icon>
                         Resources
@@ -67,7 +67,8 @@
             gotoHome(){
                 this.$router.push({name:'Index'});
             },
-            menuSlect(name){
+            menuSelect(name){
+                console.log("enter")
                 switch(name){
                     case 'registry':
                         this.$router.push({name:'Registry'});
