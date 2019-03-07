@@ -1,12 +1,11 @@
 <template>
   <div class="index-container">
-      <div class="banner">
-          <div class="content-wrapper">
-              <h1 class="title">BioContainers</h1>
-              <p class="description">Bioinformatics more accessible and reproducible</p>
-          </div>
-      </div>
-      <div class="triangle triangle-down"></div>
+      <!--<div class="banner">-->
+          <!--<div class="content-wrapper">-->
+              <!--<h1 class="title">BioContainers</h1>-->
+              <!--<p class="description">Bioinformatics more accessible and reproducible</p>-->
+          <!--</div>-->
+      <!--</div>-->
       <div class="content">
           <h1>Search</h1>
           <div class="search-wrapper">
@@ -20,14 +19,6 @@
                             <Button class="filter-button" v-for="(item ,index) in filters" :type="item.type" :key="index" @click="filterClick(index)">{{item.name}}</Button>
                         </ButtonGroup>
                   </div>
-                  <!--
-                  <div class="sort">
-                        <span class="name">Sort:</span>
-                        <ButtonGroup>
-                            <Button v-for="(item ,index) in sorts" :type="item.type" :key="index" @click="sortClick(index)">{{item.name}}</Button>
-                        </ButtonGroup>
-                  </div>
-                  -->
               </div>
               <div class="search-button-wrapper">
                   <Button type="primary" @click="search">Search</Button>
@@ -42,11 +33,6 @@
                       <p slot="title"><a class="tool-name" @click="gotoContainerDetails(item.id)">{{item.toolname}}</a></p>
                       <p slot="extra">
                         <Tooltip>
-                            <!--
-                            <svg class="icon" aria-hidden="true">
-                                <use xlink:href="#icon-icon_docker"></use>
-                            </svg>
-                            -->
                             <Icon type="logo-codepen" size="22"/>
                             <div class="tooltip-content" slot="content">
                                 {{item.content}}
@@ -60,16 +46,11 @@
                               <read-more more-str="" :text="item.description" link="#" less-str="read less" :max-chars="120"></read-more>
                               <img class="license-img" :src="item.license"/>
                             </div>
-                            <!--
-                            <div v-for="tag in item.tags" class="tag-wrapper">
-                                <Tag color="default">{{tag}}</Tag>
-                            </div>-->
                             <div class="state-wrapper">
                                 {{item.state}}
                             </div>
                         </div>
                         <div class="right">
-                            <!--<Icon type="md-checkmark" :color="item.color"/>-->
                         </div>
                       </div>
                   </Card>
@@ -83,26 +64,6 @@
               <Page :total="total" :current="current" :page-size="pageSize" size="small" show-elevator show-sizer @on-change="pageChange" @on-page-size-change="pageSizeChange"/>
           </div>
       </div>
-      <!--
-      <div class="results-wrapper">
-          <Table stripe :columns="resultsTableCol" :data="resutls" @on-row-click="rowClick"></Table>
-      </div>
-      <div class="update-statistics">
-          <Card style="width:100%" class="">
-              <p slot="title">Containers Update Statistics</p>
-          </Card>
-          <Card style="width:100%" class="">
-              <p slot="title">Containers Update Statistics</p>
-          </Card>
-      </div>
-      -->
-      <!--
-      <div class="issue-statistics">
-          <Card style="width:100%" class="issue-statistics-card">
-              <p slot="title">GitHub Issues Statistics </p>
-          </Card>
-      </div>
-      -->
   </div>
 </template>
 
@@ -111,7 +72,7 @@ const fixedEncodeURIComponent = (str) => {
 return encodeURIComponent(str).replace(/[!'()*]/g, (c) => {
 
 })
-}
+};
 import store from "@/store/store.js"
 export default {
   name: 'Registry',
@@ -304,11 +265,11 @@ export default {
         this.$http
             .get(this.$store.state.baseApiURL + '/api/ga4gh/v2/tools',{params:this.query})
             .then(function(res){
-              console.log(res)
+              console.log(res);
               let tempLength = res.body.length;
               if(tempLength > 0){
-                  let limit = res.headers.map.last_page[0].split('&')[0].split('=')[1]
-                  let offset = res.headers.map.last_page[0].split('&')[1].split('=')[1]
+                  let limit = res.headers.map.last_page[0].split('&')[0].split('=')[1];
+                  let offset = res.headers.map.last_page[0].split('&')[1].split('=')[1];
                   this.total = parseInt(limit)+parseInt(offset);
                   this.dataFound=true;
                   for(let i=0; i<tempLength; i++){
@@ -320,20 +281,20 @@ export default {
                         state:'',
                         color:res.body[i].verified ? '#19be6b': '#c5c8ce',
                         license:''
-                      }
+                      };
                       let found=false;
                       for(let j in this.licenseColor){
                         if(res.body[i].license&&res.body[i].license.match(j)){
-                          console.log(res.body[i].license)
-                          console.log(encodeURIComponent(res.body[i].license))
-                          item.license = 'https://img.shields.io/badge/license-'+encodeURIComponent(res.body[i].license).replace(/-/g,'--') + '-'+ this.licenseColor[j]+'.svg'
+                          console.log(res.body[i].license);
+                          console.log(encodeURIComponent(res.body[i].license));
+                          item.license = 'https://img.shields.io/badge/license-'+encodeURIComponent(res.body[i].license).replace(/-/g,'--') + '-'+ this.licenseColor[j]+'.svg';
                           found=true;
                           break;
                         }
                       }
                       if(res.body[i].license&&!found){
-                        console.log(res.body[i].license)
-                        console.log(encodeURIComponent(res.body[i].license))
+                        console.log(res.body[i].license);
+                        console.log(encodeURIComponent(res.body[i].license));
                         item.license = 'https://img.shields.io/badge/license-'+encodeURIComponent(res.body[i].license).replace(/-/g,'--') + '-lightgrey.svg';
                       }
                       this.cardList.push(item);

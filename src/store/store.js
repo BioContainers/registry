@@ -8,6 +8,6 @@ export default new Vuex.Store({
 	state:{
 		baseURL: location.hostname.match(/localhost/)?'':'',
 		//baseApiURL: location.hostname.match(/localhost/)?'http://localhost':'http://api.biocontainers.pro',  
-		baseApiURL: 'https://api.biocontainers.pro',
+		baseApiURL: 'https://api.biocontainers.pro/',
 	},
 });

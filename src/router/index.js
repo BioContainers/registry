@@ -8,7 +8,7 @@ import NotFound from '@/components/NotFound'
 import Mappingdata from '@/components/Mappingdata'
 import Multipackage from '@/components/Multipackage'
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   // mode: 'history',

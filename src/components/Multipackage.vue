@@ -188,7 +188,7 @@ export default {
             var item={
                 name:rowItem.name,
                 version:rowItem.version
-            }
+            };
             this.selectedPackagesResutls.push(item);
             this.createContainerValue = this.getContent();
             this.containerNameValue = this.getContainerName();

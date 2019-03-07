@@ -135,7 +135,7 @@ export default {
                         },
                         style: {
                             display:'inline-block',
-                            width: '40%'
+                            width: '30%'
                         },
                     })
                 }
@@ -307,29 +307,35 @@ export default {
                         license:resbody.license,
                         versions:[],
                         images:[]
-                      }
+                      };
 
-                      let all_versions = res.body
+                      let all_versions = res.body;
                       for(let j = 0 ; j < all_versions.length; j++){
-                          let current_version = all_versions[j]
+                          let current_version = all_versions[j];
                           var version_item = {
                               tool: current_version.name,
                               version: current_version.meta_version
-                          }
-                          this.containerObj.versions.push(version_item)
+                          };
+                          this.containerObj.versions.push(version_item);
 
                           for(let i=0; i < current_version.container_images.length; i++){
-                              let original_type = current_version.container_images[i].container_type == 'DOCKER'? "/static/images/docker.png":"/static/logo/biocontainers-logo.png"
-                              let prefix = current_version.container_images[i].container_type == 'DOCKER'? 'docker pull ': 'bioconda install '
+                              let original_type = "/static/logo/biocontainers-logo.png";
+                              let prefix = '';
+                              if(current_version.container_images[i].container_type === 'DOCKER'){
+                                  original_type = "/static/images/docker.png";
+                                  prefix = 'docker pull ';
+                              }else if(current_version.container_images[i].container_type === 'CONDA'){
+                                  original_type = "/static/images/conda.png";
+                                  prefix = 'conda install ';
+                              }
                               var item = {
                                   tool: current_version.name,
                                   version: current_version.meta_version,
                                   full_tag: prefix + current_version.container_images[i].full_tag,
                                   size: (current_version.container_images[i].size/1024).toFixed(2) + "M",
-                                  last_updated: current_version.container_images[i].last_updated.substring(0,9),
-                                  // type: resbody.container_images[i].container_type
+                                  last_updated: current_version.container_images[i].hasOwnProperty('last_updated')? current_version.container_images[i].last_updated.substring(0,9): '',
                                   type: original_type
-                              }
+                              };
                               this.containerObj.images.push(item);
                           }
                       }

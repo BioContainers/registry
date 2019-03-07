@@ -36,11 +36,11 @@ import 'echarts/map/js/world.js'
 
 
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 Vue.use(iView, { locale });
 Vue.use(VueResource);
 Vue.use(ReadMore);
-Vue.component('chart', ECharts)
+Vue.component('chart', ECharts);
 
  
 
@@ -55,4 +55,4 @@ new Vue({
   store,
   components: { App },
   template: '<App/>'
-})
+});

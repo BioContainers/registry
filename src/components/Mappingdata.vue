@@ -175,9 +175,9 @@ export default {
     retrieveGitHubIssues(){
        
       let promise1 = this.$http.get(this.RetrieveGitHubIssuesAPI1);
-      let promise2 = this.$http.get(this.RetrieveGitHubIssuesAPI2)
-      let promise3 = this.$http.get(this.RetrieveGitHubIssuesAPI3)
-      let promise4 = this.$http.get(this.RetrieveGitHubIssuesAPI4)
+      let promise2 = this.$http.get(this.RetrieveGitHubIssuesAPI2);
+      let promise3 = this.$http.get(this.RetrieveGitHubIssuesAPI3);
+      let promise4 = this.$http.get(this.RetrieveGitHubIssuesAPI4);
            
       Promise.all([promise1, promise2, promise3, promise4]).then(([v1,v2,v3,v4]) => {
         //console.log('v1',v1.data);
@@ -185,10 +185,10 @@ export default {
         let data2 = v2.data;
         let data3 = v3.data;
         let data4 = v4.data;
-        console.log('v1.data',v1.data)
+        console.log('v1.data',v1.data);
         for(let i in data1){
             //let createAt   = new Date(data1[i].created_at).toLocaleDateString();
-            let createAt   = moment(data1[i].created_at).format('DD/MM/YYYY')
+            let createAt   = moment(data1[i].created_at).format('DD/MM/YYYY');
             let modifiedAt = new Date(data1[i].updated_at).toLocaleDateString();
             let closeAt    = new Date(data1[i].close_at).toLocaleDateString();
             this.githubdates.push(createAt);
@@ -229,7 +229,7 @@ export default {
         for(let i in this.githubdates){
             this.githubDatesMap[this.githubdates[i]] = this.githubDatesMap[this.githubdates[i]] ? this.githubDatesMap[this.githubdates[i]]+1 : 1;
         }
-        console.log('this.githubDatesMap',this.githubDatesMap)
+        console.log('this.githubDatesMap',this.githubDatesMap);
 
         this.$bus.$emit('show-issue', this.githubDatesMap);
 
@@ -269,7 +269,7 @@ export default {
             .get(this.QUAY_ORGANIZATION,{headers: {'X-Requested-With' :'XMLHttpRequest','Authorization': "Bearer "+ "XRYLsxvQqmQLpP7RrajpFdiZntveNEyiffXyibK0"}})
             .then(function(res){
               //console.log('retrieveQuayIO',res);
-              let repositories = res.body.repositories
+              let repositories = res.body.repositories;
                 for(let i in repositories){
                    let item = {
                       domain: "quay.io/biocontainers/",
@@ -278,9 +278,9 @@ export default {
                       lastModified: repositories[i].last_modified, 
                       number_pull: [repositories[i].popularity, 50], 
                       start_count:repositories[i].is_starred
-                   }
+                   };
 
-                   let num = Math.floor(repositories[i].last_modified/1000)
+                   let num = Math.floor(repositories[i].last_modified/1000);
                    if(!isNaN(num))
                       this.dates[num.toString()] = this.dates[num.toString()] ? this.dates[num.toString()]+1:1;
                 }
@@ -311,7 +311,7 @@ export default {
             let item = {
               time: array[i].time,
               value: value,
-            }
+            };
             tempArray.push(item);
           }
         }
