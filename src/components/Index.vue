@@ -6,7 +6,7 @@
                   <img alt="BioContainers" style="width: 20%; margin-bottom: 36px;" src="static/images/containers.png">
 
                   <h2 class="subtitle">
-                    BioContainers <span>bioinformatics community</span>
+                    BioContainers <span>Community</span>
                   </h2>
 
                   <h1 class="title">
