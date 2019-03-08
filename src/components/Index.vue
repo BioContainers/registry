@@ -25,15 +25,21 @@
             <div class="container">
                  <p class="title">BioContainers Flow</p>
                  <Row class="second-row">
-                    <Col span="8">
+                    <Col span="6">
                       <p>SOFTWARE</p>
                       <img style="height: 140px" src="static/images/source-code.png">
                     </Col>
-                    <Col span="8">
+                    <Col span="2">
+                      <Icon type="md-arrow-round-forward" size="38"/>
+                    </Col>
+                    <Col span="6">
                       <p>CONTAINER</p>
                       <img style="height: 140px" src="static/images/container-2.png">
                     </Col>
-                    <Col span="8">
+                    <Col span="2">
+                      <Icon type="md-arrow-round-forward" size="38"/>
+                    </Col>
+                    <Col span="6">
                       <p>WORKFLOW</p>
                       <img style="height: 140px" src="static/images/workflow-2.png">
                     </Col>
@@ -229,6 +235,9 @@ export default {
     }
     .second-row{
       text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .second-row p{
       font-size: 16px;
