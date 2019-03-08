@@ -448,6 +448,7 @@ export default {
     }
     .content-wrapper{
       width: 80%;
+        padding-top: 35px;
       padding-right: 15px;
       padding-left: 15px;
       margin-right: auto;
@@ -493,6 +494,7 @@ export default {
     }
     .container-wrapper{
       margin-top: 50px;
+      padding-top: 15px;
     }
     .description-wrapper{
       margin-bottom: 5px;

@@ -44,28 +44,39 @@
       <div class="third">
         <div class="third-body">
             <div class="container">
-                 <!--<p class="title">Benefits</p>-->
+                 <p class="title">Main Components</p>
                 <Row class="third-row">
                     <Col span="8">
                       <div class="box">
                           <p class="title">Registry</p>
                           <p class="sub-title">List of bioinformatics containers and workflows including metadata, statistics</p>
+                          <a class="button" @click="onSelect()">Registry</a>
                       </div>
                     </Col>
                     <Col span="8">
                       <div class="box">
-                          <p class="title">tweets</p>
-                          <p class="sub-title"></p>
+                          <p class="title">Specifications</p>
+                          <p class="sub-title">Specifications, and architecture to create, deploy and maintain software containers using Conda and
+                              Docker technologies</p>
+                          <a class="button" href="https://biocontainers-edu.readthedocs.io/en/latest/what_is_biocontainers.html">Read More</a>
                       </div>
                     </Col>
                     <Col span="8">
                       <div class="box">
-                          <p class="title">How to Cite</p>
-                          <p class="sub-title">da Veiga Leprevost F, Grüning BA, .. Perez-Riverol Y. Bioinformatics. 2017
-                              Aug 15;33(16):2580-2582. <a href="https://academic.oup.com/bioinformatics/article/33/16/2580/3096437">BioContainers:
-                                  an open-source and community-driven framework for software standardization</a></p>
+                          <p class="title">Resources</p>
+                          <p class="sub-title">We provide multiple tools and resources to work with containers</p>
+                          <a class="button" @click="onSelectMulti()">Multi-tools</a>
+                          <a class="button" href="https://api.biocontainers.pro/api/ga4gh/v2/ui/">TRS API</a>
                       </div>
                     </Col>
+                    <!--<Col span="8">-->
+                      <!--<div class="box">-->
+                          <!--<p class="title">How to Cite</p>-->
+                          <!--<p class="sub-title">da Veiga Leprevost F, Grüning BA, .. Perez-Riverol Y. Bioinformatics. 2017-->
+                              <!--Aug 15;33(16):2580-2582. <a href="https://academic.oup.com/bioinformatics/article/33/16/2580/3096437">BioContainers:-->
+                                  <!--an open-source and community-driven framework for software standardization</a></p>-->
+                      <!--</div>-->
+                    <!--</Col>-->
                 </Row>
                 <!--<Row class="third-row">-->
                     <!--<Col span="8">-->
@@ -173,7 +184,10 @@ export default {
     },
     onSelect(){
         this.$router.push({name:'Registry'});
-    }
+    },
+    onSelectMulti(){
+        this.$router.push({name:'Multipackage'})
+    },
 
   },
   mounted(){
@@ -251,6 +265,8 @@ export default {
     .third-row .box .sub-title{
       color: white;
       font-size: 14px;
+      padding-top: 10px;
+      padding-bottom: 15px;
     }
     .container{
       margin:0 auto;
@@ -308,6 +324,34 @@ export default {
     @media all and (max-width:30em){
         a.button{
              display:block;
+            margin:0.2em auto;
+        }
+    }
+
+    a.button-2{
+        display:inline-block;
+        padding:0.3em 1.2em;
+        margin: 0em 0.1em 0.1em 0em;
+        border: 0.06em solid rgba(255,255,255,1);
+        border-radius:2em;
+        box-sizing: border-box;
+        text-decoration:none;
+        font-family:'Roboto',sans-serif;
+        font-weight:300;
+        color: #FFFFFF;
+        text-shadow: 0em 0.04em 0.04em rgba(0,0,0,0.35);
+        text-align:center;
+        transition: all 0.2s;
+        font-size: 16px;
+        padding-top: 16px;
+    }
+    a.button-2:hover{
+        border-color: rgba(255,255,255,3);
+    }
+
+    @media all and (max-width:30em){
+        a.button-2{
+            display:block;
             margin:0.2em auto;
         }
     }
