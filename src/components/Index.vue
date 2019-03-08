@@ -15,6 +15,7 @@
 
                   <div style="margin-bottom: 16px; margin-top: 16px">
                     <a href="https://biocontainers-edu.biocontainers.pro" class="button">Quick Start</a>
+                    <a class="button" @click="onSelect()">Registry</a>
                   </div>
               </div>
           </div>
@@ -170,6 +171,10 @@ export default {
     rowClick(row){
 
     },
+    onSelect(){
+        this.$router.push({name:'Registry'});
+    }
+
   },
   mounted(){
 
