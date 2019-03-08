@@ -96,23 +96,31 @@
                  <Row class="second-row">
                     <Col span="8">
                       <!--<p>BIOCONDA</p>-->
-                      <img style="width: 180px" src="static/images/bioconda-2.png">
+                      <a href="http://bioconda.github.io">
+                          <img style="width: 180px" src="static/images/bioconda-2.png">
+                      </a>
                     </Col>
                     <Col span="8">
                       <!--<p>NEXTFLOW</p>-->
-                      <img style="width: 180px" src="static/images/nextflow.png">
+                      <a href="http://nextflow.io">
+                          <img style="width: 180px" src="static/images/nextflow.png">
+                      </a>
                     </Col>
 
                      <Col span="8">
                       <!--<p>GA4GH</p>-->
-                      <img style="width: 180px" src="static/images/ga4gh.png">
+                      <a href="https://www.ga4gh.org/">
+                          <img style="width: 180px" src="static/images/ga4gh.png">
+                      </a>
                     </Col>
                 </Row>
                 <div><br><br><br></div>
                 <Row class="second-row">
                     <Col span="8">
-                      <!--<p>CWL</p>-->
-                      <img style="height: 85px" src="static/images/cwl-2.png">
+                      <a href="https://www.commonwl.org/">
+                          <img style="height: 85px" src="static/images/cwl-2.png">
+                      </a>
+
                     </Col>
                     <Col span="8">
                       <!--<p>CWL</p>-->
@@ -120,7 +128,9 @@
                     </Col>
                     <Col span="8">
                       <!--<p>CWL</p>-->
-                      <img style="width: 180px" src="static/images/galaxy.png">
+                        <a href="https://galaxyproject.org/">
+                             <img style="width: 180px" src="static/images/galaxy.png">
+                        </a>
                     </Col>
                 </Row>
 
