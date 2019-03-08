@@ -256,7 +256,7 @@ export default {
         this.$router.push({name:'Multipackage'})
     },
     twitterMoreButtonAction(){
-        window.open("https://twitter.com/pride_ebi");
+        window.open("https://twitter.com/biocontainers");
         //location.href="https://twitter.com/pride_ebi"
     }
   },
