@@ -155,6 +155,62 @@
             </div>
         </div>
       </div>
+      <div class="third">
+        <div class="third-body">
+            <div class="container">
+                 <!--<p class="title">News and Documentation</p>-->
+                <Row class="third-row">
+                    <Col span="8">
+                      <div class="box">
+                          <!--<p class="title">Registry</p>-->
+                          <p class="sub-title">tweets</p>
+                          <a class="button">Twitter </a>
+                      </div>
+                    </Col>
+                    <Col span="8">
+                      <div class="box">
+                          <p class="title">Documentation</p>
+                          <p class="sub-title">How to create a containers, how to use it into a workflow, everything you need to
+                          know about BioContainers</p>
+                          <a class="button" href="https://biocontainers-edu.readthedocs.io">Documentation</a>
+                      </div>
+                    </Col>
+
+                    <Col span="8">
+                      <div class="box">
+                          <p class="title">How to Cite</p>
+                          <p class="sub-title">da Veiga Leprevost F, Grüning BA, .. Perez-Riverol Y. Bioinformatics. 2017
+                              Aug 15;33(16):2580-2582. <a href="https://academic.oup.com/bioinformatics/article/33/16/2580/3096437">BioContainers:
+                                  an open-source and community-driven framework for software standardization</a></p>
+                      </div>
+                    </Col>
+                </Row>
+                <!--<Row class="third-row">-->
+                    <!--<Col span="8">-->
+                      <!--<div class="box">-->
+                          <!--<p class="title">Stateless</p>-->
+                          <!--<p class="sub-title">Your component layer ends up becoming stateless, and only responsible for accepting props and rendering them.</p>-->
+                      <!--</div>-->
+                    <!--</Col>-->
+                    <!--<Col span="8">-->
+                      <!--<div class="box">-->
+                          <!--<p class="title">Stateless</p>-->
+                          <!--<p class="sub-title">Your component layer ends up becoming stateless, and only responsible for accepting props and rendering them.</p>-->
+                      <!--</div>-->
+                    <!--</Col>-->
+                    <!--<Col span="8">-->
+                      <!--<div class="box">-->
+                          <!--<p class="title">Stateless</p>-->
+                          <!--<p class="sub-title">Your component layer ends up becoming stateless, and only responsible for accepting props and rendering them.</p>-->
+                      <!--</div>-->
+                    <!--</Col>-->
+                <!--</Row>-->
+            </div>
+        </div>
+      </div>
+
+
+
       <footer class="footer">
         <div class="container">
           <div class="content has-text-centered">
