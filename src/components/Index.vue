@@ -13,8 +13,8 @@
                     <span>creating, maintaining and deploying software containers and workflows</span>
                   </h1>
 
-                  <div style="margin-bottom: 16px;">
-                    <a href="https://biocontainers-edu.biocontainers.pro" class="button is-primary is-medium">Quick Start</a>
+                  <div style="margin-bottom: 16px; margin-top: 16px">
+                    <a href="https://biocontainers-edu.biocontainers.pro" class="button">Quick Start</a>
                   </div>
               </div>
           </div>
@@ -43,7 +43,7 @@
       <div class="third">
         <div class="third-body">
             <div class="container">
-                 <p class="title">Benefits</p>
+                 <!--<p class="title">Benefits</p>-->
                 <Row class="third-row">
                     <Col span="8">
                       <div class="box">
@@ -279,6 +279,32 @@ export default {
     }
     .first-body{
         padding-top: 6.5rem;
+    }
+    a.button{
+        display:inline-block;
+        padding:0.3em 1.2em;
+        margin: 0em 0.1em 0.1em 0em;
+        border: 0.06em solid rgba(255,255,255,1);
+        border-radius:2em;
+        box-sizing: border-box;
+        text-decoration:none;
+        font-family:'Roboto',sans-serif;
+        font-weight:300;
+        color: #FFFFFF;
+        text-shadow: 0em 0.04em 0.04em rgba(0,0,0,0.35);
+        text-align:center;
+        transition: all 0.2s;
+        font-size: 16px;
+    }
+    a.button:hover{
+        border-color: rgba(255,255,255,3);
+    }
+
+    @media all and (max-width:30em){
+        a.button{
+             display:block;
+            margin:0.2em auto;
+        }
     }
 </style>
 
