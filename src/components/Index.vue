@@ -161,10 +161,11 @@
                  <!--<p class="title">News and Documentation</p>-->
                 <Row class="third-row">
                     <Col span="8">
-                      <div class="box">
+                      <div class="box tweet">
                           <!--<p class="title">Registry</p>-->
                           <p class="sub-title">tweets</p>
-                          <a class="button">Twitter </a>
+                          <Timeline :id="'pride_ebi'" :widget-class="`tweet-class`" :sourceType="'profile'" :options="{ tweetLimit: '5   ', chrome:'transparent', linkColor:'#656665', borderColor:'#656665'}"/>
+                          <a class="button" @click="twitterMoreButtonAction">Twitter </a>
                       </div>
                     </Col>
                     <Col span="8">
@@ -233,8 +234,12 @@
   </div>
 </template>
 <script>
+import { Tweet, Moment, Timeline } from 'vue-tweet-embed'
 export default {
   name: 'Index',
+  components: {
+    Timeline
+  },
   data () {
     return {
 
@@ -250,7 +255,10 @@ export default {
     onSelectMulti(){
         this.$router.push({name:'Multipackage'})
     },
-
+    twitterMoreButtonAction(){
+        window.open("https://twitter.com/pride_ebi");
+        //location.href="https://twitter.com/pride_ebi"
+    }
   },
   mounted(){
 
@@ -321,7 +329,14 @@ export default {
       text-align: left !important;
       margin:10px;
       padding: 20px;
-      min-height: 200px;
+      height: 250px;
+      overflow: auto;
+    }
+    .third-row .box.tweet::-webkit-scrollbar {
+      width:1px;
+    }
+    .tweet-class{
+      /*height: */
     }
     .third-row .box .title{
       color: white;
