@@ -256,6 +256,7 @@ export default {
       text-align: left !important;
       margin:10px;
       padding: 20px;
+      min-height: 200px;
     }
     .third-row .box .title{
       color: white;
