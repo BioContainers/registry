@@ -3,19 +3,18 @@
       <div class="first">
           <div class="first-body">
               <div class="container has-text-centered">
-                  <img alt="BioContainers" style="width: 65%; margin-bottom: 36px;" src="https://proppyjs.com/img/banner-trimmed-900.png">
+                  <img alt="BioContainers" style="width: 20%; margin-bottom: 36px;" src="static/images/containers.png">
 
                   <h2 class="subtitle">
-                    Tiny <span>1.5kB utility library</span> enabling
+                    BioContainers <span>bioinformatics community</span>
                   </h2>
 
                   <h1 class="title">
-                    <span>Functional props composition for components</span>
+                    <span>creating, maintaining and deploying software containers and workflows</span>
                   </h1>
 
                   <div style="margin-bottom: 16px;">
-                    <a href="/docs/introduction" class="button is-primary is-medium">Learn more</a>
-                    <a href="/docs/quickstart" class="button is-transparent is-medium">Quick start</a>
+                    <a href="https://biocontainers-edu.biocontainers.pro" class="button is-primary is-medium">Quick Start</a>
                   </div>
               </div>
           </div>
@@ -23,19 +22,19 @@
       <div class="second">
         <div class="second-body">
             <div class="container">
-                 <p class="title">Flow of props</p>
+                 <p class="title">BioContainers Flow</p>
                  <Row class="second-row">
                     <Col span="8">
-                      <p>VARIOUS SOURCES</p>
-                      <img style="height: 140px" src="https://proppyjs.com/img/redux-logo.png">
+                      <p>SOFTWARE</p>
+                      <img style="height: 140px" src="static/images/source-code.png">
                     </Col>
                     <Col span="8">
-                      <p>VARIOUS SOURCES</p>
-                      <img style="height: 140px" src="https://proppyjs.com/img/redux-logo.png">
+                      <p>CONTAINER</p>
+                      <img style="height: 140px" src="static/images/container-2.png">
                     </Col>
                     <Col span="8">
-                      <p>VARIOUS SOURCES</p>
-                      <img style="height: 140px" src="https://proppyjs.com/img/redux-logo.png">
+                      <p>WORKFLOW</p>
+                      <img style="height: 140px" src="static/images/workflow-2.png">
                     </Col>
                 </Row>
             </div>
@@ -45,46 +44,48 @@
         <div class="third-body">
             <div class="container">
                  <p class="title">Benefits</p>
-                 <Row class="third-row">
-                    <Col span="8">
-                      <div class="box">
-                          <p class="title">Stateless</p>
-                          <p class="sub-title">Your component layer ends up becoming stateless, and only responsible for accepting props and rendering them.</p>
-                      </div>
-                    </Col>
-                    <Col span="8">
-                      <div class="box">
-                          <p class="title">Stateless</p>
-                          <p class="sub-title">Your component layer ends up becoming stateless, and only responsible for accepting props and rendering them.</p>
-                      </div>
-                    </Col>
-                    <Col span="8">
-                      <div class="box">
-                          <p class="title">Stateless</p>
-                          <p class="sub-title">Your component layer ends up becoming stateless, and only responsible for accepting props and rendering them.</p>
-                      </div>
-                    </Col>
-                </Row>
                 <Row class="third-row">
                     <Col span="8">
                       <div class="box">
-                          <p class="title">Stateless</p>
-                          <p class="sub-title">Your component layer ends up becoming stateless, and only responsible for accepting props and rendering them.</p>
+                          <p class="title">Registry</p>
+                          <p class="sub-title">List of bioinformatics containers and workflows including metadata, statistics</p>
                       </div>
                     </Col>
                     <Col span="8">
                       <div class="box">
-                          <p class="title">Stateless</p>
-                          <p class="sub-title">Your component layer ends up becoming stateless, and only responsible for accepting props and rendering them.</p>
+                          <p class="title">tweets</p>
+                          <p class="sub-title"></p>
                       </div>
                     </Col>
                     <Col span="8">
                       <div class="box">
-                          <p class="title">Stateless</p>
-                          <p class="sub-title">Your component layer ends up becoming stateless, and only responsible for accepting props and rendering them.</p>
+                          <p class="title">How to Cite</p>
+                          <p class="sub-title">da Veiga Leprevost F, Grüning BA, .. Perez-Riverol Y. Bioinformatics. 2017
+                              Aug 15;33(16):2580-2582. <a href="https://academic.oup.com/bioinformatics/article/33/16/2580/3096437">BioContainers:
+                                  an open-source and community-driven framework for software standardization</a></p>
                       </div>
                     </Col>
                 </Row>
+                <!--<Row class="third-row">-->
+                    <!--<Col span="8">-->
+                      <!--<div class="box">-->
+                          <!--<p class="title">Stateless</p>-->
+                          <!--<p class="sub-title">Your component layer ends up becoming stateless, and only responsible for accepting props and rendering them.</p>-->
+                      <!--</div>-->
+                    <!--</Col>-->
+                    <!--<Col span="8">-->
+                      <!--<div class="box">-->
+                          <!--<p class="title">Stateless</p>-->
+                          <!--<p class="sub-title">Your component layer ends up becoming stateless, and only responsible for accepting props and rendering them.</p>-->
+                      <!--</div>-->
+                    <!--</Col>-->
+                    <!--<Col span="8">-->
+                      <!--<div class="box">-->
+                          <!--<p class="title">Stateless</p>-->
+                          <!--<p class="sub-title">Your component layer ends up becoming stateless, and only responsible for accepting props and rendering them.</p>-->
+                      <!--</div>-->
+                    <!--</Col>-->
+                <!--</Row>-->
             </div>
         </div>
       </div>
@@ -92,21 +93,17 @@
         <div class="container">
           <div class="content has-text-centered">
             <p>
-              Built with ❤︎ by <a href="https://twitter.com/fahad19">@fahad19</a> and <a href="https://github.com/fahad19/proppy/graphs/contributors">contributors</a>.
+              Built with ❤︎ by <a href="https://twitter.com/biocontainers">biocontainers</a>
             </p>
 
             <p class="social-icons">
-              <a class="icon" title="GitHub" href="https://github.com/fahad19/proppy">
+              <a class="icon" title="GitHub" href="https://github.com/BioContainers">
                 <i class="fa fa-github"></i>
               </a>
 
-              <a class="icon" title="Twitter" href="https://twitter.com/proppyjs">
+              <a class="icon" title="Twitter" href="https://twitter.com/biocontainers">
                 <i class="fa fa-twitter"></i>
               </a>
-
-              <!--<a class="icon" title="Medium" href="https://medium.com/proppyjs">
-                <i class="fa fa-medium"></i>
-              </a>-->
             </p>
           </div>
         </div>
@@ -188,19 +185,19 @@ export default {
         margin-bottom: 30px;
     }
     .third-row .box{
-      background: #e85166;
+      background: #222836;
       text-align: left !important;
       margin:10px;
       padding: 20px;
     }
     .third-row .box .title{
       color: white;
-      font-size: 32px;
+      font-size: 20px;
       font-weight: 800;
     }
     .third-row .box .sub-title{
       color: white;
-      font-size: 18px;
+      font-size: 14px;
     }
     .container{
       margin:0 auto;
@@ -231,6 +228,9 @@ export default {
           max-width: 960px;
           width: 960px;
       }
+    }
+    .first-body{
+        padding-top: 6.5rem;
     }
 </style>
 
