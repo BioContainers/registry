@@ -163,8 +163,8 @@
                     <Col span="8">
                       <div class="box tweet">
                           <!--<p class="title">Registry</p>-->
-                          <p class="sub-title">tweets</p>
-                          <Timeline :id="'pride_ebi'" :widget-class="`tweet-class`" :sourceType="'profile'" :options="{ tweetLimit: '5   ', chrome:'transparent', linkColor:'#656665', borderColor:'#656665'}"/>
+                          <!--<p class="sub-title">tweets</p>-->
+                          <Timeline :id="'biocontainers'" :widget-class="`tweet-class`" :sourceType="'profile'" :options="{ tweetLimit: '5   ', chrome:'transparent', linkColor:'#656665', borderColor:'#656665'}"/>
                           <a class="button" @click="twitterMoreButtonAction">Twitter </a>
                       </div>
                     </Col>
