@@ -92,7 +92,7 @@ export default {
             {
                 title: 'Full Tag ',
                 key: 'full_tag',
-                width:400,
+                width:450,
                 // align: 'center',
                 render: (h, params) => {
                             const row = params.row;
@@ -194,7 +194,7 @@ export default {
                                   prefix = 'docker pull ';
                               }else if(current_version.container_images[i].container_type === 'CONDA'){
                                   original_type = "/static/images/conda.png";
-                                  prefix = 'conda install ';
+                                  prefix = 'conda install -c bioconda -c conda-forge ';
                               }
                               var item = {
                                   tool: current_version.name,
@@ -310,11 +310,7 @@ export default {
         width: 100%;
     }
     .card-title{
-         /*background: #222836;*/
       text-align: left !important;
-      /*margin:10px;*/
-      /*padding: 20px;*/
-      /*height: 250px;*/
       overflow: auto;
       font-size: 14px;
     }
@@ -403,38 +399,6 @@ export default {
     .filter-button{
       min-width: 70px;
     }
-    /*
-    @media (max-width: 840px) { 
-      .card{ 
-        width: calc((100% - 0px) / 1 - 3px);
-       
-      }
-    }
-    @media (max-width: 1015px) and (min-width: 841px){ 
-      .card{ 
-        width: calc((100% - 60px) / 2 - 3px);
-
-      }
-      .container-wrapper{
-       
-      }
-    }
-    @media (max-width: 1510px) and (min-width: 1016px){ 
-      .card{ 
-        width: calc((100% - 90px) / 3 - 4px);
-      }
-      .container-wrapper{
-        
-      }
-    }
-    @media (max-width: 3910px) and (min-width: 1511px){ 
-      .card{ 
-        width: calc((100% - 120px) / 4 - 4px);
-      }
-      .container-wrapper{
-        
-      }
-    }*/
    
 </style>
 
@@ -453,13 +417,5 @@ export default {
       border: 1px solid #d6e9c6 !important;
       border-color: #d6e9c6 !important;
     }
-    /*
-    table tr:last-child td:first-child {
-        border-bottom-left-radius: 10px;
-    }
 
-    table tr:last-child td:last-child {
-        border-bottom-right-radius: 10px;
-    }
-    */
 </style>

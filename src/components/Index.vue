@@ -10,7 +10,15 @@
                   </h2>
 
                   <h1 class="title">
-                      <span>{{ number_tools }} tools, {{ number_versions}} versions, {{ number_containers}} containers and packages</span>
+                          <!--<Spin  size="small" v-if="!found"/>-->
+                          <!--<span v-if="found">{{ number_tools }}</span>-->
+                          <!--tools,-->
+                          <!--<span v-if="found">{{ number_versions }}</span> versions,-->
+                          <!--<span v-if="found">{{ number_containers }}</span>containers and packages-->
+                         <span>{{ number_tools }}</span>
+                          tools,
+                          <span >{{ number_versions }}</span> versions,
+                          <span >{{ number_containers }}</span> containers and packages
                       <!--maintaining and deploying software containers and workflows</span>-->
                   </h1>
 
@@ -76,35 +84,7 @@
                           <a class="button" href="https://api.biocontainers.pro/api/ga4gh/v2/ui/">TRS API</a>
                       </div>
                     </Col>
-                    <!--<Col span="8">-->
-                      <!--<div class="box">-->
-                          <!--<p class="title">How to Cite</p>-->
-                          <!--<p class="sub-title">da Veiga Leprevost F, Grüning BA, .. Perez-Riverol Y. Bioinformatics. 2017-->
-                              <!--Aug 15;33(16):2580-2582. <a href="https://academic.oup.com/bioinformatics/article/33/16/2580/3096437">BioContainers:-->
-                                  <!--an open-source and community-driven framework for software standardization</a></p>-->
-                      <!--</div>-->
-                    <!--</Col>-->
                 </Row>
-                <!--<Row class="third-row">-->
-                    <!--<Col span="8">-->
-                      <!--<div class="box">-->
-                          <!--<p class="title">Stateless</p>-->
-                          <!--<p class="sub-title">Your component layer ends up becoming stateless, and only responsible for accepting props and rendering them.</p>-->
-                      <!--</div>-->
-                    <!--</Col>-->
-                    <!--<Col span="8">-->
-                      <!--<div class="box">-->
-                          <!--<p class="title">Stateless</p>-->
-                          <!--<p class="sub-title">Your component layer ends up becoming stateless, and only responsible for accepting props and rendering them.</p>-->
-                      <!--</div>-->
-                    <!--</Col>-->
-                    <!--<Col span="8">-->
-                      <!--<div class="box">-->
-                          <!--<p class="title">Stateless</p>-->
-                          <!--<p class="sub-title">Your component layer ends up becoming stateless, and only responsible for accepting props and rendering them.</p>-->
-                      <!--</div>-->
-                    <!--</Col>-->
-                <!--</Row>-->
             </div>
         </div>
       </div>
@@ -243,9 +223,10 @@ export default {
   },
   data () {
     return {
-        number_tools:'0',
-        number_versions:'0',
-        number_containers:'0',
+        found:false,
+        number_tools:'...',
+        number_versions:'...',
+        number_containers:'...',
 
     }
   },
@@ -278,6 +259,7 @@ export default {
                         this.number_containers = (resbody[i].value/1000).toFixed(1) + 'K'
                     }
                 }
+                this.found = true
             })
     }
   },
@@ -457,6 +439,12 @@ export default {
             display:block;
             margin:0.2em auto;
         }
+    }
+
+    .demo-spin-col{
+        height: 100px;
+        position: relative;
+        border: 1px solid #eee;
     }
 </style>
 
