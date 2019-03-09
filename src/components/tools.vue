@@ -8,99 +8,22 @@
       </div>
       <div class="triangle triangle-down"></div>
       <div class="content">
-          <!--<h1>Search</h1>-->
-          <!--<div class="search-wrapper">-->
-            <!--<Input v-model="keywords" icon="ios-search" placeholder="Search" style="width:100%"></Input>-->
-          <!--</div>-->
-          <!--<div class="search-options-wrapper">-->
-              <!--<div class="filter-wrapper">-->
-                  <!--<div class="filter">-->
-                        <!--<span class="name">Filters:</span>-->
-                        <!--<ButtonGroup>-->
-                            <!--<Button class="filter-button" v-for="(item ,index) in filters" :type="item.type" :key="index" @click="filterClick(index)">{{item.name}}</Button>-->
-                        <!--</ButtonGroup>-->
-                  <!--</div>-->
-              <!--</div>-->
-              <!--&lt;!&ndash;<div class="search-button-wrapper">&ndash;&gt;-->
-                  <!--&lt;!&ndash;<Button type="primary" @click="search">Search</Button>&ndash;&gt;-->
-              <!--&lt;!&ndash;</div>&ndash;&gt;-->
-          <!--</div>-->
           <div class="container-wrapper">
             <div class="title-container">
                   <div class="title-wrapper">
                       <div class="card-title">
-                        <span>Tool: {{containerObj.name}}</span>
+                          <p><strong>Tool</strong>: {{containerObj.name}}</p>
+                          <p><strong>Description</strong>: {{containerObj.description}}</p>
+                          <p><strong>License</strong>: {{containerObj.license}}</p>
+                          <!--<p>Home: {{containerObj.url}}</p>-->
                         <!--<span>License:{{containerObj.license}}</span>-->
                       </div>
                   </div>
-                  <!--
-                  <div class="title-wrapper">
-                      <div class="card-title">
-                        <span>Images</span>
-                      </div>
-                  </div>
-                  -->
             </div>
-            <!--<div class="container-wrapper-cards">-->
-                <!--<Card v-for="item in containerObj.versions" class="card">-->
-                      <!--<p slot="title">{{item.tool}}</p>-->
-                      <!--<p slot="extra">{{item.version}}</p>-->
-                      <!--<div class="card-content-wrapper">-->
-                        <!--<div class="left">-->
-                            <!--<div class="description-wrapper">-->
-                              <!--<read-more more-str="" :text="item.description" link="#" less-str="read less" :max-chars="120">-->
-
-                              <!--</read-more>-->
-                              <!--<img class="license-img" :src="item.license"/>-->
-                            <!--</div>-->
-                            <!--<div class="state-wrapper">-->
-                                <!--{{item.state}}-->
-                            <!--</div>-->
-                        <!--</div>-->
-                      <!--</div>-->
-                  <!--</Card>-->
-              <!--</div>-->
-
-
-            <!--<div class="card-content-wrapper">-->
-                      <!--<Card dis-hover v-for="item in containerObj.images" class="card">-->
-                            <!--<p slot="title">Container Images</p>-->
-                            <!--<div>-->
-                                <!--<span>Tag: </span><span>{{item.fullTag}}</span>-->
-                            <!--</div>-->
-
-                            <!--<div>-->
-                                <!--<span>Size: </span><span>{{item.size}}M</span>-->
-                            <!--</div>-->
-                            <!--<div>-->
-                                <!--<span>Last Update: </span><span>{{item.last_update}}</span>-->
-                            <!--</div>-->
-                      <!--</Card>-->
-                  <!--</div>-->
            <Table :columns="resultsTableCol" :data="containerObj.images"></Table>
           </div>
           
       </div>
-      <!--
-      <div class="results-wrapper">
-          <Table stripe :columns="resultsTableCol" :data="resutls" @on-row-click="rowClick"></Table>
-      </div>
-      <div class="update-statistics">
-          <Card style="width:100%" class="">
-              <p slot="title">Containers Update Statistics</p>
-          </Card>
-          <Card style="width:100%" class="">
-              <p slot="title">Containers Update Statistics</p>
-          </Card>
-      </div>
-      -->
-      <!--
-      <div class="issue-statistics">
-          <Card style="width:100%" class="issue-statistics-card">
-              <p slot="title">GitHub Issues Statistics </p>
-          </Card>
-      </div>
-      -->
   </div>
 </template>
 
@@ -116,6 +39,9 @@ export default {
         pageSize:30,
         containerObj:{
             name:'',
+            description:'',
+            license:'',
+            url:'',
             version:'',
             images:[]
         },
@@ -188,76 +114,6 @@ export default {
 
 
         ],
-        resutls:[
-            {
-                container: 'John Brown',
-                description: 18,
-                realname: 'New York No. 1 Lake Park',
-                lastmodified: '2016-10-03',
-                starredstarts:'test',
-                popularity:'test',
-                registrylink:'test'
-            },
-            {
-                container: 'John Brown',
-                description: 18,
-                realname: 'New York No. 1 Lake Park',
-                lastmodified: '2016-10-03',
-                starredstarts:'test',
-                popularity:'test',
-                registrylink:'test'
-            },
-            {
-                container: 'John Brown',
-                description: 18,
-                realname: 'New York No. 1 Lake Park',
-                lastmodified: '2016-10-03',
-                starredstarts:'test',
-                popularity:'test',
-                registrylink:'test'
-            },
-            {
-                container: 'John Brown',
-                description: 18,
-                realname: 'New York No. 1 Lake Park',
-                lastmodified: '2016-10-03',
-                starredstarts:'test',
-                popularity:'test',
-                registrylink:'test'
-            },
-        ],
-        filters:[
-            {
-                name:'All',
-                type:'primary',
-            },
-            {
-                name:'ID',
-                type:'default',
-            },
-            {
-                name:'Name',
-                type:'default',
-            },
-            {
-                name:'Description',
-                type:'default',
-            },
-        ],
-        sorts:[
-            {
-                name:'sort1',
-                type:'primary',
-            },
-            {
-                name:'sort2',
-                type:'default',
-            },
-            {
-                name:'sort3',
-                type:'default',
-            }
-        ],
     }
   },
   methods:{
@@ -294,6 +150,31 @@ export default {
                 this.sorts[i].type = 'default';
           }
     },
+    toolInfo(){
+        console.log('this.$router.params.id',this.$route.params.id)
+        this.$http
+            .get(this.$store.state.baseApiURL + '/api/ga4gh/v2/tools/'+ this.$route.params.id)
+            .then(function (res) {
+                console.log('res.body', res.body);
+                let resbody = res.body;
+                this.containerObj = {
+                        name:resbody.toolname.toUpperCase(),
+                        license:resbody.license,
+                        description: resbody.description,
+                        // url: resbody.url,
+                        versions:[],
+                        images:[]
+                      };
+                for(let i = 0; i < resbody.versions; i++){
+                    var version_item = {
+                        tool: current_version.name,
+                        version: current_version.meta_version
+                    };
+                    this.containerObj.versions.push(version_item);
+                }
+            })
+
+    },
     containerID(){
             console.log('this.$router.params.id',this.$route.params.id);
          this.$http
@@ -301,23 +182,10 @@ export default {
             .then(function(res){
                       console.log('res.body',res.body);
                       let resbody=res.body[0];
-                      this.containerObj = {
-                        name:resbody.name.toUpperCase(),
-                        version:resbody.meta_version,
-                        license:resbody.license,
-                        versions:[],
-                        images:[]
-                      };
-
+                      this.containerObj.images=[]
                       let all_versions = res.body;
                       for(let j = 0 ; j < all_versions.length; j++){
                           let current_version = all_versions[j];
-                          var version_item = {
-                              tool: current_version.name,
-                              version: current_version.meta_version
-                          };
-                          this.containerObj.versions.push(version_item);
-
                           for(let i=0; i < current_version.container_images.length; i++){
                               let original_type = "/static/logo/biocontainers-logo.png";
                               let prefix = '';
@@ -355,6 +223,7 @@ export default {
     }
   },
   mounted(){
+    this.toolInfo();
     this.containerID();
     this.containerVersion();
   }
@@ -441,11 +310,22 @@ export default {
         width: 100%;
     }
     .card-title{
-        margin:0 5px;
-        font-size: 14px;
-        display: flex;
-        justify-content: space-between;
+         /*background: #222836;*/
+      text-align: left !important;
+      /*margin:10px;*/
+      /*padding: 20px;*/
+      /*height: 250px;*/
+      overflow: auto;
+      font-size: 14px;
     }
+
+    .card-title .block{
+      text-align: left !important;
+      margin:10px;
+      overflow: auto;
+      position: relative;
+    }
+
     .content-wrapper{
       width: 80%;
         padding-top: 35px;
