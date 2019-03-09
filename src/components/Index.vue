@@ -6,11 +6,12 @@
                   <img alt="BioContainers" style="width: 20%; margin-bottom: 36px;" src="static/images/containers.png">
 
                   <h2 class="subtitle">
-                    BioContainers <span>Community</span>
+                    <span>BioContainers</span>
                   </h2>
 
                   <h1 class="title">
-                    <span>creating, maintaining and deploying software containers and workflows</span>
+                      <span>{{ number_tools }} tools, {{ number_versions}} versions, {{ number_containers}} containers and packages</span>
+                      <!--maintaining and deploying software containers and workflows</span>-->
                   </h1>
 
                   <div style="margin-bottom: 16px; margin-top: 16px">
@@ -242,6 +243,9 @@ export default {
   },
   data () {
     return {
+        number_tools:'0',
+        number_versions:'0',
+        number_containers:'0',
 
     }
   },
@@ -258,9 +262,27 @@ export default {
     twitterMoreButtonAction(){
         window.open("https://twitter.com/biocontainers");
         //location.href="https://twitter.com/pride_ebi"
+    },
+    toolStats(){
+        this.$http
+            .get(this.$store.state.baseApiURL + '/api/ga4gh/v2/stats')
+            .then(function (res) {
+                console.log('res.body', res.body);
+                let resbody = res.body;
+                for(let i = 0; i < resbody.length; i++){
+                    if(resbody[i].name === 'num_tools'){
+                        this.number_tools = (resbody[i].value/1000).toFixed(1) + 'K'
+                    }else if(resbody[i].name === 'num_versions'){
+                        this.number_versions = (resbody[i].value/1000).toFixed(1) + 'K'
+                    }else if (resbody[i].name === 'num_containers'){
+                        this.number_containers = (resbody[i].value/1000).toFixed(1) + 'K'
+                    }
+                }
+            })
     }
   },
   mounted(){
+      this.toolStats();
 
   }
 }
