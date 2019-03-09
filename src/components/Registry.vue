@@ -187,7 +187,7 @@ export default {
             }
         ],
         query:{
-          offset:1,
+          offset:0,
           limit:30
         },
         licenseColor:{
