@@ -194,7 +194,7 @@ export default {
                                   prefix = 'docker pull ';
                               }else if(current_version.container_images[i].container_type === 'CONDA'){
                                   original_type = "/static/images/conda.png";
-                                  prefix = 'conda install -c bioconda -c conda-forge ';
+                                  prefix = 'conda install -c conda-forge -c bioconda ';
                               }
                               var item = {
                                   tool: current_version.name,
