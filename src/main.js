@@ -36,8 +36,8 @@ import 'echarts/map/js/world.js'
 import VueAnalytics from 'vue-analytics'
 
 Vue.use(VueAnalytics, {
-  id: 'UA-52449822-1'
-})
+  id: 'UA-136036548-1'
+});
 
 
 Vue.config.productionTip = false;
