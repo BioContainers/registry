@@ -33,11 +33,11 @@ import 'echarts/lib/component/dataZoom.js'
 import 'echarts/lib/chart/map'
 import 'echarts/map/json/world.json'
 import 'echarts/map/js/world.js'
-import VueAnalytics from 'vue-analytics'
-
-Vue.use(VueAnalytics, {
-  id: 'UA-136036548-1'
-});
+// import VueAnalytics from 'vue-analytics'
+//
+// Vue.use(VueAnalytics, {
+//   id: 'UA-136036548-1'
+// });
 
 
 Vue.config.productionTip = false;
@@ -46,7 +46,7 @@ Vue.use(VueResource);
 Vue.use(ReadMore);
 Vue.component('chart', ECharts);
 
- 
+
 
 const bus = new Vue();
 Object.defineProperty(Vue.prototype, '$bus', { get(){return this.$root.bus} });
