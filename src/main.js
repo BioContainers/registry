@@ -33,7 +33,11 @@ import 'echarts/lib/component/dataZoom.js'
 import 'echarts/lib/chart/map'
 import 'echarts/map/json/world.json'
 import 'echarts/map/js/world.js'
+import VueAnalytics from 'vue-analytics'
 
+Vue.use(VueAnalytics, {
+  id: 'UA-52449822-1'
+})
 
 
 Vue.config.productionTip = false;
