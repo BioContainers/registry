@@ -91,7 +91,6 @@
     }
 
     .nav-container {
-        overflow: hidden;
         position: fixed;
         top: 0;
         width: 100%;
