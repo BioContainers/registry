@@ -10,15 +10,16 @@
                   </h2>
 
                   <h1 class="title">
-                          <!--<Spin  size="small" v-if="!found"/>-->
-                          <!--<span v-if="found">{{ number_tools }}</span>-->
+                          <Spin  size="small" v-if="!found"/>
+                      <span v-if="found"> {{ number_tools }}   </span><span></span><span>tools,</span>
+                          <Spin  size="small" v-if="!found"/>
+                          <span v-if="found"> {{ number_versions }} </span>  versions,
+                          <Spin  size="small" v-if="!found"/>
+                          <span v-if="found">{{ number_containers }}</span>  containers and packages
+                         <!--<span>{{ number_tools }}</span>-->
                           <!--tools,-->
-                          <!--<span v-if="found">{{ number_versions }}</span> versions,-->
-                          <!--<span v-if="found">{{ number_containers }}</span>containers and packages-->
-                         <span>{{ number_tools }}</span>
-                          tools,
-                          <span >{{ number_versions }}</span> versions,
-                          <span >{{ number_containers }}</span> containers and packages
+                          <!--<span >{{ number_versions }}</span> versions,-->
+                          <!--<span >{{ number_containers }}</span> containers and packages-->
                       <!--maintaining and deploying software containers and workflows</span>-->
                   </h1>
 
@@ -328,6 +329,19 @@ export default {
         padding-bottom: 10px;
         margin-bottom: 30px;
     }
+
+    .first-body .container>.title{
+       display: flex;
+        text-align: center;
+        align-items: center;
+       justify-content: center;
+
+    }
+
+    .first-body .container>.ivu-spin-main{
+        margin-right: 10px;
+    }
+
     .third-row .box{
       background: #222836;
       text-align: left !important;
@@ -446,5 +460,6 @@ export default {
         position: relative;
         border: 1px solid #eee;
     }
+
 </style>
 
