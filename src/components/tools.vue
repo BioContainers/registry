@@ -200,7 +200,7 @@ export default {
                                   tool: current_version.name,
                                   version: current_version.meta_version,
                                   full_tag: prefix + current_version.container_images[i].full_tag,
-                                  size: (current_version.container_images[i].size/1024).toFixed(2) + "M",
+                                  size: (current_version.container_images[i].size/1048576).toFixed(2) + "M",
                                   last_updated: current_version.container_images[i].hasOwnProperty('last_updated')? current_version.container_images[i].last_updated.substring(0,9): '',
                                   type: original_type
                               };
