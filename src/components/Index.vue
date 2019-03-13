@@ -137,11 +137,11 @@
             </div>
         </div>
       </div>
-      <div class="third">
-        <div class="third-body">
+      <div class="fourth">
+        <div class="fourth-body">
             <div class="container">
                  <!--<p class="title">News and Documentation</p>-->
-                <Row class="third-row">
+                <Row class="fourth-row">
                     <Col span="8">
                       <div class="box tweet">
                           <!--<p class="title">Registry</p>-->
@@ -350,9 +350,6 @@ export default {
       height: 250px;
       overflow: auto;
     }
-    .third-row .box.tweet::-webkit-scrollbar {
-      width:1px;
-    }
     .tweet-class{
       /*height: */
     }
@@ -366,6 +363,59 @@ export default {
       font-size: 14px;
       padding-top: 10px;
       padding-bottom: 15px;
+    }
+    .fourth{
+      margin:40px 0;
+    }
+    .fourth-body{
+        padding-bottom: 1.5rem;
+        padding-top: 1.5rem;
+    }
+    .fourth-body .container>.title{
+        text-align: center;
+        font-weight: 800;
+        font-size: 54px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+        margin-bottom: 30px;
+    }
+    .fourth-row .box{
+      background: #eaeaea;
+      text-align: left !important;
+      margin:10px;
+      padding: 20px;
+      height: 250px;
+      overflow: auto;
+    }
+    .fourth-row .box .title{
+      color: black;
+      font-size: 20px;
+      font-weight: 800;
+    }
+    .fourth-row .box .sub-title{
+      color: black;
+      font-size: 14px;
+      padding-top: 10px;
+      padding-bottom: 15px;
+    }
+    .fourth-row a.button{
+        display:inline-block;
+        padding:0.3em 1.2em;
+        margin: 0em 0.1em 0.1em 0em;
+        border: 0.06em solid rgba(0,0,0);
+        border-radius:2em;
+        box-sizing: border-box;
+        text-decoration:none;
+        font-family:'Roboto',sans-serif;
+        font-weight:300;
+        color: black;
+        text-shadow: 0em 0.04em 0.04em rgba(0,0,0,0.35);
+        text-align:center;
+        transition: all 0.2s;
+        font-size: 16px;
+    }
+    .fourth-row .box.tweet::-webkit-scrollbar {
+      width:1px;
     }
     .container{
       margin:0 auto;
