@@ -121,7 +121,7 @@ export default {
                                     },
                                     props: {
                                         type: 'ios-copy-outline',
-                                        size: '14'
+                                        size: '20'
                                     },
                                     style: {
                                         marginLeft: '5px',
