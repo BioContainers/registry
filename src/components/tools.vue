@@ -98,16 +98,38 @@ export default {
                             const row = params.row;
                             const color = 'blue';
                             const text = row.full_tag;
-
-                            return h('Tag', {
-                                props: {
-                                    type: 'box',
-                                    color: color
-                                },
+                            return h('div', {
                                 style: {
-                                    color: 'black'
-                                }
-                            }, text);
+                                    display:'flex',
+                                    alignItems:'center'
+                                },
+                            },[
+                                h('Tag', {
+                                    props: {
+                                       // type: 'box',
+                                        color: color
+                                    },
+                                    style: {
+                                        color: 'black'
+                                    }
+                                },text),
+                                h('Icon', {
+                                    on: {
+                                        click: () => {
+                                            this.doCopy(text)
+                                        }
+                                    },
+                                    props: {
+                                        type: 'ios-copy-outline',
+                                        size: '14'
+                                    },
+                                    style: {
+                                        marginLeft: '5px',
+                                        display:'inline-block',
+                                        cursor:'pointer'
+                                    },
+                                }),
+                            ]);
                         }
             },
 
@@ -220,7 +242,25 @@ export default {
     },
     containerVersion(){
 
-    }
+    },
+    doCopy(value) {
+      if (value) {
+        try {
+          console.log('copy value',value)
+          const input = document.createElement('input');
+          document.body.appendChild(input);
+          input.setAttribute('value', value);
+          input.select();
+          document.execCommand('copy');
+          this.$Message.success({ content: 'Copy Successfully', duration: 1 });
+          document.body.removeChild(input);
+        } catch (e) {
+          this.$Message.error({ content: 'Copy Failed', duration: 1 });
+          document.body.removeChild(input);
+        }
+      } else
+        this.$Message.error({ content: 'No value to Copy', duration: 1 });
+    },
   },
   mounted(){
     this.toolInfo();
