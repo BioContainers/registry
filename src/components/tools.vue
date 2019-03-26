@@ -29,8 +29,8 @@
                        <p slot="title"><!-- <i class="fas fa-link icon-tag"></i> -->Similar Studies</p>
                        <div class="list-wrapper">
                             <Card dis-hover class="similarity-card" v-for="item in similarProjects" :key="item.accession">
-                              <div class="similarity-title"><a @click="gotoDetails(item.name)">{{item.title}}</a></div>
-                              <div><span>{{item.submissionDate}}</span></div>
+                              <div class="similarity-title"><a @click="gotoDetails(item.name)">{{item.name}}</a></div>
+                              <div><span>{{item.title}}</span></div>
                             </Card>
                        </div>
                     </Card>
@@ -293,7 +293,7 @@ export default {
                 let resbody = res.body;
                 for(let i = 0; i < resbody.length; i++){
                     var tool = {
-                        tool: resbody[i].toolname,
+                        name: resbody[i].toolname,
                         title: resbody[i].description,
                         accession: resbody[i].id
                     };
