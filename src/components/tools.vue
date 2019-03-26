@@ -154,8 +154,7 @@ export default {
                                       },
                                       style: {
                                           color: 'black',
-                                          minWidth: '500px',
-                                          width:'500px'
+                                          flex: '1'
                                       }
                                   },text),
                                   h('Icon', {
