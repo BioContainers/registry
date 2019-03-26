@@ -216,10 +216,10 @@ export default {
                 this.sorts[i].type = 'default';
           }
     },
-    toolInfo(){
-        console.log('this.$router.params.id',this.$route.params.id)
+    toolInfo(id){
+        console.log('this.$router.params.id',id)
         this.$http
-            .get(this.$store.state.baseApiURL + '/api/ga4gh/v2/tools/'+ this.$route.params.id)
+            .get(this.$store.state.baseApiURL + '/api/ga4gh/v2/tools/'+ id)
             .then(function (res) {
                 console.log('res.body', res.body);
                 let resbody = res.body;
@@ -242,10 +242,9 @@ export default {
             })
 
     },
-    containerID(){
-            console.log('this.$router.params.id',this.$route.params.id);
+    containerID(id){
          this.$http
-            .get(this.$store.state.baseApiURL + '/api/ga4gh/v2/tools/'+ this.$route.params.id+'/versions')
+            .get(this.$store.state.baseApiURL + '/api/ga4gh/v2/tools/'+ id +'/versions')
             .then(function(res){
                 console.log('res.body',res.body);
                 let resbody=res.body[0];
@@ -311,10 +310,9 @@ export default {
       this.$router.push({name:'tools',params:{id:id}});
       
     },
-    getSimilars(){
-        console.log('this.$router.params.id',this.$route.params.id)
+    getSimilars(id){
         this.$http
-            .get(this.$store.state.baseApiURL + '/api/ga4gh/v2/tools/'+ this.$route.params.id + '/similars')
+            .get(this.$store.state.baseApiURL + '/api/ga4gh/v2/tools/'+ id + '/similars')
             .then(function (res) {
                 console.log('res.body similars', res.body);
                 this.similarProjects = []
@@ -332,17 +330,18 @@ export default {
     },
   },
   beforeRouteUpdate (to, from, next) {
-     this.toolInfo();
-     this.containerID();
-     this.getSimilars();
+    //console.log('from',from)
+     this.toolInfo(to.params.id);
+     this.containerID(to.params.id);
+     this.getSimilars(this.$route.params.id);
      this.containerVersion();
      next();
   },
   mounted(){
-    this.toolInfo();
-    this.containerID();
+    this.toolInfo(this.$route.params.id);
+    this.containerID(this.$route.params.id);
     this.containerVersion();
-    this.getSimilars();
+    this.getSimilars(this.$route.params.id);
   }
 }
 </script>
