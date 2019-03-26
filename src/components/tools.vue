@@ -26,7 +26,7 @@
                  </Col>
                  <Col span="4">
                     <Card dis-hover class="card">
-                       <p slot="title"><!-- <i class="fas fa-link icon-tag"></i> -->Similar Studies</p>
+                       <p slot="title"><!-- <i class="fas fa-link icon-tag"></i> -->Similar Containers</p>
                        <div class="list-wrapper">
                             <!--<Card dis-hover class="similarity-card" v-for="item in similarProjects" :key="item.accession">-->
                               <!--<div class="similarity-title"><a @click="gotoDetails(item.name)">{{item.name}}</a></div>-->
@@ -305,6 +305,9 @@ export default {
     },
 
     gotoDetails(){
+        console.log('ididididid',id);
+      //this.$router.push({name:'dataset',params:{id:id}});
+      this.$router.push({name:'tools',params:{id:id}});
       
     },
     getSimilars(){
