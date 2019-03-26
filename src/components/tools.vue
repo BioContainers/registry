@@ -221,6 +221,7 @@ export default {
             .then(function (res) {
                 console.log('res.body', res.body);
                 let resbody = res.body;
+                this.containerObj.versions = []
                 this.containerObj = {
                         name:resbody.toolname.toUpperCase(),
                         license:resbody.license,
@@ -244,34 +245,33 @@ export default {
          this.$http
             .get(this.$store.state.baseApiURL + '/api/ga4gh/v2/tools/'+ this.$route.params.id+'/versions')
             .then(function(res){
-                      console.log('res.body',res.body);
-                      let resbody=res.body[0];
-                      this.containerObj.images=[]
-                      let all_versions = res.body;
-                      for(let j = 0 ; j < all_versions.length; j++){
-                          let current_version = all_versions[j];
-                          for(let i=0; i < current_version.container_images.length; i++){
-                              let original_type = "/static/logo/biocontainers-logo.png";
-                              let prefix = '';
-                              if(current_version.container_images[i].container_type === 'DOCKER'){
-                                  original_type = "/static/images/docker.png";
-                                  prefix = 'docker pull ';
-                              }else if(current_version.container_images[i].container_type === 'CONDA'){
-                                  original_type = "/static/images/conda.png";
-                                  prefix = 'conda install -c conda-forge -c bioconda ';
-                              }
-                              var item = {
-                                  tool: current_version.name,
-                                  version: current_version.meta_version,
-                                  full_tag: prefix + current_version.container_images[i].full_tag,
-                                  size: (current_version.container_images[i].size/1048576).toFixed(2) + "M",
-                                  last_updated: current_version.container_images[i].hasOwnProperty('last_updated')? current_version.container_images[i].last_updated.substring(0,9): '',
-                                  type: original_type
-                              };
-                              this.containerObj.images.push(item);
-                          }
-                      }
-
+                console.log('res.body',res.body);
+                let resbody=res.body[0];
+                this.containerObj.images=[]
+                let all_versions = res.body;
+                for(let j = 0 ; j < all_versions.length; j++){
+                    let current_version = all_versions[j];
+                    for(let i=0; i < current_version.container_images.length; i++){
+                        let original_type = "/static/logo/biocontainers-logo.png";
+                        let prefix = '';
+                        if(current_version.container_images[i].container_type === 'DOCKER'){
+                            original_type = "/static/images/docker.png";
+                            prefix = 'docker pull ';
+                        }else if(current_version.container_images[i].container_type === 'CONDA'){
+                            original_type = "/static/images/conda.png";
+                            prefix = 'conda install -c conda-forge -c bioconda ';
+                        }
+                        var item = {
+                            tool: current_version.name,
+                            version: current_version.meta_version,
+                            full_tag: prefix + current_version.container_images[i].full_tag,
+                            size: (current_version.container_images[i].size/1048576).toFixed(2) + "M",
+                            last_updated: current_version.container_images[i].hasOwnProperty('last_updated')? current_version.container_images[i].last_updated.substring(0,9): '',
+                            type: original_type
+                        };
+                        this.containerObj.images.push(item);
+                    }
+                }
             },function(err){
                 console.log('err',err);
                 this.dataFound=false;
@@ -315,6 +315,7 @@ export default {
             .get(this.$store.state.baseApiURL + '/api/ga4gh/v2/tools/'+ this.$route.params.id + '/similars')
             .then(function (res) {
                 console.log('res.body similars', res.body);
+                this.similarProjects = []
                 let resbody = res.body;
                 for(let i = 0; i < resbody.length; i++){
                     var tool = {
@@ -328,18 +329,12 @@ export default {
 
     },
   },
-  beforeRouteEnter (to, from, next) {
-      next(vm => {
-          console.log(vm.toString())
-      // access to component's instance using `vm` .
-      // this is done because this navigation guard is called before the component is created.
-      // clear your previously populated search results.
-      // re-populate search results
-      vm.toolInfo();
-      vm.containerID();
-      vm.containerVersion();
-      next();
-  })
+  beforeRouteUpdate (to, from, next) {
+     this.toolInfo();
+     this.containerID();
+     this.getSimilars();
+     this.containerVersion();
+     next();
   },
   mounted(){
     this.toolInfo();
