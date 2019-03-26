@@ -316,6 +316,7 @@ export default {
                 console.log('res.body similars', res.body);
                 this.similarProjects = []
                 let resbody = res.body;
+                resbody = resbody.sort((a, b) => (a.similar_score < b.similar_score) ? 1 : -1)
                 for(let i = 0; i < resbody.length; i++){
                     var tool = {
                         name: resbody[i].toolname,
