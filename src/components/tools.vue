@@ -33,7 +33,7 @@
                               <!--<div><span>{{item.title}}</span></div>-->
                             <!--</Card>-->
                            <Card v-for="item in similarProjects" class="card">
-                               <p slot="title"><a class="tool-name" @click="gotoDetails(item.id)">{{item.name}}</a></p>
+                               <p slot="title"><a class="tool-name" @click="gotoDetails(item.accession)">{{item.name}}</a></p>
                                <p slot="extra">
                                    <Tooltip>
                                        <Icon type="logo-codepen" size="22"/>
