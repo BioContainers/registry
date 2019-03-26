@@ -31,16 +31,18 @@
 
                   <Card v-if="dataFound" v-for="item in cardList" class="card">
                       <p slot="title"><a class="tool-name" @click="gotoContainerDetails(item.id)">{{item.toolname}}</a></p>
-                      <p slot="extra">
-                        <Tooltip>
+                      <p style="display: flex" slot="extra">
+
+                        <span>
                             <Icon type="md-cloud-download" size="22"/>
                             <!--<div class="tooltip-content" slot="content">-->
                                 <!--{{item.content}}-->
                             <!--</div>-->
-                            <div>
+
+                        </span>
+                          <span style="padding-top: 1px; margin-left: 2px">
                                 {{item.pulls}}
-                            </div>
-                        </Tooltip>
+                            </span>
                       </p>
                       <div class="card-content-wrapper">
                         <div class="left">
