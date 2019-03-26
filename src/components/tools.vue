@@ -33,7 +33,7 @@
                               <!--<div><span>{{item.title}}</span></div>-->
                             <!--</Card>-->
                            <Card v-for="item in similarProjects" class="card">
-                               <p slot="title"><a class="tool-name" @click="gotoDetails(item.accession)">{{item.name}}</a></p>
+                               <p slot="title"><a class="tool-name" @click="gotoDetails(item.id)">{{item.name}}</a></p>
                                <p slot="extra">
                                    <Tooltip>
                                        <Icon type="logo-codepen" size="22"/>
@@ -304,8 +304,7 @@ export default {
         this.$Message.error({ content: 'No value to Copy', duration: 1 });
     },
 
-    gotoDetails(){
-        console.log('ididididid',id);
+    gotoDetails(id){
       //this.$router.push({name:'dataset',params:{id:id}});
       this.$router.push({name:'tools',params:{id:id}});
       
@@ -321,13 +320,26 @@ export default {
                     var tool = {
                         name: resbody[i].toolname,
                         title: resbody[i].description,
-                        accession: resbody[i].id
+                        id: resbody[i].id
                     };
                     this.similarProjects.push(tool);
                 }
             })
 
     },
+  },
+  beforeRouteEnter (to, from, next) {
+      next(vm => {
+          console.log(vm.toString())
+      // access to component's instance using `vm` .
+      // this is done because this navigation guard is called before the component is created.
+      // clear your previously populated search results.
+      // re-populate search results
+      vm.toolInfo();
+      vm.containerID();
+      vm.containerVersion();
+      next();
+  })
   },
   mounted(){
     this.toolInfo();
