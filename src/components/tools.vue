@@ -28,10 +28,33 @@
                     <Card dis-hover class="card">
                        <p slot="title"><!-- <i class="fas fa-link icon-tag"></i> -->Similar Studies</p>
                        <div class="list-wrapper">
-                            <Card dis-hover class="similarity-card" v-for="item in similarProjects" :key="item.accession">
-                              <div class="similarity-title"><a @click="gotoDetails(item.name)">{{item.name}}</a></div>
-                              <div><span>{{item.title}}</span></div>
-                            </Card>
+                            <!--<Card dis-hover class="similarity-card" v-for="item in similarProjects" :key="item.accession">-->
+                              <!--<div class="similarity-title"><a @click="gotoDetails(item.name)">{{item.name}}</a></div>-->
+                              <!--<div><span>{{item.title}}</span></div>-->
+                            <!--</Card>-->
+                           <Card v-for="item in similarProjects" class="card">
+                               <p slot="title"><a class="tool-name" @click="gotoDetails(item.id)">{{item.name}}</a></p>
+                               <p slot="extra">
+                                   <Tooltip>
+                                       <Icon type="logo-codepen" size="22"/>
+                                       <div class="tooltip-content" slot="content">
+                                           {{item.description}}
+                                       </div>
+                                   </Tooltip>
+                               </p>
+                               <div class="card-content-wrapper">
+                                   <div class="left">
+                                       <div class="description-wrapper">
+                                           <!--<Input v-model="item.description" disabled type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="" />-->
+                                           <read-more more-str="" :text="item.title" link="#" less-str="read less" :max-chars="120"></read-more>
+                                       </div>
+                                       <!--<div class="state-wrapper">-->
+                                           <!--{{item.state}}-->
+                                       <!--</div>-->
+                                   </div>
+
+                               </div>
+                           </Card>
                        </div>
                     </Card>
                  </Col>
