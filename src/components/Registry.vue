@@ -33,9 +33,12 @@
                       <p slot="title"><a class="tool-name" @click="gotoContainerDetails(item.id)">{{item.toolname}}</a></p>
                       <p slot="extra">
                         <Tooltip>
-                            <Icon type="logo-codepen" size="22"/>
-                            <div class="tooltip-content" slot="content">
-                                {{item.content}}
+                            <Icon type="md-cloud-download" size="22"/>
+                            <!--<div class="tooltip-content" slot="content">-->
+                                <!--{{item.content}}-->
+                            <!--</div>-->
+                            <div>
+                                {{item.pulls}}
                             </div>
                         </Tooltip>
                       </p>
@@ -279,6 +282,7 @@ export default {
                         description:res.body[i].description ? res.body[i].description:'Tool description is coming',
                         tags:['tag1','tag2','tag2'],
                         state:'',
+                        pulls:abbreviateNumber(res.body[i].pulls),
                         color:res.body[i].verified ? '#19be6b': '#c5c8ce',
                         license:''
                       };
@@ -334,6 +338,27 @@ export default {
   mounted(){
     this.search();
   }
+}
+
+var SI_SYMBOL = ["", "K", "M", "G", "T", "P", "E"];
+
+function abbreviateNumber(number){
+
+    // what tier? (determines SI symbol)
+    var tier = Math.log10(number) / 3 | 0;
+
+    // if zero, we don't need a suffix
+    if(tier == 0) return number;
+
+    // get suffix and determine scale
+    var suffix = SI_SYMBOL[tier];
+    var scale = Math.pow(10, tier * 3);
+
+    // scale the number
+    var scaled = number / scale;
+
+    // format number and add suffix
+    return scaled.toFixed(1) + suffix;
 }
 </script>
 
