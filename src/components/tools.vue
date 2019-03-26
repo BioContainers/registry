@@ -9,20 +9,35 @@
       <div class="triangle triangle-down"></div>
       <div class="content">
           <div class="container-wrapper">
-            <div class="title-container">
-                  <div class="title-wrapper">
-                      <div class="card-title">
-                          <p><strong>Tool</strong>: {{containerObj.name}}</p>
-                          <p><strong>Description</strong>: {{containerObj.description}}</p>
-                          <p><strong>License</strong>: {{containerObj.license}}</p>
-                          <!--<p>Home: {{containerObj.url}}</p>-->
-                        <!--<span>License:{{containerObj.license}}</span>-->
+            <Row :gutter="16">
+                 <Col span="20">
+                      <div class="title-container">
+                            <div class="title-wrapper">
+                                <div class="card-title">
+                                    <p><strong>Tool</strong>: {{containerObj.name}}</p>
+                                    <p><strong>Description</strong>: {{containerObj.description}}</p>
+                                    <p><strong>License</strong>: {{containerObj.license}}</p>
+                                    <!--<p>Home: {{containerObj.url}}</p>-->
+                                  <!--<span>License:{{containerObj.license}}</span>-->
+                                </div>
+                            </div>
                       </div>
-                  </div>
-            </div>
-           <Table :columns="resultsTableCol" :data="containerObj.images"></Table>
+                       <Table :columns="resultsTableCol" :data="containerObj.images"></Table>
+                 </Col>
+                 <Col span="4">
+                    <Card dis-hover class="card">
+                       <p slot="title"><!-- <i class="fas fa-link icon-tag"></i> -->Similar Studies</p>
+                       <div class="list-wrapper">
+                            <Card dis-hover class="similarity-card" v-for="item in similarProjects" :key="item.accession">
+                              <div class="similarity-title"><a @click="gotoDetails(item.accession)">{{item.title}}</a></div>
+                              <div><span>{{item.submissionDate}}</span></div>
+                            </Card>
+                       </div>
+                      </p>
+                  </Card>
+                 </Col>
+            </Row>
           </div>
-          
       </div>
   </div>
 </template>
@@ -54,6 +69,7 @@ export default {
                 title: 'Type',
                 key: 'type',
                 align: 'center',
+                width: 65,
                 render:(h,params) => {
                     return h('img', {
                         attrs: {
@@ -61,7 +77,7 @@ export default {
                         },
                         style: {
                             display:'inline-block',
-                            width: '30%'
+                            width: '100%'
                         },
                     })
                 }
@@ -70,29 +86,33 @@ export default {
                 title: 'Tool',
                 key: 'tool',
                 align: 'center',
+                width: 120,
+
             },
             {
                 title: 'Version',
                 key: 'version',
                 align: 'center',
-                sortable: true
+                sortable: true,
+                width: 100,
             },
             {
                 title: 'Modified',
                 key: 'last_updated',
                 align: 'center',
-                sortable: true
+                sortable: true,
+                width: 105,
             },
             {
                 title: 'Size',
                 key: 'size',
                 align: 'center',
-                sortable: true
+                sortable: true,
+                width: 85,
             },
             {
                 title: 'Full Tag ',
                 key: 'full_tag',
-                width:450,
                 // align: 'center',
                 render: (h, params) => {
                             const row = params.row;
@@ -110,10 +130,19 @@ export default {
                             }, text);
                         }
             },
-
-
-
         ],
+        similarProjects:[
+          {
+            accession: "PXD005209",
+            title:"Title and Content",
+            submissionDate: "2017-01-16"
+          },
+          {
+            accession: "PXD005201",
+            title:"Title and Content",
+            submissionDate: "2017-01-16"
+          }
+        ]
     }
   },
   methods:{
@@ -220,6 +249,9 @@ export default {
     },
     containerVersion(){
 
+    },
+    gotoDetails(){
+      
     }
   },
   mounted(){
@@ -399,7 +431,15 @@ export default {
     .filter-button{
       min-width: 70px;
     }
-   
+    .similarity-card{
+      margin-bottom: 5px;
+    }
+    .card a{
+        color: #495060;
+    }
+    .card a:hover{
+          color: #eb8c1f;
+    }
 </style>
 
 <style>
