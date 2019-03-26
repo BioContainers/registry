@@ -153,7 +153,9 @@ export default {
                                           color: color
                                       },
                                       style: {
-                                          color: 'black'
+                                          color: 'black',
+                                          minWidth: '500px',
+                                          width:'500px'
                                       }
                                   },text),
                                   h('Icon', {
