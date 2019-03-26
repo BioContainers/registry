@@ -29,12 +29,11 @@
                        <p slot="title"><!-- <i class="fas fa-link icon-tag"></i> -->Similar Studies</p>
                        <div class="list-wrapper">
                             <Card dis-hover class="similarity-card" v-for="item in similarProjects" :key="item.accession">
-                              <div class="similarity-title"><a @click="gotoDetails(item.accession)">{{item.title}}</a></div>
+                              <div class="similarity-title"><a @click="gotoDetails(item.name)">{{item.title}}</a></div>
                               <div><span>{{item.submissionDate}}</span></div>
                             </Card>
                        </div>
-                      </p>
-                  </Card>
+                    </Card>
                  </Col>
             </Row>
           </div>
@@ -155,18 +154,7 @@ export default {
                         }
             },
         ],
-        similarProjects:[
-          {
-            accession: "PXD005209",
-            title:"Title and Content",
-            submissionDate: "2017-01-16"
-          },
-          {
-            accession: "PXD005201",
-            title:"Title and Content",
-            submissionDate: "2017-01-16"
-          }
-        ]
+        similarProjects:[]
     }
   },
   methods:{
@@ -295,12 +283,31 @@ export default {
 
     gotoDetails(){
       
-    }
+    },
+    getSimilars(){
+        console.log('this.$router.params.id',this.$route.params.id)
+        this.$http
+            .get(this.$store.state.baseApiURL + '/api/ga4gh/v2/tools/'+ this.$route.params.id + '/similars')
+            .then(function (res) {
+                console.log('res.body similars', res.body);
+                let resbody = res.body;
+                for(let i = 0; i < resbody.length; i++){
+                    var tool = {
+                        tool: resbody[i].toolname,
+                        title: resbody[i].description,
+                        accession: resbody[i].id
+                    };
+                    this.similarProjects.push(tool);
+                }
+            })
+
+    },
   },
   mounted(){
     this.toolInfo();
     this.containerID();
     this.containerVersion();
+    this.getSimilars();
   }
 }
 </script>
