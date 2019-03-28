@@ -14,7 +14,7 @@
                       <div class="card-title">
                           <p><strong>Tool</strong>: {{containerObj.name}}</p>
                           <p><strong>Description</strong>: {{containerObj.description}}</p>
-                          <p><strong>License</strong>: {{containerObj.license}}</p>
+                          <p class="license-wrapper"><strong>License</strong>:  <img class="license-img" :src="containerObj.license"/></p>
                           <!--<p>Home: {{containerObj.url}}</p>-->
                         <!--<span>License:{{containerObj.license}}</span>-->
                       </div>
@@ -132,10 +132,15 @@ export default {
                             ]);
                         }
             },
-
-
-
         ],
+        licenseColor:{
+          Apache: 'brightgreen',
+          MIT:'green',
+          GPL:'blue',
+          BSD:'yellow',
+          CC:'blueviolet',
+          Artistic:'important'
+        }
     }
   },
   methods:{
@@ -181,12 +186,23 @@ export default {
                 let resbody = res.body;
                 this.containerObj = {
                         name:resbody.toolname.toUpperCase(),
-                        license:resbody.license,
+                        license:'',
                         description: resbody.description,
                         // url: resbody.url,
                         versions:[],
                         images:[]
                       };
+                let found=false;
+                for(let j in this.licenseColor){
+                    if(resbody.license&&resbody.license.match(j)){
+                      this.containerObj.license = 'https://img.shields.io/badge/license-'+encodeURIComponent(resbody.license).replace(/-/g,'--') + '-'+ this.licenseColor[j]+'.svg';
+                      found=true;
+                      break;
+                    }
+                }
+                if(resbody.license&&!found){
+                    this.containerObj.license = 'https://img.shields.io/badge/license-'+encodeURIComponent(resbody.license).replace(/-/g,'--') + '-lightgrey.svg';
+                }
                 for(let i = 0; i < resbody.versions; i++){
                     var version_item = {
                         tool: current_version.name,
@@ -439,7 +455,13 @@ export default {
     .filter-button{
       min-width: 70px;
     }
-   
+    .license-wrapper{
+      display: flex;
+      align-items: center;
+    }
+    .license-img{
+      margin-left: 10px;
+    }
 </style>
 
 <style>
