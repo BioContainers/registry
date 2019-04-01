@@ -9,20 +9,57 @@
       <div class="triangle triangle-down"></div>
       <div class="content">
           <div class="container-wrapper">
-            <div class="title-container">
-                  <div class="title-wrapper">
-                      <div class="card-title">
-                          <p><strong>Tool</strong>: {{containerObj.name}}</p>
-                          <p><strong>Description</strong>: {{containerObj.description}}</p>
-                          <p class="license-wrapper"><strong>License</strong>:  <img class="license-img" :src="containerObj.license"/></p>
-                          <!--<p>Home: {{containerObj.url}}</p>-->
-                        <!--<span>License:{{containerObj.license}}</span>-->
+            <Row :gutter="16">
+                 <Col span="20">
+                      <div class="title-container">
+                            <div class="title-wrapper">
+                                <div class="card-title">
+                                    <p><strong>Tool</strong>: {{containerObj.name}}</p>
+                                    <p><strong>Description</strong>: {{containerObj.description}}</p>
+                                    <p class="license-wrapper"><strong>License</strong>:  <img class="license-img" :src="containerObj.license"/></p>
+                                    <!--<p>Home: {{containerObj.url}}</p>-->
+                                    <!--<span>License:{{containerObj.license}}</span>-->
+                                </div>
+                            </div>
                       </div>
-                  </div>
-            </div>
-           <Table :columns="resultsTableCol" :data="containerObj.images"></Table>
+                       <Table :columns="resultsTableCol" :data="containerObj.images"></Table>
+                 </Col>
+                 <Col span="4">
+                    <Card dis-hover class="card">
+                       <p slot="title"><!-- <i class="fas fa-link icon-tag"></i> -->Similar Containers</p>
+                       <div class="list-wrapper">
+                            <!--<Card dis-hover class="similarity-card" v-for="item in similarProjects" :key="item.accession">-->
+                              <!--<div class="similarity-title"><a @click="gotoDetails(item.name)">{{item.name}}</a></div>-->
+                              <!--<div><span>{{item.title}}</span></div>-->
+                            <!--</Card>-->
+                           <Card v-for="item in similarProjects" class="card">
+                               <p slot="title"><a class="tool-name" @click="gotoDetails(item.id)">{{item.name}}</a></p>
+                               <p slot="extra">
+                                   <Tooltip>
+                                       <Icon type="logo-codepen" size="22"/>
+                                       <div class="tooltip-content" slot="content">
+                                           {{item.description}}
+                                       </div>
+                                   </Tooltip>
+                               </p>
+                               <div class="card-content-wrapper">
+                                   <div class="left">
+                                       <div class="description-wrapper">
+                                           <!--<Input v-model="item.description" disabled type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="" />-->
+                                           <read-more more-str="" :text="item.title" link="#" less-str="read less" :max-chars="120"></read-more>
+                                       </div>
+                                       <!--<div class="state-wrapper">-->
+                                           <!--{{item.state}}-->
+                                       <!--</div>-->
+                                   </div>
+
+                               </div>
+                           </Card>
+                       </div>
+                    </Card>
+                 </Col>
+            </Row>
           </div>
-          
       </div>
   </div>
 </template>
@@ -54,6 +91,7 @@ export default {
                 title: 'Type',
                 key: 'type',
                 align: 'center',
+                width: 65,
                 render:(h,params) => {
                     return h('img', {
                         attrs: {
@@ -61,7 +99,7 @@ export default {
                         },
                         style: {
                             display:'inline-block',
-                            width: '30%'
+                            width: '100%'
                         },
                     })
                 }
@@ -70,66 +108,73 @@ export default {
                 title: 'Tool',
                 key: 'tool',
                 align: 'center',
+                width: 120,
+
             },
             {
                 title: 'Version',
                 key: 'version',
                 align: 'center',
-                sortable: true
+                sortable: true,
+                width: 100,
             },
             {
                 title: 'Modified',
                 key: 'last_updated',
                 align: 'center',
-                sortable: true
+                sortable: true,
+                width: 105,
             },
             {
                 title: 'Size',
                 key: 'size',
                 align: 'center',
-                sortable: true
+                sortable: true,
+                width: 85,
             },
             {
                 title: 'Full Tag ',
                 key: 'full_tag',
-                width:450,
                 // align: 'center',
                 render: (h, params) => {
                             const row = params.row;
                             const color = 'blue';
                             const text = row.full_tag;
+
                             return h('div', {
-                                style: {
-                                    display:'flex',
-                                    alignItems:'center'
-                                },
-                            },[
-                                h('Tag', {
-                                    props: {
-                                       // type: 'box',
-                                        color: color
-                                    },
-                                    style: {
-                                        color: 'black'
-                                    }
-                                },text),
-                                h('Icon', {
-                                    on: {
-                                        click: () => {
-                                            this.doCopy(text)
-                                        }
-                                    },
-                                    props: {
-                                        type: 'ios-copy-outline',
-                                        size: '14'
-                                    },
-                                    style: {
-                                        marginLeft: '5px',
-                                        display:'inline-block',
-                                        cursor:'pointer'
-                                    },
-                                }),
-                            ]);
+                              style: {
+                                  display:'flex',
+                                      alignItems:'center'
+                                  },
+                              },[
+                                  h('Tag', {
+                                      props: {
+                                         // type: 'box',
+                                          color: color
+                                      },
+                                      style: {
+                                          color: 'black',
+                                          flex: '1'
+                                      }
+                                  },text),
+                                  h('Icon', {
+                                      on: {
+                                          click: () => {
+                                              this.doCopy(text)
+                                          }
+                                      },
+                                      props: {
+                                          type: 'ios-copy-outline',
+                                          size: '14'
+                                      },
+                                      style: {
+                                          marginLeft: '5px',
+                                          display:'inline-block',
+                                          cursor:'pointer'
+                                      },
+                                  }),
+                              ]);
+
                         }
             },
         ],
@@ -140,7 +185,8 @@ export default {
           BSD:'yellow',
           CC:'blueviolet',
           Artistic:'important'
-        }
+        },
+        similarProjects:[]
     }
   },
   methods:{
@@ -177,13 +223,14 @@ export default {
                 this.sorts[i].type = 'default';
           }
     },
-    toolInfo(){
-        console.log('this.$router.params.id',this.$route.params.id)
+    toolInfo(id){
+        console.log('this.$router.params.id',id)
         this.$http
-            .get(this.$store.state.baseApiURL + '/api/ga4gh/v2/tools/'+ this.$route.params.id)
+            .get(this.$store.state.baseApiURL + '/api/ga4gh/v2/tools/'+ id)
             .then(function (res) {
                 console.log('res.body', res.body);
                 let resbody = res.body;
+                this.containerObj.versions = []
                 this.containerObj = {
                         name:resbody.toolname.toUpperCase(),
                         license:'',
@@ -213,39 +260,37 @@ export default {
             })
 
     },
-    containerID(){
-            console.log('this.$router.params.id',this.$route.params.id);
+    containerID(id){
          this.$http
-            .get(this.$store.state.baseApiURL + '/api/ga4gh/v2/tools/'+ this.$route.params.id+'/versions')
+            .get(this.$store.state.baseApiURL + '/api/ga4gh/v2/tools/'+ id +'/versions')
             .then(function(res){
-                      console.log('res.body',res.body);
-                      let resbody=res.body[0];
-                      this.containerObj.images=[]
-                      let all_versions = res.body;
-                      for(let j = 0 ; j < all_versions.length; j++){
-                          let current_version = all_versions[j];
-                          for(let i=0; i < current_version.container_images.length; i++){
-                              let original_type = "/static/logo/biocontainers-logo.png";
-                              let prefix = '';
-                              if(current_version.container_images[i].container_type === 'DOCKER'){
-                                  original_type = "/static/images/docker.png";
-                                  prefix = 'docker pull ';
-                              }else if(current_version.container_images[i].container_type === 'CONDA'){
-                                  original_type = "/static/images/conda.png";
-                                  prefix = 'conda install -c conda-forge -c bioconda ';
-                              }
-                              var item = {
-                                  tool: current_version.name,
-                                  version: current_version.meta_version,
-                                  full_tag: prefix + current_version.container_images[i].full_tag,
-                                  size: (current_version.container_images[i].size/1048576).toFixed(2) + "M",
-                                  last_updated: current_version.container_images[i].hasOwnProperty('last_updated')? current_version.container_images[i].last_updated.substring(0,9): '',
-                                  type: original_type
-                              };
-                              this.containerObj.images.push(item);
-                          }
-                      }
-
+                console.log('res.body',res.body);
+                let resbody=res.body[0];
+                this.containerObj.images=[]
+                let all_versions = res.body;
+                for(let j = 0 ; j < all_versions.length; j++){
+                    let current_version = all_versions[j];
+                    for(let i=0; i < current_version.container_images.length; i++){
+                        let original_type = "/static/logo/biocontainers-logo.png";
+                        let prefix = '';
+                        if(current_version.container_images[i].container_type === 'DOCKER'){
+                            original_type = "/static/images/docker.png";
+                            prefix = 'docker pull ';
+                        }else if(current_version.container_images[i].container_type === 'CONDA'){
+                            original_type = "/static/images/conda.png";
+                            prefix = 'conda install -c conda-forge -c bioconda ';
+                        }
+                        var item = {
+                            tool: current_version.name,
+                            version: current_version.meta_version,
+                            full_tag: prefix + current_version.container_images[i].full_tag,
+                            size: (current_version.container_images[i].size/1048576).toFixed(2) + "M",
+                            last_updated: current_version.container_images[i].hasOwnProperty('last_updated')? current_version.container_images[i].last_updated.substring(0,9): '',
+                            type: original_type
+                        };
+                        this.containerObj.images.push(item);
+                    }
+                }
             },function(err){
                 console.log('err',err);
                 this.dataFound=false;
@@ -277,11 +322,45 @@ export default {
       } else
         this.$Message.error({ content: 'No value to Copy', duration: 1 });
     },
+
+    gotoDetails(id){
+      //this.$router.push({name:'dataset',params:{id:id}});
+      this.$router.push({name:'tools',params:{id:id}});
+      
+    },
+    getSimilars(id){
+        this.$http
+            .get(this.$store.state.baseApiURL + '/api/ga4gh/v2/tools/'+ id + '/similars')
+            .then(function (res) {
+                console.log('res.body similars', res.body);
+                this.similarProjects = []
+                let resbody = res.body;
+                resbody = resbody.sort((a, b) => (a.similar_score < b.similar_score) ? 1 : -1)
+                for(let i = 0; i < resbody.length; i++){
+                    var tool = {
+                        name: resbody[i].toolname,
+                        title: resbody[i].description,
+                        id: resbody[i].id
+                    };
+                    this.similarProjects.push(tool);
+                }
+            })
+
+    },
+  },
+  beforeRouteUpdate (to, from, next) {
+    //console.log('from',from)
+     this.toolInfo(to.params.id);
+     this.containerID(to.params.id);
+     this.getSimilars(this.$route.params.id);
+     this.containerVersion();
+     next();
   },
   mounted(){
-    this.toolInfo();
-    this.containerID();
+    this.toolInfo(this.$route.params.id);
+    this.containerID(this.$route.params.id);
     this.containerVersion();
+    this.getSimilars(this.$route.params.id);
   }
 }
 </script>
@@ -461,6 +540,15 @@ export default {
     }
     .license-img{
       margin-left: 10px;
+    {
+    .similarity-card{
+      margin-bottom: 5px;
+    }
+    .card a{
+        color: #495060;
+    }
+    .card a:hover{
+          color: #eb8c1f;
     }
 </style>
 
