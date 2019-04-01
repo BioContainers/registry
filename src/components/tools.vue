@@ -540,7 +540,7 @@ export default {
     }
     .license-img{
       margin-left: 10px;
-    {
+    }
     .similarity-card{
       margin-bottom: 5px;
     }
