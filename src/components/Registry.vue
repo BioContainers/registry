@@ -19,6 +19,14 @@
                             <Button class="filter-button" v-for="(item ,index) in filters" :type="item.type" :key="index" @click="filterClick(index)">{{item.name}}</Button>
                         </ButtonGroup>
                   </div>
+                  <div class="sort">
+                        <span class="name">Sorts by:</span>
+                        <div class="sortOption">
+                            <Select v-model="sortType" style="width:90px" @on-change="sortClick">
+                                <Option v-for="item in sorts" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                            </Select>
+                        </div>
+                  </div>
               </div>
               <div class="search-button-wrapper">
                   <Button type="primary" @click="search">Search</Button>
@@ -177,19 +185,16 @@ export default {
                 type:'default',
             },
         ],
+        sortType:'default',
         sorts:[
             {
-                name:'sort1',
-                type:'primary',
+                label:'Default',
+                value:'default',
             },
             {
-                name:'sort2',
-                type:'default',
+                label:'Pull No',
+                value:'pulls',
             },
-            {
-                name:'sort3',
-                type:'default',
-            }
         ],
         query:{
           offset:0,
@@ -240,12 +245,15 @@ export default {
         }*/
     },
     sortClick(index){
+      console.log(this.sortType)
+      this.search();
+        /*
           for(let i in this.sorts){
               if(i == index)
                 this.sorts[i].type = 'primary';
               else
                 this.sorts[i].type = 'default';
-          }
+          }*/
     },
     search(){
         this.loading=true;
@@ -267,10 +275,12 @@ export default {
         else if(this.filter == 'All'){
           this.query['all_fields_search'] = this.keywords;
         }
+
+        this.query.sort_field = this.sortType
+        this.query.sort_order = 'asc' 
         this.$http
             .get(this.$store.state.baseApiURL + '/api/ga4gh/v2/tools',{params:this.query})
             .then(function(res){
-              console.log(res);
               let tempLength = res.body.length;
               if(tempLength > 0){
                   let limit = res.headers.map.last_page[0].split('&')[0].split('=')[1];
@@ -291,16 +301,12 @@ export default {
                       let found=false;
                       for(let j in this.licenseColor){
                         if(res.body[i].license&&res.body[i].license.match(j)){
-                          console.log(res.body[i].license);
-                          console.log(encodeURIComponent(res.body[i].license));
                           item.license = 'https://img.shields.io/badge/license-'+encodeURIComponent(res.body[i].license).replace(/-/g,'--') + '-'+ this.licenseColor[j]+'.svg';
                           found=true;
                           break;
                         }
                       }
                       if(res.body[i].license&&!found){
-                        console.log(res.body[i].license);
-                        console.log(encodeURIComponent(res.body[i].license));
                         item.license = 'https://img.shields.io/badge/license-'+encodeURIComponent(res.body[i].license).replace(/-/g,'--') + '-lightgrey.svg';
                       }
                       this.cardList.push(item);
@@ -382,6 +388,9 @@ function abbreviateNumber(number){
     }
     .filter-wrapper .sort{
       margin-left: 10px;
+    }
+    .sortOption{
+      display: inline-block;
     }
     .filter-wrapper .name{
       font-size: 0.875rem
