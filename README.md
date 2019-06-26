@@ -19,7 +19,7 @@ This project provides a web UI for [BioContainers](https://biocontainers.pro)
 How to Test
 ------------------------
 
-- To test the application go to **dist** directory and install `npm install -g http-server`, then use `httop-server` to test the app:
+- To test the application go to **dist** directory and install `npm install -g http-server`, then use `http-server` to test the app:
 
 ```
 http-server -o
