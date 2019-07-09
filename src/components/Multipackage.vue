@@ -271,7 +271,8 @@ export default {
                 version: version,
                 channel: channel
             };
-
+            packages.push(packageObject);
+            /*
             if (Object.keys(index).indexOf(name) === -1) {
                 index[name] = version;
                 packages.push(packageObject);
@@ -285,7 +286,7 @@ export default {
                     index[name] = version;
                     packages[idx] = packageObject;
                 }
-            }
+            }*/
         });
 
         return packages;
