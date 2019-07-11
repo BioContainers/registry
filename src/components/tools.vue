@@ -9,6 +9,7 @@
       <div class="triangle triangle-down"></div>
       <div class="content">
           <div class="container-wrapper">
+            <VulnerabilitiesModal/>
             <Row :gutter="16">
                  <Col span="20">
                       <div class="title-container">
@@ -32,7 +33,7 @@
                               <!--<div class="similarity-title"><a @click="gotoDetails(item.name)">{{item.name}}</a></div>-->
                               <!--<div><span>{{item.title}}</span></div>-->
                             <!--</Card>-->
-                           <Card v-for="item in similarProjects" class="card">
+                           <Card v-for="item in similarProjects" class="card" v-bind:key="item.id">
                                <p slot="title"><a class="tool-name" @click="gotoDetails(item.id)">{{item.name}}</a></p>
                                <p slot="extra">
                                    <Tooltip>
@@ -65,11 +66,18 @@
 </template>
 
 <script>
+
+
 import store from "@/store/store.js"
+import VulnerabilitiesModal from './VulnerabilitiesModal'
 export default {
   name: 'tools',
+  components: {
+    VulnerabilitiesModal: VulnerabilitiesModal
+  },
   data () {
     return {
+        showModal: false,
         keywords:'',
         total:1000,
         current:1,
@@ -175,7 +183,42 @@ export default {
                                   }),
                               ]);
 
-                        }
+                }
+            },
+            {
+                title: 'security',
+                key: 'security',
+                align: 'center',
+                width: 85,
+                render: (h, params) => {
+                            const row = params.row;
+                            const color = 'blue';
+
+                            return h('div', {
+                              style: {
+                                  display:'flex',
+                                      alignItems:'center'
+                                  },
+                              },[
+                                  h('Icon', {
+                                      on: {
+                                          click: () => {
+                                            this.getAnchoreImage(row)
+                                          }
+                                      },
+                                      props: {
+                                          type: 'ios-copy-outline',
+                                          size: '14'
+                                      },
+                                      style: {
+                                          marginLeft: '5px',
+                                          display:'inline-block',
+                                          cursor:'pointer'
+                                      },
+                                  }),
+                              ]);
+
+                }
             },
         ],
         licenseColor:{
@@ -222,6 +265,33 @@ export default {
               else
                 this.sorts[i].type = 'default';
           }
+    },
+    getAnchoreImage(container) {
+        let ctx = this
+        this.$http
+            .get('https://jenkins.biocontainers.pro/security/v1/images', {params:{
+              fulltag: "docker.io/" + container.full_version,
+              history: false
+            }})
+            .then(function (res) {
+              if (res.body && res.body.length > 0) {
+                let digest = res.body[0].imageDigest
+                ctx.getVulnerabilities(digest)
+              }
+            }).catch(function(err) {
+              ctx.$modal.show('vulnerabilities', {vulnerabilities: [], msg: 'Not analysed yet'})
+            })
+    },
+    getVulnerabilities(digest) {
+      let ctx = this;
+        this.$http
+            .get('https://jenkins.biocontainers.pro/security/v1/images/' + digest + '/vuln/all')
+            .then(function (res) {
+              ctx.$modal.show('vulnerabilities', {vulnerabilities: res.body.vulnerabilities, msg: ''})
+              
+            }).catch(function(err) {
+
+            })
     },
     toolInfo(id){
         console.log('this.$router.params.id',id)
@@ -286,7 +356,8 @@ export default {
                             full_tag: prefix + current_version.container_images[i].full_tag,
                             size: (current_version.container_images[i].size/1048576).toFixed(2) + "M",
                             last_updated: current_version.container_images[i].hasOwnProperty('last_updated')? current_version.container_images[i].last_updated.substring(0,9): '',
-                            type: original_type
+                            type: original_type,
+                            full_version: current_version.container_images[i].full_tag
                         };
                         this.containerObj.images.push(item);
                     }
@@ -332,7 +403,7 @@ export default {
         this.$http
             .get(this.$store.state.baseApiURL + '/api/ga4gh/v2/tools/'+ id + '/similars')
             .then(function (res) {
-                console.log('res.body similars', res.body);
+                // console.log('res.body similars', res.body);
                 this.similarProjects = []
                 let resbody = res.body;
                 resbody = resbody.sort((a, b) => (a.similar_score < b.similar_score) ? 1 : -1)
@@ -363,7 +434,12 @@ export default {
     this.getSimilars(this.$route.params.id);
   }
 }
+
+
 </script>
+
+
+
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
