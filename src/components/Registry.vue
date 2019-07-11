@@ -9,7 +9,7 @@
       <div class="content">
           <h1>Search</h1>
           <div class="search-wrapper">
-            <Input v-model="keywords" icon="ios-search" placeholder="Search" style="width:100%" @on-enter="search"></Input>
+            <Input v-model="keywords" icon="ios-search" placeholder="Search" style="width:100%" @on-enter="search"/>
           </div>
           <div class="search-options-wrapper">
               <div class="filter-wrapper">
@@ -36,8 +36,8 @@
 
                   <Spin fix v-if="loading"></Spin>
 
-
-                  <Card v-if="dataFound" v-for="item in cardList" class="card">
+                  <div v-if="dataFound">
+                  <Card v-for="item in cardList" class="card" v-bind:key="item.id">
                       <p slot="title"><a class="tool-name" @click="gotoContainerDetails(item.id)">{{item.toolname}}</a></p>
                       <p style="display: flex" slot="extra">
 
@@ -67,6 +67,7 @@
                         </div>
                       </div>
                   </Card>
+                  </div>
                   <div v-if="!dataFound" class="no-data-container">
                       No Data...
                   </div>

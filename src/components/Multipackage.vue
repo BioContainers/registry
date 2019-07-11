@@ -11,7 +11,7 @@
               <Card class="card">
                   <p slot="title">Packages</p>
                   <div class="search-wrapper">
-                    <Input v-model="keywords" icon="ios-search" placeholder="Search" style="width:100%" @on-change="search"></Input>
+                    <Input v-model="keywords" icon="ios-search" placeholder="Search" style="width:100%" @on-change="search"/>
                   </div>
                   <Table stripe :columns="resultsTableCol" :data="resutls" :loading="loading"></Table>
                   <div class="page-wrapper">
