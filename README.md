@@ -40,7 +40,7 @@ Download the source code and put these files to a web server.
     * If user wants to search in the entire hub just like the docker hub, then he can use the search option given at the top. The phrase he wants to search for will search in the entire hub.
 - Filter by word
 - Sort
-    * User can use the sort option to sort the items accorsing to the alphabetical order whether it is ascending or decending.
+    * User can use the sort option to sort the items according to the alphabetical order whether it is ascending or decending.
 - Show the containers description.
 
 Contributing
