@@ -19,29 +19,17 @@ This project provides a web UI for [BioContainers](https://biocontainers.pro)
 How to Test
 ------------------------
 
-- To test the application go to **dist** directory and install `npm install -g http-server`, then use `http-server` to test the app:
+- Run the following installing command:
 
 ```
-http-server -o
+npm install
 ```
 
-We have already deployed this web-ui to our [github pages](http://worksap-ate.github.io/docker-registry-ui/#/).
+- Run the command:
 
-- Please set your docker-registry IP at "Set Registry IP" option. 
-- And you can use the Web UI.
-
-How to Install to your own server
---------------------------------------
-
-Download the source code and put these files to a web server.
-
-- Show all biocontainers in dockerhub and quay.io.
-- Search for containers using the **Search Box**
-    * If user wants to search in the entire hub just like the docker hub, then he can use the search option given at the top. The phrase he wants to search for will search in the entire hub.
-- Filter by word
-- Sort
-    * User can use the sort option to sort the items according to the alphabetical order whether it is ascending or decending.
-- Show the containers description.
+```
+npm run dev
+```
 
 Contributing
 --------------------
