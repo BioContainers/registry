@@ -186,7 +186,7 @@ export default {
                 }
             },
             {
-                title: 'security',
+                title: 'Security Check',
                 key: 'security',
                 align: 'center',
                 width: 85,
@@ -207,7 +207,7 @@ export default {
                                           }
                                       },
                                       props: {
-                                          type: 'ios-copy-outline',
+                                          type: 'ios-link',
                                           size: '14'
                                       },
                                       style: {
