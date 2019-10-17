@@ -120,14 +120,13 @@
                       <a href="https://www.commonwl.org/">
                           <img style="height: 85px" src="static/images/cwl-2.png">
                       </a>
-
                     </Col>
                     <Col span="8">
-                      <!--<p>CWL</p>-->
-                      <!--<img style="width: 180px" src="static/images/cwl-2.png">-->
+                      <a href="https://elixir-europe.org/">
+                          <img style="height: 85px" src="static/images/elixir.png">
+                      </a>
                     </Col>
                     <Col span="8">
-                      <!--<p>CWL</p>-->
                         <a href="https://galaxyproject.org/">
                              <img style="width: 180px" src="static/images/galaxy.png">
                         </a>
