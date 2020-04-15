@@ -341,7 +341,7 @@ export default {
                 for(let j = 0 ; j < all_versions.length; j++){
                     let current_version = all_versions[j];
                     for(let i=0; i < current_version.container_images.length; i++){
-                        let original_type = "/static/logo/biocontainers-logo.png";
+                        let original_type = "/static/images/singularity.png";
                         let prefix = '';
                         if(current_version.container_images[i].container_type === 'DOCKER'){
                             original_type = "/static/images/docker.png";
