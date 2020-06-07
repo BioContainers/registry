@@ -24,7 +24,7 @@
                   </h1>
 
                   <div style="margin-bottom: 16px; margin-top: 16px">
-                    <a href="https://biocontainers-edu.biocontainers.pro" class="button">Quick Start</a>
+                    <a href="https://biocontainers-edu.readthedocs.io/en/latest/" class="button">Quick Start</a>
                     <a class="button" @click="onSelect()">Registry</a>
                   </div>
               </div>
@@ -74,7 +74,7 @@
                           <p class="title">Specifications</p>
                           <p class="sub-title">Specifications, and architecture to create, deploy and maintain software containers using Conda and
                               Docker technologies</p>
-                          <a class="button" href="https://biocontainers-edu.readthedocs.io/en/latest/what_is_biocontainers.html">Read More</a>
+                          <a class="button" https://biocontainers-edu.readthedocs.io/en/latest/what_is_biocontainers.html">Read More</a>
                       </div>
                     </Col>
                     <Col span="8">
@@ -154,7 +154,7 @@
                           <p class="title">Documentation</p>
                           <p class="sub-title">How to create a containers, how to use it into a workflow, everything you need to
                           know about BioContainers</p>
-                          <a class="button" href="https://biocontainers-edu.readthedocs.io">Documentation</a>
+                          <a class="button" href="https://biocontainers-edu.readthedocs.io/en/latest/">Documentation</a>
                       </div>
                     </Col>
 
