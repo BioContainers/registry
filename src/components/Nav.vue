@@ -59,7 +59,7 @@
                         this.$router.push({name:'Registry'});
                         break;
                     case 'documentation':
-                        window.open('http://biocontainers-edu.biocontainers.pro');
+                        window.open('https://biocontainers-edu.readthedocs.io/en/latest/');
                         break;
                     case 'statslink':
                         this.$router.push({name:'Mappingdata'});
