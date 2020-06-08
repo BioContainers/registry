@@ -22,8 +22,16 @@
                   <div class="sort">
                         <span class="name">Sorts by:</span>
                         <div class="sortOption">
-                            <Select v-model="sortType" style="width:90px" @on-change="sortClick">
-                                <Option v-for="item in sorts" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                            <Select v-model="sortType" style="width:90px" @on-change="sortTypeClick">
+                                <Option v-for="item in sortTypeArray" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                            </Select>
+                        </div>
+                  </div>
+                  <div class="sort">
+                        <span class="name">Sorts Order:</span>
+                        <div class="sortOption">
+                            <Select v-model="sortOrder" style="width:90px" @on-change="sortOrderClick">
+                                <Option v-for="item in sortOrderArray" :value="item.value" :key="item.value">{{ item.label }}</Option>
                             </Select>
                         </div>
                   </div>
@@ -187,7 +195,7 @@ export default {
             },
         ],
         sortType:'default',
-        sorts:[
+        sortTypeArray:[
             {
                 label:'Default',
                 value:'default',
@@ -195,6 +203,17 @@ export default {
             {
                 label:'Pull No',
                 value:'pulls',
+            },
+        ],
+        sortOrder:'asc',
+        sortOrderArray:[
+            {
+                label:'Asc',
+                value:'asc',
+            },
+            {
+                label:'Desc',
+                value:'desc',
             },
         ],
         query:{
@@ -245,8 +264,19 @@ export default {
             }
         }*/
     },
-    sortClick(index){
+    sortTypeClick(index){
       console.log(this.sortType)
+      this.search();
+        /*
+          for(let i in this.sorts){
+              if(i == index)
+                this.sorts[i].type = 'primary';
+              else
+                this.sorts[i].type = 'default';
+          }*/
+    },
+    sortOrderClick(index){
+      console.log(this.sortOrder)
       this.search();
         /*
           for(let i in this.sorts){
@@ -278,7 +308,7 @@ export default {
         }
 
         this.query.sort_field = this.sortType
-        this.query.sort_order = 'asc' 
+        this.query.sort_order = this.sortOrder 
         this.$http
             .get(this.$store.state.baseApiURL + '/api/ga4gh/v2/tools',{params:this.query})
             .then(function(res){
