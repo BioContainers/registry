@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import Index from '@/components/Index'
 import Registry from '@/components/Registry'
 
-import tools from '@/components/tools'
+import Tool from '@/components/Tool'
 import NotFound from '@/components/NotFound'
 import Mappingdata from '@/components/Mappingdata'
 import Multipackage from '@/components/Multipackage'
@@ -29,7 +29,7 @@ export default new Router({
     {
       path: '/tools/:id',
       name: 'tools',
-      component: tools
+      component: Tool
     },
     {
       path: '/mappingdata',
