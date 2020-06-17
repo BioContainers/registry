@@ -14,16 +14,20 @@
                     <TabPane label="Readme" icon="ios-list-box">
                         <Row :gutter="20">
                              <Col span="16">
-                                  <div class="title-container">{{containerObj.name}}</div>
+                                 <div class="title-container">{{containerObj.name}}</div>
+                                 <div class="description-container">{{containerObj.description}}</p> </div>
+                                 <h2>Usage</h2>
+                                 <p>Bioconda Installation</p>
+                                 <p>With an activated Bioconda channel `conda config --add channels bioconda`, install with:</p>
+                                 <p>conda install {{containerObj.name}}</p>
 
-                                  <div class="description-container">{{containerObj.description}}</p> </div>
                              </Col>
                              <Col span="8">
                                   <div class="property-container">
                                       <div class="property-wrapper">
                                         <div class="property-item">
                                             <div class="property-title"><strong>Downloads</strong></div>
-                                            <div class="property-content">2,005,230</div>
+                                            <div class="property-content">{{containerObj.pulls}}</div>
                                         </div>
                                       </div>
                                       <Divider class="divider"/>
@@ -48,12 +52,11 @@
                              </Col>
                         </Row>
                     </TabPane>
-                    <TabPane label="Tool Property" icon="ios-apps">
-                      
-                    </TabPane>
-                    <TabPane label="Similar Tools" icon="logo-buffer">
+                    <TabPane label="Packages and Containers" icon="logo-buffer">
                         <VulnerabilitiesModal/>
                         <Table :columns="resultsTableCol" :data="containerObj.images"></Table>
+                    </TabPane>
+                    <TabPane label="Similar Tools" icon="ios-apps">
                     </TabPane>
                 </Tabs>
             </Row>
@@ -87,7 +90,8 @@ export default {
             license:'',
             url:'',
             version:'',
-            images:[]
+            images:[],
+            pulls:0
         },
         loading:true,
         dataFound:false,
@@ -301,12 +305,13 @@ export default {
                 let resbody = res.body;
                 this.containerObj.versions = []
                 this.containerObj = {
-                        name:resbody.toolname.toUpperCase(),
-                        license:'',
-                        description: resbody.description,
+                    name:resbody.toolname.toUpperCase(),
+                    license:'',
+                    description: resbody.description,
                         // url: resbody.url,
-                        versions:[],
-                        images:[]
+                    versions:[],
+                    images:[],
+                    pulls:abbreviateNumber(resbody.pulls)
                       };
                 let found=false;
                 for(let j in this.licenseColor){
@@ -317,7 +322,7 @@ export default {
                     }
                 }
                 if(resbody.license&&!found){
-                    this.containerObj.license = 'https://img.shields.io/badge/license-'+encodeURIComponent(resbody.license).replace(/-/g,'--') + '-lightgrey.svg';
+                    this.containerObj.license = 'https://img.shields.io/badge/license-'+encodeURIComponent(resbody.license).replace(/-/g,'--') + '-lightgrey.svg?';
                 }
                 for(let i = 0; i < resbody.versions; i++){
                     var version_item = {
@@ -434,6 +439,25 @@ export default {
   }
 }
 
+var SI_SYMBOL = ["", "K", "M", "G", "T", "P", "E"];
+function abbreviateNumber(number){
+
+    // what tier? (determines SI symbol)
+    var tier = Math.log10(number) / 3 | 0;
+
+    // if zero, we don't need a suffix
+    if(tier == 0) return number;
+
+    // get suffix and determine scale
+    var suffix = SI_SYMBOL[tier];
+    var scale = Math.pow(10, tier * 3);
+
+    // scale the number
+    var scaled = number / scale;
+
+    // format number and add suffix
+    return scaled.toFixed(1) + suffix;
+}
 
 </script>
 
