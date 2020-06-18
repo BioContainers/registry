@@ -464,6 +464,9 @@ export default {
     .ivu-table{
         font-size: 14px;
     }
+    .ivu-tag{
+        font-size: 16px;
+    }
     .search-wrapper{
       width: 100%;
       text-align: center;
