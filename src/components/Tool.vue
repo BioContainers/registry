@@ -66,13 +66,14 @@
                              </Col>
                         </Row>
                     </TabPane>
-                    <TabPane label="Tool Property" icon="ios-apps">
-                      
-                    </TabPane>
-                    <TabPane label="Similar Tools" icon="logo-buffer">
+                    <TabPane label="Packages and Containers" icon="logo-buffer">
                         <VulnerabilitiesModal/>
                         <Table :columns="resultsTableCol" :data="containerObj.images"></Table>
                     </TabPane>
+                    <TabPane label="Similar Tools" icon="ios-apps">
+                      
+                    </TabPane>
+                    
                 </Tabs>
             </Row>
 
