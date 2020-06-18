@@ -17,8 +17,13 @@
                               <div class="description-container">{{containerObj.description}}</p> </div>
                               <div class="readme-content">
                                 <div class="head">
-                                    <div>Usage</div>
+                                    <div class="title">Usage</div>
                                     <Divider class="divider"/>
+                                    <div class="description-container">
+                                      <div>Bioconda Installation</div>
+                                      <p>With an activated Bioconda channel `conda config --add channels bioconda`, install with:</p>
+                                      <p>conda install {{containerObj.name}}</p>
+                                    </div>
                                 </div>
                                 <div class="middle">
                                     <Row :gutter="6">
@@ -79,12 +84,11 @@
                               </div>
                         </Row>
                     </TabPane>
-                    <TabPane label="Tool Property" icon="ios-apps">
-                      
-                    </TabPane>
-                    <TabPane label="Similar Tools" icon="logo-buffer">
+                    <TabPane label="Packages and Containers" icon="logo-buffer">
                         <VulnerabilitiesModal/>
                         <Table :columns="resultsTableCol" :data="containerObj.images"></Table>
+                    </TabPane>
+                    <TabPane label="Similar Tools" icon="ios-apps">
                     </TabPane>
                 </Tabs>
             </Row>
@@ -118,7 +122,8 @@ export default {
             license:'',
             url:'',
             version:'',
-            images:[]
+            images:[],
+            pulls:0
         },
         loading:true,
         dataFound:false,
@@ -333,12 +338,13 @@ export default {
                 let resbody = res.body;
                 this.containerObj.versions = []
                 this.containerObj = {
-                        name:resbody.toolname.toUpperCase(),
-                        license:'',
-                        description: resbody.description,
+                    name:resbody.toolname.toUpperCase(),
+                    license:'',
+                    description: resbody.description,
                         // url: resbody.url,
-                        versions:[],
-                        images:[]
+                    versions:[],
+                    images:[],
+                    pulls:abbreviateNumber(resbody.pulls)
                       };
                 let found=false;
                 for(let j in this.licenseColor){
@@ -349,7 +355,7 @@ export default {
                     }
                 }
                 if(resbody.license&&!found){
-                    this.containerObj.license = 'https://img.shields.io/badge/license-'+encodeURIComponent(resbody.license).replace(/-/g,'--') + '-lightgrey.svg';
+                    this.containerObj.license = 'https://img.shields.io/badge/license-'+encodeURIComponent(resbody.license).replace(/-/g,'--') + '-lightgrey.svg?';
                 }
                 for(let i = 0; i < resbody.versions; i++){
                     var version_item = {
@@ -466,6 +472,25 @@ export default {
   }
 }
 
+var SI_SYMBOL = ["", "K", "M", "G", "T", "P", "E"];
+function abbreviateNumber(number){
+
+    // what tier? (determines SI symbol)
+    var tier = Math.log10(number) / 3 | 0;
+
+    // if zero, we don't need a suffix
+    if(tier == 0) return number;
+
+    // get suffix and determine scale
+    var suffix = SI_SYMBOL[tier];
+    var scale = Math.pow(10, tier * 3);
+
+    // scale the number
+    var scaled = number / scale;
+
+    // format number and add suffix
+    return scaled.toFixed(1) + suffix;
+}
 
 </script>
 
@@ -680,8 +705,10 @@ export default {
     .readme-content{
       margin-top: 30px;
     }
-    .readme-content .head{
-      font-weight: 700
+    .readme-content .head .title{
+      font-weight: 700;
+      font-size:1.1rem !important;
+      margin-bottom: 10px;
     }
     .readme-content .middle{
       margin: 20px 0;
