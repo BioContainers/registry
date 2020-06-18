@@ -12,40 +12,71 @@
             <Row :gutter="16">
                 <Tabs>
                     <TabPane label="Readme" icon="ios-list-box">
-                        <Row :gutter="20">
-                             <Col span="16">
-                                  <div class="title-container">{{containerObj.name}}</div>
-
-                                  <div class="description-container">{{containerObj.description}}</p> </div>
-                             </Col>
-                             <Col span="8">
-                                  <div class="property-container">
-                                      <div class="property-wrapper">
-                                        <div class="property-item">
-                                            <div class="property-title"><strong>Downloads</strong></div>
-                                            <div class="property-content">2,005,230</div>
-                                        </div>
-                                      </div>
-                                      <Divider class="divider"/>
-                                      <div class="property-wrapper">
-                                        <div class="property-item">
-                                            <div class="property-title"><strong>Homepage</strong></div>
-                                            <div class="property-content">http://xxx.xxx.com</div>
-                                        </div>
-                                      </div>
-                                      <Divider class="divider"/>
-                                      <div class="property-wrapper">
-                                        <div class="property-item">
-                                            <div class="property-title"><strong>Version</strong></div>
-                                            <div class="property-content">1.0</div>
-                                        </div>
-                                        <div class="property-item">
-                                            <div class="property-title"><strong>License</strong></div>
-                                            <div class="property-content"><img class="license-img" :src="containerObj.license"/></div>
-                                        </div>
-                                      </div>
-                                  </div>
-                             </Col>
+                        <Row>
+                              <div class="title-container">{{containerObj.name}}</div>
+                              <div class="description-container">{{containerObj.description}}</p> </div>
+                              <div class="readme-content">
+                                <div class="head">
+                                    <div>Usage</div>
+                                    <Divider class="divider"/>
+                                </div>
+                                <div class="middle">
+                                    <Row :gutter="6">
+                                        <Col span="6">
+                                            <div class="property-container">
+                                              <div class="property-wrapper">
+                                                <div class="property-item">
+                                                    <div class="property-title"><strong>Navigation</strong></div>
+                                                    <a class="property-content">xxxx</a>
+                                                    <a class="property-content">xxxx</a>
+                                                    <a class="property-content">xxxx</a>
+                                                    <a class="property-content">xxxx</a>
+                                                </div>
+                                              </div>
+                                            </div>
+                                        </Col>
+                                        <Col span="18">
+                                              <div class="property-container">
+                                                  <div class="property-wrapper">
+                                                    <div class="property-item">
+                                                        <div class="property-title"><strong>Abstract</strong></div>
+                                                        <div class="property-content">aaaaaaaa</div>
+                                                    </div>
+                                                  </div>
+                                                  <div class="property-wrapper">
+                                                    <div class="property-item">
+                                                        <div class="property-title"><strong>Homepage: </strong> http://xxx.xxx.com</div>
+                                                    </div>
+                                                  </div>
+                                                  <div class="property-wrapper">
+                                                    <div class="property-item">
+                                                        <div class="property-title"><strong>Version: </strong> 1.0</div>
+                                                    </div>
+                                                  </div>
+                                                  <div class="property-wrapper">
+                                                    <div class="property-item">
+                                                        <div class="property-title"><strong>License: </strong><img class="license-img" :src="containerObj.license"/></div>
+                                                    </div>
+                                                  </div>
+                                                  <div class="property-wrapper">
+                                                    <div class="property-item">
+                                                        <div class="property-title"><strong>Installation</strong></div>
+                                                        <div class="property-content">With an activated Bioconda</div>
+                                                        <div class="property-code">conda install abacat</div>
+                                                    </div>
+                                                  </div>
+                                              </div>
+                                        </Col>
+                                    </Row>
+                                </div>
+                                <div class="foot">
+                                    <div>Keyword</div>
+                                    <Divider class="divider"/>
+                                    <div class="tag-wrapper" >
+                                        <Tag v-for="item in toolKeywordsArray" color="warning" style="margin-right: 5px">{{item}}</Tag>
+                                    </div>
+                                </div>
+                              </div>
                         </Row>
                     </TabPane>
                     <TabPane label="Tool Property" icon="ios-apps">
@@ -228,7 +259,8 @@ export default {
           CC:'blueviolet',
           Artistic:'important'
         },
-        similarProjects:[]
+        similarProjects:[],
+        toolKeywordsArray:['ui1','ui2','ui3']
     }
   },
   methods:{
@@ -588,10 +620,6 @@ export default {
       margin-bottom: 5px;
       white-space: normal;
     }
-    .tag-wrapper{
-      margin-bottom: 5px;
-      display: inline-block;
-    }
     .card{
       width: 100%;
       margin-bottom: 30px;
@@ -631,12 +659,38 @@ export default {
       display: flex;
       /*margin-bottom: 10px;*/
       width: 100%;
+      margin-bottom: 10px;
+      min-height: 50px;
     }
     .property-item{
-      width: 50%
+      
+    }
+    .property-title{
+      display: flex;
+      align-items: center;
+    }
+    .property-code{
+      padding: 7px 30px;
+      background: #EEE;
+      margin-top: 10px;
     }
     .divider{
       margin:10px 0;
+    }
+    .readme-content{
+      margin-top: 30px;
+    }
+    .readme-content .head{
+      font-weight: 700
+    }
+    .readme-content .middle{
+      margin: 20px 0;
+    }
+    .readme-content .foot{
+      font-weight: 700
+    }
+    .tag-wrapper{
+      display: flex
     }
 </style>
 
