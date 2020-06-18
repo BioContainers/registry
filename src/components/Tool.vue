@@ -14,9 +14,27 @@
                     <TabPane label="Readme" icon="ios-list-box">
                         <Row :gutter="20">
                              <Col span="16">
-                                  <div class="title-container">{{containerObj.name}}</div>
+                                  <div style="margin-bottom: 20px">
+                                      <div class="title-container">{{containerObj.name}}</div>
 
-                                  <div class="description-container">{{containerObj.description}}</p> </div>
+                                      <div class="description-container">{{containerObj.description}}</div>
+                                  </div>
+                                  <div class="middle" style="margin-bottom: 20px">
+                                      <div><strong>Usage</strong></div>
+                                      <Divider class="divider"/>
+                                      <div class="description-container">
+                                          <div>Bioconda Installation</div>
+                                          <div>With an activated Bioconda channel `conda config --add channels bioconda`, install with:</div>
+                                      </div>
+                                      <div class="code">conda install {{containerObj.name}}</div>
+                                  </div>
+                                  <div class="foot">
+                                      <div><strong>Keyword</strong></div>
+                                      <Divider class="divider"/>
+                                      <div class="tag-wrapper" >
+                                          <Tag v-for="item in toolKeywordsArray" color="warning" style="margin-right:5px;height:30px;font-size:16px;line-height:30px;">{{item}}</Tag>
+                                      </div>
+                                  </div>
                              </Col>
                              <Col span="8">
                                   <div class="property-container">
@@ -228,7 +246,8 @@ export default {
           CC:'blueviolet',
           Artistic:'important'
         },
-        similarProjects:[]
+        similarProjects:[],
+        toolKeywordsArray:['ui1','ui2','ui3']
     }
   },
   methods:{
@@ -638,6 +657,15 @@ export default {
     .divider{
       margin:10px 0;
     }
+    .middle .code{
+        background: #EEE;
+        padding: 5px 30px;
+        display: inline-block;
+    }
+    .description-container div{
+      margin-bottom: 10px;
+    }
+    
 </style>
 
 <style>
