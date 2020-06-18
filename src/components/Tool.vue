@@ -12,7 +12,7 @@
             <Row :gutter="16">
                 <Tabs>
                     <TabPane label="Readme" icon="ios-list-box">
-                        <Row :gutter="20">
+                        <Row :gutter="80">
                              <Col span="16">
                                   <div style="margin-bottom: 20px">
                                       <div class="title-container">{{containerObj.name}}</div>
