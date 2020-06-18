@@ -41,7 +41,7 @@
                                       <div class="property-wrapper">
                                         <div class="property-item">
                                             <div class="property-title"><strong>Downloads</strong></div>
-                                            <div class="property-content">2,005,230</div>
+                                            <div class="property-content">{{containerObj.pulls}}</div>
                                         </div>
                                       </div>
                                       <Divider class="divider"/>
@@ -55,7 +55,7 @@
                                       <div class="property-wrapper">
                                         <div class="property-item">
                                             <div class="property-title"><strong>Version</strong></div>
-                                            <div class="property-content">1.0</div>
+                                            <div class="property-content">1</div>
                                         </div>
                                         <div class="property-item">
                                             <div class="property-title"><strong>License</strong></div>
@@ -323,13 +323,14 @@ export default {
                 let resbody = res.body;
                 this.containerObj.versions = []
                 this.containerObj = {
-                        name:resbody.toolname.toUpperCase(),
-                        license:'',
-                        description: resbody.description,
-                        // url: resbody.url,
-                        versions:[],
-                        images:[]
-                      };
+                    name:resbody.toolname.toUpperCase(),
+                    license:'',
+                    description: resbody.description,
+                    pulls: abbreviateNumber(resbody.pulls),
+                    // url: resbody.url,
+                    versions:[],
+                    images:[]
+                };
                 let found=false;
                 for(let j in this.licenseColor){
                     if(resbody.license&&resbody.license.match(j)){
@@ -454,6 +455,27 @@ export default {
     this.containerVersion();
     this.getSimilars(this.$route.params.id);
   }
+}
+
+var SI_SYMBOL = ["", "K", "M", "G", "T", "P", "E"];
+
+function abbreviateNumber(number){
+
+    // what tier? (determines SI symbol)
+    var tier = Math.log10(number) / 3 | 0;
+
+    // if zero, we don't need a suffix
+    if(tier == 0) return number;
+
+    // get suffix and determine scale
+    var suffix = SI_SYMBOL[tier];
+    var scale = Math.pow(10, tier * 3);
+
+    // scale the number
+    var scaled = number / scale;
+
+    // format number and add suffix
+    return scaled.toFixed(1) + suffix;
 }
 
 </script>
