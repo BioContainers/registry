@@ -68,7 +68,7 @@
                     </TabPane>
                     <TabPane label="Packages and Containers" icon="logo-buffer">
                         <VulnerabilitiesModal/>
-                        <Table :columns="resultsTableCol" :data="containerObj.images"></Table>
+                        <Table class="tool-table" :columns="resultsTableCol" :data="containerObj.images"></Table>
                     </TabPane>
                     <TabPane label="Similar Tools" icon="ios-apps">
                       
@@ -143,7 +143,7 @@ export default {
                 key: 'version',
                 align: 'center',
                 sortable: true,
-                width: 100,
+                width: 110,
             },
             {
                 title: 'Last Update',
@@ -157,7 +157,7 @@ export default {
                 key: 'size',
                 align: 'center',
                 sortable: true,
-                width: 85,
+                width: 100,
             },
             {
                 title: 'Full Tag ',
@@ -711,5 +711,10 @@ function abbreviateNumber(number){
       border: 1px solid #d6e9c6 !important;
       border-color: #d6e9c6 !important;
     }
-
+    .tool-table .ivu-table{
+      font-size: 14px;
+    }
+    .tool-table .ivu-tag{
+      font-size: 14px;
+    }
 </style>
