@@ -12,78 +12,66 @@
             <Row :gutter="16">
                 <Tabs>
                     <TabPane label="Readme" icon="ios-list-box">
-                        <Row>
-                              <div class="title-container">{{containerObj.name}}</div>
-                              <div class="description-container">{{containerObj.description}}</p> </div>
-                              <div class="readme-content">
-                                <div class="head">
-                                    <div class="title">Usage</div>
-                                    <Divider class="divider"/>
-                                </div>
-                                <div class="middle">
-                                    <Row :gutter="6">
-                                        <Col span="6">
-                                            <div class="property-container">
-                                              <div class="property-wrapper">
-                                                <div class="property-item">
-                                                    <div class="property-title"><strong>Navigation</strong></div>
-                                                    <a class="property-content">xxxx</a>
-                                                    <a class="property-content">xxxx</a>
-                                                    <a class="property-content">xxxx</a>
-                                                    <a class="property-content">xxxx</a>
-                                                </div>
-                                              </div>
-                                            </div>
-                                        </Col>
-                                        <Col span="18">
-                                              <div class="property-container">
-                                                  <div class="property-wrapper">
-                                                    <div class="property-item">
-                                                        <div class="property-title"><strong>Abstract</strong></div>
-                                                        <div class="property-content">aaaaaaaa</div>
-                                                    </div>
-                                                  </div>
-                                                  <div class="property-wrapper">
-                                                    <div class="property-item">
-                                                        <div class="property-title"><strong>Homepage: </strong> http://xxx.xxx.com</div>
-                                                    </div>
-                                                  </div>
-                                                  <div class="property-wrapper">
-                                                    <div class="property-item">
-                                                        <div class="property-title"><strong>Version: </strong> 1.0</div>
-                                                    </div>
-                                                  </div>
-                                                  <div class="property-wrapper">
-                                                    <div class="property-item">
-                                                        <div class="property-title"><strong>License: </strong><img class="license-img" :src="containerObj.license"/></div>
-                                                    </div>
-                                                  </div>
-                                                  <div class="property-wrapper">
-                                                    <div class="property-item">
-                                                        <div class="property-title"><strong>Bioconda Installation</strong></div>
-                                                        <div class="property-content">With an activated Bioconda channel `conda config --add channels bioconda`, install with:</div>
-                                                        <div class="property-code">conda install {{containerObj.name}}</div>
-                                                    </div>
-                                                  </div>
-                                              </div>
-                                        </Col>
-                                    </Row>
-                                </div>
-                                <div class="foot">
-                                    <div>Keyword</div>
-                                    <Divider class="divider"/>
-                                    <div class="tag-wrapper" >
-                                        <Tag v-for="item in toolKeywordsArray" color="warning" style="margin-right: 5px">{{item}}</Tag>
-                                    </div>
-                                </div>
-                              </div>
+                        <Row :gutter="80">
+                             <Col span="16">
+                                  <div style="margin-bottom: 20px">
+                                      <div class="title-container">{{containerObj.name}}</div>
+
+                                      <div class="description-container">{{containerObj.description}}</div>
+                                  </div>
+                                  <div class="middle" style="margin-bottom: 20px">
+                                      <div><strong>Usage</strong></div>
+                                      <Divider class="divider"/>
+                                      <div class="description-container">
+                                          <div>Bioconda Installation</div>
+                                          <div>With an activated Bioconda channel `conda config --add channels bioconda`, install with:</div>
+                                      </div>
+                                      <div class="code">conda install {{containerObj.name}}</div>
+                                  </div>
+                                  <div class="foot">
+                                      <div><strong>Keyword</strong></div>
+                                      <Divider class="divider"/>
+                                      <div class="tag-wrapper" >
+                                          <Tag v-for="item in toolKeywordsArray" color="warning" style="margin-right:5px;height:30px;font-size:16px;line-height:30px;">{{item}}</Tag>
+                                      </div>
+                                  </div>
+                             </Col>
+                             <Col span="8">
+                                  <div class="property-container">
+                                      <div class="property-wrapper">
+                                        <div class="property-item">
+                                            <div class="property-title"><strong>Downloads</strong></div>
+                                            <div class="property-content">2,005,230</div>
+                                        </div>
+                                      </div>
+                                      <Divider class="divider"/>
+                                      <div class="property-wrapper">
+                                        <div class="property-item">
+                                            <div class="property-title"><strong>Homepage</strong></div>
+                                            <div class="property-content">http://xxx.xxx.com</div>
+                                        </div>
+                                      </div>
+                                      <Divider class="divider"/>
+                                      <div class="property-wrapper">
+                                        <div class="property-item">
+                                            <div class="property-title"><strong>Version</strong></div>
+                                            <div class="property-content">1.0</div>
+                                        </div>
+                                        <div class="property-item">
+                                            <div class="property-title"><strong>License</strong></div>
+                                            <div class="property-content"><img class="license-img" :src="containerObj.license"/></div>
+                                        </div>
+                                      </div>
+                                  </div>
+                             </Col>
                         </Row>
                     </TabPane>
-                    <TabPane label="Packages and Containers" icon="logo-buffer">
+                    <TabPane label="Tool Property" icon="ios-apps">
+                      
+                    </TabPane>
+                    <TabPane label="Similar Tools" icon="logo-buffer">
                         <VulnerabilitiesModal/>
                         <Table :columns="resultsTableCol" :data="containerObj.images"></Table>
-                    </TabPane>
-                    <TabPane label="Similar Tools" icon="ios-apps">
                     </TabPane>
                 </Tabs>
             </Row>
@@ -117,8 +105,7 @@ export default {
             license:'',
             url:'',
             version:'',
-            images:[],
-            pulls:0
+            images:[]
         },
         loading:true,
         dataFound:false,
@@ -333,13 +320,12 @@ export default {
                 let resbody = res.body;
                 this.containerObj.versions = []
                 this.containerObj = {
-                    name:resbody.toolname.toUpperCase(),
-                    license:'',
-                    description: resbody.description,
+                        name:resbody.toolname.toUpperCase(),
+                        license:'',
+                        description: resbody.description,
                         // url: resbody.url,
-                    versions:[],
-                    images:[],
-                    pulls:abbreviateNumber(resbody.pulls)
+                        versions:[],
+                        images:[]
                       };
                 let found=false;
                 for(let j in this.licenseColor){
@@ -350,7 +336,7 @@ export default {
                     }
                 }
                 if(resbody.license&&!found){
-                    this.containerObj.license = 'https://img.shields.io/badge/license-'+encodeURIComponent(resbody.license).replace(/-/g,'--') + '-lightgrey.svg?';
+                    this.containerObj.license = 'https://img.shields.io/badge/license-'+encodeURIComponent(resbody.license).replace(/-/g,'--') + '-lightgrey.svg';
                 }
                 for(let i = 0; i < resbody.versions; i++){
                     var version_item = {
@@ -467,25 +453,6 @@ export default {
   }
 }
 
-var SI_SYMBOL = ["", "K", "M", "G", "T", "P", "E"];
-function abbreviateNumber(number){
-
-    // what tier? (determines SI symbol)
-    var tier = Math.log10(number) / 3 | 0;
-
-    // if zero, we don't need a suffix
-    if(tier == 0) return number;
-
-    // get suffix and determine scale
-    var suffix = SI_SYMBOL[tier];
-    var scale = Math.pow(10, tier * 3);
-
-    // scale the number
-    var scaled = number / scale;
-
-    // format number and add suffix
-    return scaled.toFixed(1) + suffix;
-}
 
 </script>
 
@@ -640,6 +607,10 @@ function abbreviateNumber(number){
       margin-bottom: 5px;
       white-space: normal;
     }
+    .tag-wrapper{
+      margin-bottom: 5px;
+      display: inline-block;
+    }
     .card{
       width: 100%;
       margin-bottom: 30px;
@@ -679,41 +650,22 @@ function abbreviateNumber(number){
       display: flex;
       /*margin-bottom: 10px;*/
       width: 100%;
-      margin-bottom: 10px;
-      min-height: 50px;
     }
     .property-item{
-      
-    }
-    .property-title{
-      display: flex;
-      align-items: center;
-    }
-    .property-code{
-      padding: 4px 20px;
-      background: #EEE;
-      margin-top: 5px;
+      width: 50%
     }
     .divider{
       margin:10px 0;
     }
-    .readme-content{
-      margin-top: 30px;
+    .middle .code{
+        background: #EEE;
+        padding: 5px 30px;
+        display: inline-block;
     }
-    .readme-content .head .title{
-      font-weight: 700;
-      font-size:1.1rem !important;
+    .description-container div{
       margin-bottom: 10px;
     }
-    .readme-content .middle{
-      margin: 20px 0;
-    }
-    .readme-content .foot{
-      font-weight: 700
-    }
-    .tag-wrapper{
-      display: flex
-    }
+    
 </style>
 
 <style>
