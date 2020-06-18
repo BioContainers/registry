@@ -19,11 +19,6 @@
                                 <div class="head">
                                     <div class="title">Usage</div>
                                     <Divider class="divider"/>
-                                    <div class="description-container">
-                                      <div>Bioconda Installation</div>
-                                      <p>With an activated Bioconda channel `conda config --add channels bioconda`, install with:</p>
-                                      <p>conda install {{containerObj.name}}</p>
-                                    </div>
                                 </div>
                                 <div class="middle">
                                     <Row :gutter="6">
@@ -65,9 +60,9 @@
                                                   </div>
                                                   <div class="property-wrapper">
                                                     <div class="property-item">
-                                                        <div class="property-title"><strong>Installation</strong></div>
-                                                        <div class="property-content">With an activated Bioconda</div>
-                                                        <div class="property-code">conda install abacat</div>
+                                                        <div class="property-title"><strong>Bioconda Installation</strong></div>
+                                                        <div class="property-content">With an activated Bioconda channel `conda config --add channels bioconda`, install with:</div>
+                                                        <div class="property-code">conda install {{containerObj.name}}</div>
                                                     </div>
                                                   </div>
                                               </div>
@@ -695,9 +690,9 @@ function abbreviateNumber(number){
       align-items: center;
     }
     .property-code{
-      padding: 7px 30px;
+      padding: 4px 20px;
       background: #EEE;
-      margin-top: 10px;
+      margin-top: 5px;
     }
     .divider{
       margin:10px 0;
