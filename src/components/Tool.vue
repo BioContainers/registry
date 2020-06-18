@@ -73,7 +73,7 @@
                     <TabPane label="Similar Tools" icon="ios-apps">
                       
                     </TabPane>
-                    
+
                 </Tabs>
             </Row>
 
@@ -117,7 +117,8 @@ export default {
                 title: 'Type',
                 key: 'type',
                 align: 'center',
-                width: 65,
+                width: 95,
+                sortable: true,
                 render:(h,params) => {
                     return h('img', {
                         attrs: {
@@ -130,13 +131,13 @@ export default {
                     })
                 }
             },
-            {
-                title: 'Tool',
-                key: 'tool',
-                align: 'center',
-                width: 120,
-
-            },
+            // {
+            //     title: 'Tool',
+            //     key: 'tool',
+            //     align: 'center',
+            //     width: 120,
+            //
+            // },
             {
                 title: 'Version',
                 key: 'version',
@@ -145,11 +146,11 @@ export default {
                 width: 100,
             },
             {
-                title: 'Modified',
+                title: 'Last Update',
                 key: 'last_updated',
                 align: 'center',
                 sortable: true,
-                width: 105,
+                width: 140,
             },
             {
                 title: 'Size',
@@ -161,6 +162,7 @@ export default {
             {
                 title: 'Full Tag ',
                 key: 'full_tag',
+                sortable: true,
                 // align: 'center',
                 render: (h, params) => {
                             const row = params.row;
@@ -203,41 +205,41 @@ export default {
 
                 }
             },
-            {
-                title: 'Security Check',
-                key: 'security',
-                align: 'center',
-                width: 85,
-                render: (h, params) => {
-                            const row = params.row;
-                            const color = 'blue';
-
-                            return h('div', {
-                              style: {
-                                  display:'flex',
-                                      alignItems:'center'
-                                  },
-                              },[
-                                  h('Icon', {
-                                      on: {
-                                          click: () => {
-                                            this.getAnchoreImage(row)
-                                          }
-                                      },
-                                      props: {
-                                          type: 'ios-link',
-                                          size: '14'
-                                      },
-                                      style: {
-                                          marginLeft: '5px',
-                                          display:'inline-block',
-                                          cursor:'pointer'
-                                      },
-                                  }),
-                              ]);
-
-                }
-            },
+            // {
+            //     title: 'Security Check',
+            //     key: 'security',
+            //     align: 'center',
+            //     width: 85,
+            //     render: (h, params) => {
+            //                 const row = params.row;
+            //                 const color = 'blue';
+            //
+            //                 return h('div', {
+            //                   style: {
+            //                       display:'flex',
+            //                           alignItems:'center'
+            //                       },
+            //                   },[
+            //                       h('Icon', {
+            //                           on: {
+            //                               click: () => {
+            //                                 this.getAnchoreImage(row)
+            //                               }
+            //                           },
+            //                           props: {
+            //                               type: 'ios-link',
+            //                               size: '14'
+            //                           },
+            //                           style: {
+            //                               marginLeft: '5px',
+            //                               display:'inline-block',
+            //                               cursor:'pointer'
+            //                           },
+            //                       }),
+            //                   ]);
+            //
+            //     }
+            // },
         ],
         licenseColor:{
           Apache: 'brightgreen',
@@ -462,6 +464,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+    .ivu-table{
+        font-size: 14px;
+    }
     .search-wrapper{
       width: 100%;
       text-align: center;
