@@ -694,6 +694,8 @@ function abbreviateNumber(number){
         background: #EEE;
         padding: 5px 30px;
         display: inline-block;
+        width: 100%;
+        font-family: "Anonymous Pro", "Menlo", "Consolas", "Bitstream Vera Sans Mono", "Courier New", monospace;
     }
     .description-container div{
       margin-bottom: 10px;
