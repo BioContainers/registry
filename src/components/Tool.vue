@@ -320,13 +320,13 @@ export default {
     toolInfo(id){
         console.log('this.$router.params.id',id)
         this.$http
-            .get(this.$store.state.baseApiURL + '/api/ga4gh/v2/tools/'+ id)
+            .get(this.$store.state.baseApiURL + '/ga4gh/trs/v2/tools/'+ id)
             .then(function (res) {
                 console.log('res.body', res.body);
                 let resbody = res.body;
                 this.containerObj.versions = []
                 this.containerObj = {
-                    name:resbody.toolname.toUpperCase(),
+                    name:resbody.name,
                     license:'',
                     description: resbody.description,
                     pulls: abbreviateNumber(resbody.pulls),
@@ -357,7 +357,7 @@ export default {
     },
     containerID(id){
          this.$http
-            .get(this.$store.state.baseApiURL + '/api/ga4gh/v2/tools/'+ id +'/versions')
+            .get(this.$store.state.baseApiURL + '/ga4gh/trs/v2/tools/'+ id +'/versions')
             .then(function(res){
                 console.log('res.body',res.body);
                 let resbody=res.body[0];
@@ -426,7 +426,7 @@ export default {
     },
     getSimilars(id){
         this.$http
-            .get(this.$store.state.baseApiURL + '/api/ga4gh/v2/tools/'+ id + '/similars')
+            .get(this.$store.state.baseApiURL + '/ga4gh/trs/v2/tools/'+ id + '/similars')
             .then(function (res) {
                 // console.log('res.body similars', res.body);
                 this.similarProjects = []
