@@ -20,29 +20,26 @@
                                       <div class="description-container">{{containerObj.description}}</div>
                                   </div>
                                   <div class="middle" style="margin-bottom: 20px">
-                                      <div><strong>Usage</strong></div>
+                                      <div><h2>Usage</h2></div>
                                       <Divider class="divider"/>
                                       <div>
                                           <div class="description-container">
-                                              <div><stron>BioConda Installation</stron></div>
+                                              <div><strong>BioConda Installation</strong></div>
                                               <div>With an activated BioConda channel (see <a href="https://bioconda.github.io/user/install.html#set-up-channels">Set up bioconda channels</a>), install with:</div>
-                                              <div class="code">
-                                                  <div>conda config --add channels defaults,bioconda,conda-forge</div>
-                                                  <div>conda install {{containerObj.name}}</div>
-                                              </div>
+                                              <div class="code">conda install {{containerObj.name}}</div>
                                               <div></div>
                                               <div>More information about BioConda can be found <a href="https://bioconda.github.io/user/index.html">here</a></div>
                                               <div></div>
-                                              <div>Install specific version</div>
+                                              <div><strong>Install specific version</strong></div>
                                               <div>From the Packages and Containers tab you can select a conda package version to install: </div>
-                                              <div class="code">onda install {{containerObj.conda_example}}</div>
+                                              <div class="code">conda install {{containerObj.conda_example}}</div>
                                               <div></div>
-                                              <div>Update to latest version</div>
+                                              <div><strong>Update to latest version</strong></div>
                                               <div>You can update your package to the latest version using the following command:</div>
                                               <div class="code">conda update {{containerObj.name}}</div>
                                           </div>
                                           <div class="description-container">
-                                              <div>Docker Installation</div>
+                                              <div><strong>Docker Installation</strong></div>
                                               <div>You first need to be sure that <a href="https://biocontainers-edu.readthedocs.io/en/latest/getting_started.html">docker is installed in your system</a>, then you can install the containers using the following command:</div>
                                               <div class="code">docker pull {{containerObj.name}}</div>
                                           </div>
@@ -712,6 +709,7 @@ function abbreviateNumber(number){
         padding: 5px 30px;
         display: inline-block;
         width: 100%;
+        font-size: 14px;
         font-family: "Anonymous Pro", "Menlo", "Consolas", "Bitstream Vera Sans Mono", "Courier New", monospace;
     }
     .description-container div{
