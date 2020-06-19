@@ -22,11 +22,14 @@
                                   <div class="middle" style="margin-bottom: 20px">
                                       <div><strong>Usage</strong></div>
                                       <Divider class="divider"/>
-                                      <div class="description-container">
-                                          <div>Bioconda Installation</div>
-                                          <div>With an activated Bioconda channel `conda config --add channels bioconda`, install with:</div>
+                                      <div>
+                                          <div class="description-container">
+                                              <div>BioConda Installation</div>
+                                              <div>With an activated BioConda channel `conda config --add channels bioconda`, install with:</div>
+                                          </div>
+                                          <div class="code">conda install {{containerObj.name}}</div>
+                                          <div>More information about BioConda can be found <a href="https://bioconda.github.io/user/index.html">here</a></div>
                                       </div>
-                                      <div class="code">conda install {{containerObj.name}}</div>
                                   </div>
                                   <div class="foot">
                                       <div><strong>Keyword</strong></div>
