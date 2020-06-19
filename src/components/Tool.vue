@@ -11,7 +11,7 @@
           <div class="container-wrapper">
             <Row :gutter="16">
                 <Tabs>
-                    <TabPane label="Readme" icon="ios-list-box">
+                        <TabPane label="Readme" icon="ios-list-box">
                         <Row :gutter="80">
                              <Col span="16">
                                   <div style="margin-bottom: 20px">
@@ -35,7 +35,7 @@
                                       <div><strong>Keyword</strong></div>
                                       <Divider class="divider"/>
                                       <div class="tag-wrapper" >
-                                          <Tag v-for="item in toolKeywordsArray" color="warning" style="margin-right:5px;height:30px;font-size:16px;line-height:30px;">{{item}}</Tag>
+                                          <Tag v-for="item in containerObj.keywords" color="warning" style="margin-right:5px;height:30px;font-size:16px;line-height:30px;">{{item}}</Tag>
                                       </div>
                                   </div>
                              </Col>
@@ -51,7 +51,7 @@
                                       <div class="property-wrapper">
                                         <div class="property-item">
                                             <div class="property-title"><strong>Homepage</strong></div>
-                                            <div class="property-content">http://xxx.xxx.com</div>
+                                            <div class="property-content">{{containerObj.url}}</div>
                                         </div>
                                       </div>
                                       <Divider class="divider"/>
@@ -253,7 +253,6 @@ export default {
           Artistic:'important'
         },
         similarProjects:[],
-        toolKeywordsArray:['ui1','ui2','ui3']
     }
   },
   methods:{
@@ -328,11 +327,14 @@ export default {
                 this.containerObj = {
                     name:resbody.name,
                     license:'',
+                    url: resbody.tool_url,
                     description: resbody.description,
                     pulls: abbreviateNumber(resbody.pulls),
                     // url: resbody.url,
                     versions:[],
-                    images:[]
+                    images:[],
+                    keywords:resbody.tool_tags
+
                 };
                 let found=false;
                 for(let j in this.licenseColor){
@@ -365,24 +367,24 @@ export default {
                 let all_versions = res.body;
                 for(let j = 0 ; j < all_versions.length; j++){
                     let current_version = all_versions[j];
-                    for(let i=0; i < current_version.container_images.length; i++){
+                    for(let i=0; i < current_version.images.length; i++){
                         let original_type = "/static/images/singularity.png";
                         let prefix = '';
-                        if(current_version.container_images[i].container_type === 'DOCKER'){
+                        if(current_version.images[i].image_type === 'Docker'){
                             original_type = "/static/images/docker.png";
                             prefix = 'docker pull ';
-                        }else if(current_version.container_images[i].container_type === 'CONDA'){
+                        }else if(current_version.images[i].image_type === 'Conda'){
                             original_type = "/static/images/conda.png";
                             prefix = 'conda install -c conda-forge -c bioconda ';
                         }
                         var item = {
                             tool: current_version.name,
                             version: current_version.meta_version,
-                            full_tag: prefix + current_version.container_images[i].full_tag,
-                            size: (current_version.container_images[i].size/1048576).toFixed(2) + "M",
-                            last_updated: current_version.container_images[i].hasOwnProperty('last_updated')? current_version.container_images[i].last_updated.substring(0,10): '',
+                            full_tag: prefix + current_version.images[i].image_name,
+                            size: (current_version.images[i].size/1048576).toFixed(2) + "M",
+                            last_updated: current_version.images[i].hasOwnProperty('updated')? current_version.images[i].updated.substring(0,10): '',
                             type: original_type,
-                            full_version: current_version.container_images[i].full_tag
+                            full_version: current_version.images[i].image_name
                         };
                         this.containerObj.images.push(item);
                     }
