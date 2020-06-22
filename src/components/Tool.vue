@@ -20,9 +20,9 @@
                                       <div></div>
                                       <div>
                                           <div v-if="containerObj.conda===true">
-                                              <img v-if="containerObj.conda===true" src="https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=for-the-badge&logo=anaconda" />
-                                              <img v-if="containerObj.docker===true" src="https://img.shields.io/badge/install%20with-docker-important.svg?style=for-the-badge&logo=docker" />
-                                              <img v-if="containerObj.singularity===true" src="https://img.shields.io/badge/install%20with-singularity-blue.svg?style=for-the-badge" />
+                                              <img v-if="containerObj.conda===true" src="https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square&logo=anaconda" />
+                                              <img v-if="containerObj.docker===true" src="https://img.shields.io/badge/install%20with-docker-important.svg?style=flat-square&logo=docker" />
+                                              <img v-if="containerObj.singularity===true" src="https://img.shields.io/badge/install%20with-singularity-blue.svg?style=flat-square" />
                                           </div>
                                       </div>
                                   </div>
@@ -98,8 +98,11 @@
                                       </div>
                                       <Divider class="divider"/>
                                       <div class="property-wrapper">
-                                        <div class="property-item">
+                                        <div>
                                             <div class="property-title"><strong>GitHub Repo</strong></div>
+                                            <gh-btns-watch v-bind:slug="containerObj.github_repo" show-count />
+                                            <gh-btns-star v-bind:slug="containerObj.github_repo" show-count />
+                                            <gh-btns-fork v-bind:slug="containerObj.github_repo" show-count />
                                         </div>
                                       </div>
                                       <Divider class="divider"/>
@@ -131,7 +134,12 @@
 </template>
 
 <script>
+import Vue from 'vue';
+import 'vue-github-buttons/dist/vue-github-buttons.css'; // Stylesheet
+import VueGitHubButtons from 'vue-github-buttons'; // Component plugin
+Vue.use(VueGitHubButtons, { useCache: true });
 
+var gh = require('parse-github-url');
 
 import store from "@/store/store.js"
 import VulnerabilitiesModal from './VulnerabilitiesModal'
@@ -383,16 +391,18 @@ export default {
                     keywords:resbody.tool_tags
 
                 };
+                let parse_url = gh(this.containerObj.url);
+                this.containerObj.github_repo = parse_url.path
                 let found=false;
                 for(let j in this.licenseColor){
                     if(resbody.license&&resbody.license.match(j)){
-                      this.containerObj.license = 'https://img.shields.io/badge/license-'+encodeURIComponent(resbody.license).replace(/-/g,'--') + '-'+ this.licenseColor[j]+'.svg';
+                      this.containerObj.license = 'https://img.shields.io/badge/license-'+encodeURIComponent(resbody.license).replace(/-/g,'--') + '-'+ this.licenseColor[j]+'.svg?style=flat-square';
                       found=true;
                       break;
                     }
                 }
                 if(resbody.license&&!found){
-                    this.containerObj.license = 'https://img.shields.io/badge/license-'+encodeURIComponent(resbody.license).replace(/-/g,'--') + '-lightgrey.svg';
+                    this.containerObj.license = 'https://img.shields.io/badge/license-'+encodeURIComponent(resbody.license).replace(/-/g,'--') + '-lightgrey.svg?style=flat-square';
                 }
                 for(let i = 0; i < resbody.versions.length; i++){
                     let current_version = resbody.versions[i]
