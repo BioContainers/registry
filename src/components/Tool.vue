@@ -536,13 +536,13 @@ export default {
      this.toolInfo(to.params.id);
      this.containerID(to.params.id);
      this.getSimilars(this.$route.params.id);
-     this.containerVersion();
+     // this.containerVersion();
      next();
   },
   mounted(){
     this.toolInfo(this.$route.params.id);
     this.containerID(this.$route.params.id);
-    this.containerVersion();
+    // this.containerVersion();
     this.getSimilars(this.$route.params.id);
   }
 }
