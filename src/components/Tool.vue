@@ -11,7 +11,7 @@
           <div class="container-wrapper">
             <Row :gutter="16">
                 <Tabs>
-                        <TabPane label="Readme" icon="ios-list-box">
+                    <TabPane label="Readme" icon="ios-list-box">
                         <Row :gutter="80">
                              <Col span="16">
                                   <div style="margin-bottom: 20px">
@@ -119,7 +119,35 @@
                         <Table class="tool-table" :columns="resultsTableCol" :data="containerObj.images"></Table>
                     </TabPane>
                     <TabPane label="Similar Tools" icon="ios-apps">
-                        <Table class="similars-table" :columns="similarTableCol" :data="similarProjects"></Table>
+<!--                        <Table class="similars-table" :columns="similarTableCol" :data="similarProjects"></Table>-->
+                        <div class="container-wrapper">
+
+                            <Card v-for="item in similarProjects" class="card" v-bind:key="item.id">
+                                <p slot="title"><a class="tool-name" @click="gotoDetails(item.id)">{{item.name}}</a></p>
+                                <p style="display: flex" slot="extra">
+                                    <span>
+                                        <Icon type="md-cloud-download" size="22"/>
+                                    </span>
+                                    <span style="padding-top: 1px; margin-left: 2px">
+                                        {{item.pulls}}
+                                    </span>
+                                </p>
+                      <div class="card-content-wrapper">
+                        <div class="left">
+                            <div class="description-wrapper">
+                              <!--<Input v-model="item.description" disabled type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="" />-->
+                              <read-more more-str="" :text="item.description" link="#" less-str="read less" :max-chars="120"></read-more>
+                              <img class="license-img" :src="item.license"/>
+                            </div>
+                            <div class="state-wrapper">
+                                {{item.state}}
+                            </div>
+                        </div>
+                        <div class="right">
+                        </div>
+                      </div>
+                  </Card>
+                        </div>
                     </TabPane>
 
                 </Tabs>
@@ -514,11 +542,25 @@ export default {
                 let resbody = res.body;
                 resbody = resbody.sort((a, b) => (a.similar_score < b.similar_score) ? 1 : -1)
                 for(let i = 0; i < resbody.length; i++){
-                    var tool = {
-                        name: resbody[i].id,
-                        description: resbody[i].description
+                    var item = {
+                        id: resbody[i].id,
+                        description: resbody[i].description,
+                        name: resbody[i].name,
+                        license: resbody[i].license,
+                        pulls: abbreviateNumber(resbody[i].pulls),
                     };
-                    this.similarProjects.push(tool);
+                    let found=false;
+                      for(let j in this.licenseColor){
+                        if(resbody[i].license&&resbody[i].license.match(j)){
+                          item.license = 'https://img.shields.io/badge/license-'+encodeURIComponent(resbody[i].license).replace(/-/g,'--') + '-'+ this.licenseColor[j]+'.svg';
+                          found=true;
+                          break;
+                        }
+                      }
+                      if(res.body[i].license&&!found){
+                        item.license = 'https://img.shields.io/badge/license-'+encodeURIComponent(resbody[i].license).replace(/-/g,'--') + '-lightgrey.svg';
+                      }
+                    this.similarProjects.push(item);
                 }
             })
 
@@ -720,9 +762,11 @@ function abbreviateNumber(number){
       display: inline-block;
     }
     .card{
-      width: 100%;
+      display: inline-block;
+      margin: 0 15px;
       margin-bottom: 30px;
-      min-height: 100px;
+      height: 200px;
+      min-height: 200px;
       overflow: hidden;
       transition: all 0.15s ease-out;
       -webkit-transition: all 0.15s ease-out;
@@ -776,6 +820,109 @@ function abbreviateNumber(number){
     .description-container div{
       margin-bottom: 10px;
     }
+    .card-content-wrapper{
+      display: flex;
+      justify-content: space-between;
+    }
+    .card-content-wrapper .left{
+      display: flex;
+      justify-content: space-between;
+      overflow: hidden;
+      /* text-overflow: ellipsis; */
+      white-space: normal;
+    }
+    .card-content-wrapper .right{
+      display: flex;
+      align-items: end;
+      font-size: 30px;
+    }
+    .content h1{
+      border-bottom: 1px solid #e4973e;
+      font-weight: 500;
+      padding-top: 60px;
+      color: #eb8c1f;
+    }
+    .container-wrapper{
+      margin-top: 50px;
+    }
+    .description-wrapper{
+      margin-bottom: 5px;
+      white-space: normal;
+      width: 100%;
+      text-align:justify;
+    }
+    .tag-wrapper{
+      margin-bottom: 5px;
+      display: inline-block;
+    }
+    .card{
+      display: inline-block;
+      margin: 0 15px;
+      margin-bottom: 30px;
+      height: 200px;
+      min-height: 200px;
+      overflow: hidden;
+      transition: all 0.15s ease-out;
+      -webkit-transition: all 0.15s ease-out;
+    }
+    .tooltip-content{
+        white-space: normal;
+        width: 200px;
+    }
+    .page-wrapper{
+      text-align: center;
+      font-size: 12px;
+    }
+    .filter-button{
+      min-width: 70px;
+    }
+    .tool-name{
+      /*
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: normal;*/
+    }
+    .license-img{
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+    }
+    @media (max-width: 840px) {
+      .card{
+        width: calc((100% - 0px) / 1 - 3px);
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+      }
+    }
+    @media (max-width: 1015px) and (min-width: 841px){
+      .card{
+        width: calc((100% - 60px) / 2 - 3px);
+
+      }
+      .container-wrapper{
+        margin-left: -15px;
+        margin-right: -15px;
+      }
+    }
+    @media (max-width: 1510px) and (min-width: 1016px){
+      .card{
+        width: calc((100% - 90px) / 3 - 4px);
+      }
+      .container-wrapper{
+        margin-left: -15px;
+        margin-right: -15px;
+      }
+    }
+    @media (max-width: 3910px) and (min-width: 1511px){
+      .card{
+        width: calc((100% - 120px) / 4 - 4px);
+      }
+      .container-wrapper{
+        margin-left: -15px;
+        margin-right: -15px;
+      }
+    }
+
     
 </style>
 
