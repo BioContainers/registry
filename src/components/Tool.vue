@@ -16,14 +16,21 @@
                              <Col span="16">
                                   <div style="margin-bottom: 20px">
                                       <div class="title-container">{{containerObj.name}}</div>
-
                                       <div class="description-container">{{containerObj.description}}</div>
+                                      <div></div>
+                                      <div>
+                                          <div v-if="containerObj.conda===true">
+                                              <img v-if="containerObj.conda===true" src="https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=for-the-badge&logo=anaconda" />
+                                              <img v-if="containerObj.docker===true" src="https://img.shields.io/badge/install%20with-docker-important.svg?style=for-the-badge&logo=docker" />
+                                              <img v-if="containerObj.singularity===true" src="https://img.shields.io/badge/install%20with-singularity-blue.svg?style=for-the-badge" />
+                                          </div>
+                                      </div>
                                   </div>
                                   <div class="middle" style="margin-bottom: 20px">
                                       <div><h2>Usage</h2></div>
                                       <Divider class="divider"/>
                                       <div>
-                                          <div class="description-container">
+                                          <div v-if="containerObj.conda===true" class="description-container">
                                               <div><strong>BioConda Installation</strong></div>
                                               <div>With an activated BioConda channel (see <a href="https://bioconda.github.io/user/install.html#set-up-channels">Set up bioconda channels</a>), install with:</div>
                                               <div class="code">conda install {{containerObj.name}}</div>
@@ -32,16 +39,25 @@
                                               <div></div>
                                               <div><strong>Install specific version</strong></div>
                                               <div>From the Packages and Containers tab you can select a conda package version to install: </div>
-                                              <div class="code">conda install {{containerObj.conda_example}}</div>
+                                              <div class="code">{{containerObj.conda_example}}</div>
                                               <div></div>
                                               <div><strong>Update to latest version</strong></div>
                                               <div>You can update your package to the latest version using the following command:</div>
                                               <div class="code">conda update {{containerObj.name}}</div>
                                           </div>
-                                          <div class="description-container">
+                                          <div v-if="containerObj.docker===true" class="description-container">
                                               <div><strong>Docker Installation</strong></div>
                                               <div>You first need to be sure that <a href="https://biocontainers-edu.readthedocs.io/en/latest/getting_started.html">docker is installed in your system</a>, then you can install the containers using the following command:</div>
-                                              <div class="code">docker pull {{containerObj.name}}</div>
+                                              <div class="code">{{containerObj.docker_example}}</div>
+                                              <div></div>
+                                              <div>For docker containers no latest version is available, you always need to use the container tag.</div>
+                                          </div>
+                                          <div v-if="containerObj.singularity===true" class="description-container">
+                                              <div><strong>Singularity Installation</strong></div>
+                                              <div>You first need to be sure that <a href="https://sylabs.io/guides/3.5/user-guide/quick_start.html#quick-installation-steps">singularity is installed in your system</a>, then you can use the containers using the following command:</div>
+                                              <div class="code">{{containerObj.singularity_example}}</div>
+                                              <div></div>
+                                              <div>For docker containers no latest version is available, you always need to use the container tag.</div>
                                           </div>
                                       </div>
                                   </div>
@@ -71,12 +87,26 @@
                                       <Divider class="divider"/>
                                       <div class="property-wrapper">
                                         <div class="property-item">
-                                            <div class="property-title"><strong>Version</strong></div>
-                                            <div class="property-content">1</div>
+                                            <div class="property-title"><strong>Versions</strong></div>
+                                            <read-more more-str="" :text="containerObj.versions.join(', ')" link="#" less-str="" :max-chars="50"></read-more>
+<!--                                            <div class="property-content">{{containerObj.versions.join(', ')}}</div>-->
                                         </div>
                                         <div class="property-item">
                                             <div class="property-title"><strong>License</strong></div>
                                             <div class="property-content"><img class="license-img" :src="containerObj.license"/></div>
+                                        </div>
+                                      </div>
+                                      <Divider class="divider"/>
+                                      <div class="property-wrapper">
+                                        <div class="property-item">
+                                            <div class="property-title"><strong>GitHub Repo</strong></div>
+                                        </div>
+                                      </div>
+                                      <Divider class="divider"/>
+                                      <div class="property-wrapper">
+                                        <div class="property-item">
+                                            <div class="property-title"><strong>Last Update</strong></div>
+                                            <div class="property-content">{{containerObj.last_update}}</div>
                                         </div>
                                       </div>
                                   </div>
@@ -123,7 +153,10 @@ export default {
             license:'',
             url:'',
             version:'',
-            images:[]
+            images:[],
+            conda: false,
+            docker: false,
+            singularity: false
         },
         loading:true,
         dataFound:false,
@@ -361,13 +394,16 @@ export default {
                 if(resbody.license&&!found){
                     this.containerObj.license = 'https://img.shields.io/badge/license-'+encodeURIComponent(resbody.license).replace(/-/g,'--') + '-lightgrey.svg';
                 }
-                for(let i = 0; i < resbody.versions; i++){
+                for(let i = 0; i < resbody.versions.length; i++){
+                    let current_version = resbody.versions[i]
                     var version_item = {
                         tool: current_version.name,
                         version: current_version.meta_version
                     };
-                    this.containerObj.versions.push(version_item);
+                    this.containerObj.versions.push(current_version.meta_version);
                 }
+                this.containerObj.versions.sort();
+                this.containerObj.versions.reverse();
             })
 
     },
@@ -379,6 +415,10 @@ export default {
                 let resbody=res.body[0];
                 this.containerObj.images=[]
                 let all_versions = res.body;
+                this.containerObj.conda = false
+                this.containerObj.docker = false
+                this.containerObj.singularity = false
+                this.containerObj.last_update = ''
                 for(let j = 0 ; j < all_versions.length; j++){
                     let current_version = all_versions[j];
                     for(let i=0; i < current_version.images.length; i++){
@@ -387,9 +427,17 @@ export default {
                         if(current_version.images[i].image_type === 'Docker'){
                             original_type = "/static/images/docker.png";
                             prefix = 'docker pull ';
+                            this.containerObj.docker = true
+                            this.containerObj.docker_example = prefix + current_version.images[i].image_name
                         }else if(current_version.images[i].image_type === 'Conda'){
                             original_type = "/static/images/conda.png";
                             prefix = 'conda install -c conda-forge -c bioconda ';
+                            this.containerObj.conda = true
+                            this.containerObj.conda_example = prefix + current_version.images[i].image_name
+                        }else if(current_version.images[i].image_type == 'Singularity'){
+                            this.containerObj.singularity = true
+                            prefix = 'singularity run '
+                            this.containerObj.singularity_example = prefix + current_version.images[i].image_name
                         }
                         var item = {
                             tool: current_version.name,
@@ -401,7 +449,11 @@ export default {
                             full_version: current_version.images[i].image_name
                         };
                         this.containerObj.images.push(item);
+                        if(item.last_updated > this.containerObj.last_update){
+                            this.containerObj.last_update = item.last_updated
+                        }
                     }
+
                 }
             },function(err){
                 console.log('err',err);
@@ -706,7 +758,7 @@ function abbreviateNumber(number){
     }
     .middle .code{
         background: #EEE;
-        padding: 5px 30px;
+        padding: 5px 20px;
         display: inline-block;
         width: 100%;
         font-size: 14px;
