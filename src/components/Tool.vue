@@ -119,7 +119,7 @@
                         <Table class="tool-table" :columns="resultsTableCol" :data="containerObj.images"></Table>
                     </TabPane>
                     <TabPane label="Similar Tools" icon="ios-apps">
-                        <Table class="similars-table" :columns="similarTableCol" :data="containerObj.similars"></Table>
+                        <Table class="similars-table" :columns="similarTableCol" :data="similarProjects"></Table>
                     </TabPane>
 
                 </Tabs>
@@ -311,7 +311,7 @@ export default {
           CC:'blueviolet',
           Artistic:'important'
         },
-
+        similarProjects:[]
     }
   },
   methods:{
@@ -509,7 +509,8 @@ export default {
         this.$http
             .get(this.$store.state.baseApiURL + '/ga4gh/trs/v2/tools/'+ id + '/similars')
             .then(function (res) {
-                this.containerObj.similars = []
+                // console.log('res.body similars', res.body);
+                this.similarProjects = []
                 let resbody = res.body;
                 resbody = resbody.sort((a, b) => (a.similar_score < b.similar_score) ? 1 : -1)
                 for(let i = 0; i < resbody.length; i++){
@@ -517,32 +518,21 @@ export default {
                         name: resbody[i].id,
                         description: resbody[i].description
                     };
-                    this.containerObj.similars.push(tool);
+                    this.similarProjects.push(tool);
                 }
-                console.log('res.body similars', this.containerObj.similars);
-            },function(err){
-                console.log('err',err);
-                this.dataFound=false;
-                this.loading=false;
-                this.$Notice.error({
-                    title: 'Server Error',
-                    desc: err.body.error
-                });
-            });
+            })
+
     },
   },
   beforeRouteUpdate (to, from, next) {
-    //console.log('from',from)
      this.toolInfo(to.params.id);
      this.containerID(to.params.id);
-     this.getSimilars(this.$route.params.id);
-     // this.containerVersion();
+     this.getSimilars(to.params.id);
      next();
   },
   mounted(){
     this.toolInfo(this.$route.params.id);
     this.containerID(this.$route.params.id);
-    // this.containerVersion();
     this.getSimilars(this.$route.params.id);
   }
 }
