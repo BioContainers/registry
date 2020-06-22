@@ -310,7 +310,7 @@ export default {
         this.query.sort_field = this.sortType
         this.query.sort_order = this.sortOrder 
         this.$http
-            .get(this.$store.state.baseApiURL + '/api/ga4gh/v2/tools',{params:this.query})
+            .get(this.$store.state.baseApiURL + '/ga4gh/trs/v2/tools',{params:this.query})
             .then(function(res){
               let tempLength = res.body.length;
               if(tempLength > 0){
@@ -321,7 +321,7 @@ export default {
                   for(let i=0; i<tempLength; i++){
                       var item = {
                         id:res.body[i].id,
-                        toolname:res.body[i].toolname.toUpperCase(),
+                        toolname:res.body[i].name,
                         description:res.body[i].description ? res.body[i].description:'Tool description is coming',
                         tags:['tag1','tag2','tag2'],
                         state:'',
