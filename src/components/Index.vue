@@ -246,7 +246,7 @@ export default {
     },
     toolStats(){
         this.$http
-            .get(this.$store.state.baseApiURL + '/api/ga4gh/v2/stats')
+            .get(this.$store.state.baseApiURL + '/ga4gh/trs/v2/stats')
             .then(function (res) {
                 console.log('res.body', res.body);
                 let resbody = res.body;
