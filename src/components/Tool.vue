@@ -65,7 +65,7 @@
                                       <div><strong>Keyword</strong></div>
                                       <Divider class="divider"/>
                                       <div class="tag-wrapper" >
-                                          <Tag v-for="item in containerObj.keywords" color="warning" style="margin-right:5px;height:30px;font-size:16px;line-height:30px;">{{item}}</Tag>
+                                          <Tag v-for="item in containerObj.keywords" v-bind:key="item" color="warning" style="margin-right:5px;height:30px;font-size:16px;line-height:30px;">{{item}}</Tag>
                                       </div>
                                   </div>
                              </Col>
@@ -88,8 +88,7 @@
                                       <div class="property-wrapper">
                                         <div class="property-item">
                                             <div class="property-title"><strong>Versions</strong></div>
-                                            <read-more more-str="" :text="containerObj.versions.join(', ')" link="#" less-str="" :max-chars="50"></read-more>
-<!--                                            <div class="property-content">{{containerObj.versions.join(', ')}}</div>-->
+                                            <read-more more-str="" v-bind:text="containerObj.versions_text" link="#" less-str="" :max-chars="50"></read-more>
                                         </div>
                                         <div class="property-item">
                                             <div class="property-title"><strong>License</strong></div>
@@ -100,9 +99,9 @@
                                       <div class="property-wrapper">
                                         <div>
                                             <div class="property-title"><strong>GitHub Repo</strong></div>
-                                            <gh-btns-watch v-bind:slug="containerObj.github_repo" show-count />
-                                            <gh-btns-star v-bind:slug="containerObj.github_repo" show-count />
-                                            <gh-btns-fork v-bind:slug="containerObj.github_repo" show-count />
+                                            <gh-btns-watch v-bind:slug="containerObj.github_repo" show-count/>
+                                            <gh-btns-star v-bind:slug="containerObj.github_repo" show-count/>
+                                            <gh-btns-fork v-bind:slug="containerObj.github_repo" show-count/>
                                         </div>
                                       </div>
                                       <Divider class="divider"/>
@@ -117,11 +116,10 @@
                         </Row>
                     </TabPane>
                     <TabPane label="Packages and Containers" icon="logo-buffer">
-                        <VulnerabilitiesModal/>
                         <Table class="tool-table" :columns="resultsTableCol" :data="containerObj.images"></Table>
                     </TabPane>
                     <TabPane label="Similar Tools" icon="ios-apps">
-                      
+                        <Table class="similars-table" :columns="similarTableCol" :data="containerObj.similars"></Table>
                     </TabPane>
 
                 </Tabs>
@@ -160,8 +158,9 @@ export default {
             description:'',
             license:'',
             url:'',
-            version:'',
+            versions_text:'',
             images:[],
+            similars:[],
             conda: false,
             docker: false,
             singularity: false
@@ -189,13 +188,6 @@ export default {
                     })
                 }
             },
-            // {
-            //     title: 'Tool',
-            //     key: 'tool',
-            //     align: 'center',
-            //     width: 120,
-            //
-            // },
             {
                 title: 'Version',
                 key: 'version',
@@ -218,7 +210,7 @@ export default {
                 width: 100,
             },
             {
-                title: 'Full Tag ',
+                title: 'Full Tag',
                 key: 'full_tag',
                 sortable: true,
                 // align: 'center',
@@ -299,6 +291,18 @@ export default {
             //     }
             // },
         ],
+        similarTableCol:[
+            {
+                title: 'Name',
+                key: 'name',
+                sortable: true,
+            },
+            {
+                title: 'Description',
+                key: 'description',
+                sortable: true,
+            },
+        ],
         licenseColor:{
           Apache: 'brightgreen',
           MIT:'green',
@@ -307,7 +311,7 @@ export default {
           CC:'blueviolet',
           Artistic:'important'
         },
-        similarProjects:[],
+
     }
   },
   methods:{
@@ -378,7 +382,6 @@ export default {
             .then(function (res) {
                 console.log('res.body', res.body);
                 let resbody = res.body;
-                this.containerObj.versions = []
                 this.containerObj = {
                     name:resbody.name,
                     license:'',
@@ -386,7 +389,7 @@ export default {
                     description: resbody.description,
                     pulls: abbreviateNumber(resbody.pulls),
                     // url: resbody.url,
-                    versions:[],
+                    versions:'',
                     images:[],
                     keywords:resbody.tool_tags
 
@@ -394,6 +397,7 @@ export default {
                 let parse_url = gh(this.containerObj.url);
                 this.containerObj.github_repo = parse_url.path
                 let found=false;
+                let versions = []
                 for(let j in this.licenseColor){
                     if(resbody.license&&resbody.license.match(j)){
                       this.containerObj.license = 'https://img.shields.io/badge/license-'+encodeURIComponent(resbody.license).replace(/-/g,'--') + '-'+ this.licenseColor[j]+'.svg?style=flat-square';
@@ -410,10 +414,12 @@ export default {
                         tool: current_version.name,
                         version: current_version.meta_version
                     };
-                    this.containerObj.versions.push(current_version.meta_version);
+                    versions.push(current_version.meta_version);
                 }
-                this.containerObj.versions.sort();
-                this.containerObj.versions.reverse();
+                versions.sort();
+                versions.reverse();
+                this.containerObj.versions_text = versions.join(', ')
+                console.log('versions', this.containerObj.versions_text)
             })
 
     },
@@ -475,9 +481,6 @@ export default {
                 });
             });
     },
-    containerVersion(){
-
-    },
     doCopy(value) {
       if (value) {
         try {
@@ -506,20 +509,26 @@ export default {
         this.$http
             .get(this.$store.state.baseApiURL + '/ga4gh/trs/v2/tools/'+ id + '/similars')
             .then(function (res) {
-                // console.log('res.body similars', res.body);
-                this.similarProjects = []
+                this.containerObj.similars = []
                 let resbody = res.body;
                 resbody = resbody.sort((a, b) => (a.similar_score < b.similar_score) ? 1 : -1)
                 for(let i = 0; i < resbody.length; i++){
                     var tool = {
-                        name: resbody[i].toolname,
-                        title: resbody[i].description,
-                        id: resbody[i].id
+                        name: resbody[i].id,
+                        description: resbody[i].description
                     };
-                    this.similarProjects.push(tool);
+                    this.containerObj.similars.push(tool);
                 }
-            })
-
+                console.log('res.body similars', this.containerObj.similars);
+            },function(err){
+                console.log('err',err);
+                this.dataFound=false;
+                this.loading=false;
+                this.$Notice.error({
+                    title: 'Server Error',
+                    desc: err.body.error
+                });
+            });
     },
   },
   beforeRouteUpdate (to, from, next) {
@@ -546,7 +555,7 @@ function abbreviateNumber(number){
     var tier = Math.log10(number) / 3 | 0;
 
     // if zero, we don't need a suffix
-    if(tier == 0) return number;
+    if(tier === 0) return number;
 
     // get suffix and determine scale
     var suffix = SI_SYMBOL[tier];
