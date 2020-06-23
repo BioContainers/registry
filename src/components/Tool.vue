@@ -92,16 +92,16 @@
                                         </div>
                                         <div class="property-item">
                                             <div class="property-title"><strong>License</strong></div>
-                                            <div class="property-content"><img class="license-img" :src="containerObj.license"/></div>
+                                            <div class="property-content"><img class="license-img2" :src="containerObj.license"/></div>
                                         </div>
                                       </div>
                                       <Divider class="divider"/>
                                       <div class="property-wrapper">
                                         <div>
                                             <div class="property-title"><strong>GitHub Repo</strong></div>
-                                            <gh-btns-watch v-bind:slug="containerObj.github_repo" show-count/>
-                                            <gh-btns-star v-bind:slug="containerObj.github_repo" show-count/>
-                                            <gh-btns-fork v-bind:slug="containerObj.github_repo" show-count/>
+                                            <gh-btns-watch slug="OpenGene/fastp" show-count/>
+                                            <gh-btns-star slug="OpenGene/fastp" show-count/>
+                                            <gh-btns-fork slug="OpenGene/fastp" show-count/>
                                         </div>
                                       </div>
                                       <Divider class="divider"/>
@@ -137,7 +137,7 @@
                             <div class="description-wrapper">
                               <!--<Input v-model="item.description" disabled type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="" />-->
                               <read-more more-str="" :text="item.description" link="#" less-str="read less" :max-chars="120"></read-more>
-                              <img class="license-img2" :src="item.license"/>
+                              <img class="license-img" :src="item.license"/>
                             </div>
                             <div class="state-wrapper">
                                 {{item.state}}
@@ -283,41 +283,41 @@ export default {
 
                 }
             },
-            // {
-            //     title: 'Security Check',
-            //     key: 'security',
-            //     align: 'center',
-            //     width: 85,
-            //     render: (h, params) => {
-            //                 const row = params.row;
-            //                 const color = 'blue';
-            //
-            //                 return h('div', {
-            //                   style: {
-            //                       display:'flex',
-            //                           alignItems:'center'
-            //                       },
-            //                   },[
-            //                       h('Icon', {
-            //                           on: {
-            //                               click: () => {
-            //                                 this.getAnchoreImage(row)
-            //                               }
-            //                           },
-            //                           props: {
-            //                               type: 'ios-link',
-            //                               size: '14'
-            //                           },
-            //                           style: {
-            //                               marginLeft: '5px',
-            //                               display:'inline-block',
-            //                               cursor:'pointer'
-            //                           },
-            //                       }),
-            //                   ]);
-            //
-            //     }
-            // },
+            {
+                title: 'security',
+                key: 'security',
+                align: 'center',
+                width: 85,
+                render: (h, params) => {
+                            const row = params.row;
+                            const color = 'blue';
+
+                            return h('div', {
+                              style: {
+                                  display:'flex',
+                                      alignItems:'center'
+                                  },
+                              },[
+                                  h('Icon', {
+                                      on: {
+                                          click: () => {
+                                            this.getAnchoreImage(row)
+                                          }
+                                      },
+                                      props: {
+                                          type: 'ios-link',
+                                          size: '14'
+                                      },
+                                      style: {
+                                          marginLeft: '5px',
+                                          display:'inline-block',
+                                          cursor:'pointer'
+                                      },
+                                  }),
+                              ]);
+
+                }
+            },
         ],
         similarTableCol:[
             {
@@ -466,19 +466,22 @@ export default {
                 for(let j = 0 ; j < all_versions.length; j++){
                     let current_version = all_versions[j];
                     for(let i=0; i < current_version.images.length; i++){
-                        let original_type = "/static/images/singularity.png";
-                        let prefix = '';
+                        let original_type = "/static/images/docker.png";
+                        let prefix = 'docker pull ';
+                        this.containerObj.docker = true
                         if(current_version.images[i].image_type === 'Docker'){
                             original_type = "/static/images/docker.png";
                             prefix = 'docker pull ';
                             this.containerObj.docker = true
                             this.containerObj.docker_example = prefix + current_version.images[i].image_name
-                        }else if(current_version.images[i].image_type === 'Conda'){
+                        }
+                        if(current_version.images[i].image_type === 'Conda'){
                             original_type = "/static/images/conda.png";
                             prefix = 'conda install -c conda-forge -c bioconda ';
                             this.containerObj.conda = true
                             this.containerObj.conda_example = prefix + current_version.images[i].image_name
-                        }else if(current_version.images[i].image_type == 'Singularity'){
+                        }
+                        if(current_version.images[i].image_type == 'Singularity' || current_version.images[i].image_name.indexOf('depot.galaxyproject.org') !== -1){
                             this.containerObj.singularity = true
                             prefix = 'singularity run '
                             this.containerObj.singularity_example = prefix + current_version.images[i].image_name
