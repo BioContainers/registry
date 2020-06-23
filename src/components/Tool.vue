@@ -99,9 +99,11 @@
                                       <div class="property-wrapper">
                                         <div>
                                             <div class="property-title"><strong>GitHub Repo</strong></div>
-                                            <gh-btns-watch slug="OpenGene/fastp" show-count/>
-                                            <gh-btns-star slug="OpenGene/fastp" show-count/>
-                                            <gh-btns-fork slug="OpenGene/fastp" show-count/>
+                                            <div v-if="containerObj.github_repo">
+                                                <gh-btns-watch slug="OpenGene/fastp" show-count/>
+                                                <gh-btns-star slug="OpenGene/fastp" show-count/>
+                                                <gh-btns-fork slug="OpenGene/fastp" show-count/>
+                                            </div>
                                         </div>
                                       </div>
                                       <Divider class="divider"/>
@@ -424,6 +426,7 @@ export default {
                 };
                 let parse_url = gh(this.containerObj.url);
                 this.containerObj.github_repo = parse_url.path
+                console.log('this.containerObj',this.containerObj)
                 let found=false;
                 let versions = []
                 for(let j in this.licenseColor){
