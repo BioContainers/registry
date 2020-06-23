@@ -111,6 +111,19 @@
                                             <div class="property-content">{{containerObj.last_update}}</div>
                                         </div>
                                       </div>
+                                      <Divider class="divider"/>
+                                      <div class="property-wrapper">
+                                        <div class="property-item">
+                                            <div class="property-title"><strong>Identifiers</strong></div>
+                                            <div class="property-content" v-if="containerObj.identifiers">
+                                                <ul>
+                                                    <li v-for="menuItem in containerObj.identifiers" class="nav-item">
+                                                        <a :href="menuItem.url" class="nav-link">{{ menuItem.text }}</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      </div>
                                   </div>
                              </Col>
                         </Row>
@@ -173,6 +186,18 @@ Vue.use(VueGitHubButtons, { useCache: true });
 var gh = require('parse-github-url');
 
 import store from "@/store/store.js"
+
+function retrieveURL(identifier) {
+    let url = ''
+    if (identifier.indexOf('biotools') != -1){
+        url = 'https://bio.tools/' + identifier.replace('biotools:', '')
+    }
+    if(identifier.indexOf('PMID') != -1){
+        url = 'https://pubmed.ncbi.nlm.nih.gov/' + identifier.replace('PMID:', '')
+    }
+    return url
+}
+
 // import VulnerabilitiesModal from './VulnerabilitiesModal'
 export default {
   name: 'tools',
@@ -196,7 +221,8 @@ export default {
             similars:[],
             conda: false,
             docker: false,
-            singularity: false
+            singularity: false,
+            identifiers: []
         },
         loading:true,
         dataFound:false,
@@ -460,8 +486,8 @@ export default {
                     // url: resbody.url,
                     versions:'',
                     images:[],
-                    keywords:resbody.tool_tags
-
+                    keywords:resbody.tool_tags,
+                    identifiers: []
                 };
                 let parse_url = gh(this.containerObj.url);
                 this.containerObj.github_repo = parse_url.path
@@ -490,6 +516,15 @@ export default {
                 versions.reverse();
                 this.containerObj.versions_text = versions.join(', ')
                 console.log('versions', this.containerObj.versions_text)
+
+                for(let i = 0; i < resbody.identifiers.length; i++){
+                    let identifier = resbody.identifiers[i]
+                    var item = {
+                        text: identifier,
+                        url: retrieveURL(identifier)
+                    };
+                    this.containerObj.identifiers.push(item);
+                }
             })
 
     },
