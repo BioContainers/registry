@@ -10,8 +10,8 @@
       <div class="content">
           <div class="container-wrapper">
             <Row :gutter="16">
-                <Tabs>
-                    <TabPane label="Readme" icon="ios-list-box">
+                <Tabs v-model="tabName">
+                    <TabPane label="Readme" icon="ios-list-box" name="readme">
                         <Row :gutter="80">
                              <Col span="16">
                                   <div style="margin-bottom: 20px">
@@ -117,10 +117,10 @@
                              </Col>
                         </Row>
                     </TabPane>
-                    <TabPane label="Packages and Containers" icon="logo-buffer">
+                    <TabPane label="Packages and Containers" icon="logo-buffer" name="package">
                         <Table class="tool-table" :columns="resultsTableCol" :data="containerObj.images"></Table>
                     </TabPane>
-                    <TabPane label="Similar Tools" icon="ios-apps">
+                    <TabPane label="Similar Tools" icon="ios-apps" name="similar">
 <!--                        <Table class="similars-table" :columns="similarTableCol" :data="similarProjects"></Table>-->
                         <div class="container-wrapper">
 
@@ -341,7 +341,8 @@ export default {
           CC:'blueviolet',
           Artistic:'important'
         },
-        similarProjects:[]
+        similarProjects:[],
+        tabName:'readme'
     }
   },
   methods:{
@@ -379,6 +380,7 @@ export default {
           }
     },
     getAnchoreImage(container) {
+      console.log('row',container)
         let ctx = this
         this.$http
             .get('https://jenkins.biocontainers.pro/security/v1/images', {params:{
@@ -536,8 +538,9 @@ export default {
 
     gotoDetails(id){
       //this.$router.push({name:'dataset',params:{id:id}});
-      this.$router.push({name:'tools',params:{id:id}});
       
+      this.$router.push({name:'tools',params:{id:id}})
+      this.tabName ='readme'
     },
     getSimilars(id){
         this.$http
