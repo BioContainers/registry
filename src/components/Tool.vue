@@ -79,7 +79,7 @@
                                       <div class="property-wrapper">
                                         <div class="property-item">
                                             <div class="property-title"><strong>Homepage</strong></div>
-                                            <div class="property-content">{{containerObj.url}}</div>
+                                            <div class="property-content"><a v-bind:href="containerObj.url">{{containerObj.url}}</a></div>
                                         </div>
                                       </div>
                                       <Divider class="divider"/>
