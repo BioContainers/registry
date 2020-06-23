@@ -118,7 +118,7 @@
                     <TabPane label="Packages and Containers" icon="logo-buffer" name="package">
                         <Table class="tool-table" :columns="resultsTableCol" :data="containerObj.images"></Table>
                     </TabPane>
-                    <TabPane label="Similar Tools" icon="ios-apps" name="similar">
+                    <TabPane label="Similar Tools" icon="ios-apps" name="similar" :disabled="similarNotFound">
 <!--                        <Table class="similars-table" :columns="similarTableCol" :data="similarProjects"></Table>-->
                         <div class="container-wrapper">
 
@@ -340,6 +340,7 @@ export default {
           Artistic:'important'
         },
         similarProjects:[],
+        similarNotFound: false,
         tabName:'readme'
     }
   },
@@ -570,6 +571,9 @@ export default {
                         item.license = 'https://img.shields.io/badge/license-'+encodeURIComponent(resbody[i].license).replace(/-/g,'--') + '-lightgrey.svg';
                       }
                     this.similarProjects.push(item);
+                }
+                if (this.similarProjects.length == 0){
+                  this.similarNotFound = true
                 }
             })
 
