@@ -121,7 +121,7 @@
                         <Table class="tool-table" :columns="resultsTableCol" :data="containerObj.images"></Table>
                     </TabPane>
                     <TabPane label="Similar Tools" icon="ios-apps" name="similar">
-<!--                        <Table class="similars-table" :columns="similarTableCol" :data="similarProjects"></Table>-->
+                        <!-- <Table class="similars-table" :columns="similarTableCol" :data="similarProjects"></Table>-->
                         <div class="container-wrapper">
 
                             <Card v-for="item in similarProjects" class="card" v-bind:key="item.id">
@@ -154,10 +154,16 @@
 
                 </Tabs>
             </Row>
-
-            
           </div>
       </div>
+      <Modal
+          title="Security"
+          v-model="showModal"
+          name="Security"
+          :closable="false"
+          @on-ok="modalClose">
+          <Table border ref="addPropertyTable" class="add-col-table" :columns="tableCols" :data="tableData" height="500"></Table>
+      </Modal> 
   </div>
 </template>
 
@@ -170,11 +176,11 @@ Vue.use(VueGitHubButtons, { useCache: true });
 var gh = require('parse-github-url');
 
 import store from "@/store/store.js"
-import VulnerabilitiesModal from './VulnerabilitiesModal'
+// import VulnerabilitiesModal from './VulnerabilitiesModal'
 export default {
   name: 'tools',
   components: {
-    VulnerabilitiesModal: VulnerabilitiesModal
+    // VulnerabilitiesModal: VulnerabilitiesModal
   },
   data () {
     return {
@@ -286,10 +292,10 @@ export default {
                 }
             },
             {
-                title: 'security',
+                title: 'Security',
                 key: 'security',
                 align: 'center',
-                width: 85,
+                width: 100,
                 render: (h, params) => {
                             const row = params.row;
                             const color = 'blue';
@@ -342,7 +348,33 @@ export default {
           Artistic:'important'
         },
         similarProjects:[],
-        tabName:'readme'
+        tabName:'readme',
+        tableCols: [
+            {
+                title: 'Feed',
+                key: 'feed_group',
+                align: 'center',
+            },
+                        {
+                title: 'Package',
+                key: 'package',
+                align: 'center',
+                sortable: true,
+            },
+            {
+                title: 'Severity',
+                key: 'severity',
+                align: 'center',
+                sortable: true,
+            },
+            {
+                title: 'CVE',
+                key: 'vuln',
+                align: 'center',
+                sortable: true,
+            },
+        ],
+        tableData:[]
     }
   },
   methods:{
@@ -393,7 +425,10 @@ export default {
                 ctx.getVulnerabilities(digest)
               }
             }).catch(function(err) {
-              ctx.$modal.show('vulnerabilities', {vulnerabilities: [], msg: 'Not analysed yet'})
+              this.$Notice.error({
+                  title: 'Image Check Error',
+                  desc: 'Not analysed yet'
+              });
             })
     },
     getVulnerabilities(digest) {
@@ -401,7 +436,11 @@ export default {
         this.$http
             .get('https://jenkins.biocontainers.pro/security/v1/images/' + digest + '/vuln/all')
             .then(function (res) {
-              ctx.$modal.show('vulnerabilities', {vulnerabilities: res.body.vulnerabilities, msg: ''})
+              this.showModal = true
+              
+              this.tableData = res.body.vulnerabilities
+              console.log('this.tableData',res.body.vulnerabilities)
+              // ctx.$modal.show('vulnerabilities', {vulnerabilities: res.body.vulnerabilities, msg: ''})
               
             }).catch(function(err) {
 
@@ -415,7 +454,7 @@ export default {
                 console.log('res.body', res.body);
                 let resbody = res.body;
                 this.containerObj = {
-                    name:resbody.name,
+                    name:res.body.name,
                     license:'',
                     url: resbody.tool_url,
                     description: resbody.description,
@@ -574,6 +613,9 @@ export default {
             })
 
     },
+    modalClose(){
+
+    }
   },
   beforeRouteUpdate (to, from, next) {
      this.toolInfo(to.params.id);
