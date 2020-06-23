@@ -137,7 +137,7 @@
                             <div class="description-wrapper">
                               <!--<Input v-model="item.description" disabled type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="" />-->
                               <read-more more-str="" :text="item.description" link="#" less-str="read less" :max-chars="120"></read-more>
-                              <img class="license-img" :src="item.license"/>
+                              <img class="license-img2" :src="item.license"/>
                             </div>
                             <div class="state-wrapper">
                                 {{item.state}}
@@ -786,7 +786,7 @@ function abbreviateNumber(number){
       display: flex;
       align-items: center;
     }
-    .license-img{
+    .license-img2{
       /*margin-left: 10px;*/
     }
     .similarity-card{
