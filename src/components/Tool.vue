@@ -19,11 +19,9 @@
                                       <div class="description-container">{{containerObj.description}}</div>
                                       <div></div>
                                       <div>
-                                          <div v-if="containerObj.conda===true">
-                                              <img v-if="containerObj.conda===true" src="https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square&logo=anaconda" />
-                                              <img v-if="containerObj.docker===true" src="https://img.shields.io/badge/install%20with-docker-important.svg?style=flat-square&logo=docker" />
-                                              <img v-if="containerObj.singularity===true" src="https://img.shields.io/badge/install%20with-singularity-blue.svg?style=flat-square" />
-                                          </div>
+                                          <img v-if="containerObj.conda===true" src="https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square&logo=anaconda" />
+                                          <img v-if="containerObj.docker===true" src="https://img.shields.io/badge/install%20with-docker-important.svg?style=flat-square&logo=docker" />
+                                          <img v-if="containerObj.singularity===true" src="https://img.shields.io/badge/install%20with-singularity-blue.svg?style=flat-square" />
                                       </div>
                                   </div>
                                   <div class="middle" style="margin-bottom: 20px">
@@ -474,6 +472,7 @@ export default {
                         let original_type = "/static/images/docker.png";
                         let prefix = 'docker pull ';
                         this.containerObj.docker = true
+                        this.containerObj.docker_example = prefix + current_version.images[i].image_name
                         if(current_version.images[i].image_type === 'Docker'){
                             original_type = "/static/images/docker.png";
                             prefix = 'docker pull ';
@@ -484,13 +483,11 @@ export default {
                             original_type = "/static/images/conda.png";
                             prefix = 'conda install -c conda-forge -c bioconda ';
                             this.containerObj.conda = true
-                            this.containerObj.docker = false
                             this.containerObj.conda_example = prefix + current_version.images[i].image_name
                         }
                         if(current_version.images[i].image_type == 'Singularity' || current_version.images[i].image_name.indexOf('depot.galaxyproject.org') !== -1){
                             this.containerObj.singularity = true
                             original_type = "/static/images/singularity.png"
-                            this.containerObj.docker = false
                             prefix = 'singularity run '
                             this.containerObj.singularity_example = prefix + current_version.images[i].image_name
                         }
