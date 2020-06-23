@@ -371,7 +371,7 @@ export default {
                 sortable: true,
             },
         ],
-        tableData:[]
+        tableData:[],
         similarNotFound: false,
     }
   },
