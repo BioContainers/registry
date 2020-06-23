@@ -42,9 +42,6 @@
                 sortable: true,
             },
           ]
-
-
-
       }
     },
 

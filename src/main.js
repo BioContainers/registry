@@ -38,14 +38,14 @@ import 'echarts/map/js/world.js'
 // Vue.use(VueAnalytics, {
 //   id: 'UA-136036548-1'
 // });
-import VModal from 'vue-js-modal'
+// import VModal from 'vue-js-modal'
 
 
 Vue.config.productionTip = false;
 Vue.use(iView, { locale });
 Vue.use(VueResource);
 Vue.use(ReadMore);
-Vue.use(VModal);
+// Vue.use(VModal);
 Vue.component('chart', ECharts);
 
 

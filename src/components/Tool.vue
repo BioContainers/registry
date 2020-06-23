@@ -10,8 +10,8 @@
       <div class="content">
           <div class="container-wrapper">
             <Row :gutter="16">
-                <Tabs>
-                    <TabPane label="Readme" icon="ios-list-box">
+                <Tabs v-model="tabName">
+                    <TabPane label="Readme" icon="ios-list-box" name="readme">
                         <Row :gutter="80">
                              <Col span="16">
                                   <div style="margin-bottom: 20px">
@@ -19,11 +19,9 @@
                                       <div class="description-container">{{containerObj.description}}</div>
                                       <div></div>
                                       <div>
-                                          <div v-if="containerObj.conda===true">
-                                              <img v-if="containerObj.conda===true" src="https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square&logo=anaconda" />
-                                              <img v-if="containerObj.docker===true" src="https://img.shields.io/badge/install%20with-docker-important.svg?style=flat-square&logo=docker" />
-                                              <img v-if="containerObj.singularity===true" src="https://img.shields.io/badge/install%20with-singularity-blue.svg?style=flat-square" />
-                                          </div>
+                                          <img v-if="containerObj.conda===true" src="https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square&logo=anaconda" />
+                                          <img v-if="containerObj.docker===true" src="https://img.shields.io/badge/install%20with-docker-important.svg?style=flat-square&logo=docker" />
+                                          <img v-if="containerObj.singularity===true" src="https://img.shields.io/badge/install%20with-singularity-blue.svg?style=flat-square" />
                                       </div>
                                   </div>
                                   <div class="middle" style="margin-bottom: 20px">
@@ -92,16 +90,18 @@
                                         </div>
                                         <div class="property-item">
                                             <div class="property-title"><strong>License</strong></div>
-                                            <div class="property-content"><img class="license-img" :src="containerObj.license"/></div>
+                                            <div class="property-content"><img class="license-img2" :src="containerObj.license"/></div>
                                         </div>
                                       </div>
                                       <Divider class="divider"/>
                                       <div class="property-wrapper">
                                         <div>
                                             <div class="property-title"><strong>GitHub Repo</strong></div>
-                                            <gh-btns-watch v-bind:slug="containerObj.github_repo" show-count/>
-                                            <gh-btns-star v-bind:slug="containerObj.github_repo" show-count/>
-                                            <gh-btns-fork v-bind:slug="containerObj.github_repo" show-count/>
+                                            <div v-if="containerObj.github_repo">
+                                                <gh-btns-watch v-bind:slug="containerObj.github_repo" show-count/>
+                                                <gh-btns-star v-bind:slug="containerObj.github_repo" show-count/>
+                                                <gh-btns-fork v-bind:slug="containerObj.github_repo" show-count/>
+                                            </div>
                                         </div>
                                       </div>
                                       <Divider class="divider"/>
@@ -115,11 +115,10 @@
                              </Col>
                         </Row>
                     </TabPane>
-                    <TabPane label="Packages and Containers" icon="logo-buffer">
+                    <TabPane label="Packages and Containers" icon="logo-buffer" name="package">
                         <Table class="tool-table" :columns="resultsTableCol" :data="containerObj.images"></Table>
                     </TabPane>
-                    <TabPane label="Similar Tools" icon="ios-apps">
-<!--                        <Table class="similars-table" :columns="similarTableCol" :data="similarProjects"></Table>-->
+                    <TabPane label="Similar Tools" icon="ios-apps" name="similar" :disabled="similarNotFound">
                         <div class="container-wrapper">
 
                             <Card v-for="item in similarProjects" class="card" v-bind:key="item.id">
@@ -152,10 +151,16 @@
 
                 </Tabs>
             </Row>
-
-            
           </div>
       </div>
+      <Modal
+          title="Security"
+          v-model="showModal"
+          name="Security"
+          :closable="false"
+          @on-ok="modalClose">
+          <Table border ref="addPropertyTable" class="add-col-table" :columns="tableCols" :data="tableData" height="500"></Table>
+      </Modal> 
   </div>
 </template>
 
@@ -168,11 +173,11 @@ Vue.use(VueGitHubButtons, { useCache: true });
 var gh = require('parse-github-url');
 
 import store from "@/store/store.js"
-import VulnerabilitiesModal from './VulnerabilitiesModal'
+// import VulnerabilitiesModal from './VulnerabilitiesModal'
 export default {
   name: 'tools',
   components: {
-    VulnerabilitiesModal: VulnerabilitiesModal
+    // VulnerabilitiesModal: VulnerabilitiesModal
   },
   data () {
     return {
@@ -283,41 +288,41 @@ export default {
 
                 }
             },
-            // {
-            //     title: 'Security Check',
-            //     key: 'security',
-            //     align: 'center',
-            //     width: 85,
-            //     render: (h, params) => {
-            //                 const row = params.row;
-            //                 const color = 'blue';
-            //
-            //                 return h('div', {
-            //                   style: {
-            //                       display:'flex',
-            //                           alignItems:'center'
-            //                       },
-            //                   },[
-            //                       h('Icon', {
-            //                           on: {
-            //                               click: () => {
-            //                                 this.getAnchoreImage(row)
-            //                               }
-            //                           },
-            //                           props: {
-            //                               type: 'ios-link',
-            //                               size: '14'
-            //                           },
-            //                           style: {
-            //                               marginLeft: '5px',
-            //                               display:'inline-block',
-            //                               cursor:'pointer'
-            //                           },
-            //                       }),
-            //                   ]);
-            //
-            //     }
-            // },
+            {
+                title: 'Security',
+                key: 'security',
+                align: 'center',
+                width: 100,
+                render: (h, params) => {
+                            const row = params.row;
+                            const color = 'blue';
+
+                            return h('div', {
+                              style: {
+                                  display:'flex',
+                                      alignItems:'center'
+                                  },
+                              },[
+                                  h('Icon', {
+                                      on: {
+                                          click: () => {
+                                            this.getAnchoreImage(row)
+                                          }
+                                      },
+                                      props: {
+                                          type: 'ios-link',
+                                          size: '14'
+                                      },
+                                      style: {
+                                          marginLeft: '5px',
+                                          display:'inline-block',
+                                          cursor:'pointer'
+                                      },
+                                  }),
+                              ]);
+
+                }
+            },
         ],
         similarTableCol:[
             {
@@ -339,7 +344,35 @@ export default {
           CC:'blueviolet',
           Artistic:'important'
         },
-        similarProjects:[]
+        similarProjects:[],
+        tabName:'readme',
+        tableCols: [
+            {
+                title: 'Feed',
+                key: 'feed_group',
+                align: 'center',
+            },
+                        {
+                title: 'Package',
+                key: 'package',
+                align: 'center',
+                sortable: true,
+            },
+            {
+                title: 'Severity',
+                key: 'severity',
+                align: 'center',
+                sortable: true,
+            },
+            {
+                title: 'CVE',
+                key: 'vuln',
+                align: 'center',
+                sortable: true,
+            },
+        ],
+        tableData:[],
+        similarNotFound: false,
     }
   },
   methods:{
@@ -377,6 +410,7 @@ export default {
           }
     },
     getAnchoreImage(container) {
+      console.log('row',container)
         let ctx = this
         this.$http
             .get('https://jenkins.biocontainers.pro/security/v1/images', {params:{
@@ -389,7 +423,10 @@ export default {
                 ctx.getVulnerabilities(digest)
               }
             }).catch(function(err) {
-              ctx.$modal.show('vulnerabilities', {vulnerabilities: [], msg: 'Not analysed yet'})
+              this.$Notice.error({
+                  title: 'Image Check Error',
+                  desc: 'Not analysed yet'
+              });
             })
     },
     getVulnerabilities(digest) {
@@ -397,7 +434,11 @@ export default {
         this.$http
             .get('https://jenkins.biocontainers.pro/security/v1/images/' + digest + '/vuln/all')
             .then(function (res) {
-              ctx.$modal.show('vulnerabilities', {vulnerabilities: res.body.vulnerabilities, msg: ''})
+              this.showModal = true
+              
+              this.tableData = res.body.vulnerabilities
+              console.log('this.tableData',res.body.vulnerabilities)
+              // ctx.$modal.show('vulnerabilities', {vulnerabilities: res.body.vulnerabilities, msg: ''})
               
             }).catch(function(err) {
 
@@ -411,7 +452,7 @@ export default {
                 console.log('res.body', res.body);
                 let resbody = res.body;
                 this.containerObj = {
-                    name:resbody.name,
+                    name:res.body.name,
                     license:'',
                     url: resbody.tool_url,
                     description: resbody.description,
@@ -424,6 +465,7 @@ export default {
                 };
                 let parse_url = gh(this.containerObj.url);
                 this.containerObj.github_repo = parse_url.path
+                console.log('this.containerObj',this.containerObj)
                 let found=false;
                 let versions = []
                 for(let j in this.licenseColor){
@@ -466,20 +508,25 @@ export default {
                 for(let j = 0 ; j < all_versions.length; j++){
                     let current_version = all_versions[j];
                     for(let i=0; i < current_version.images.length; i++){
-                        let original_type = "/static/images/singularity.png";
-                        let prefix = '';
+                        let original_type = "/static/images/docker.png";
+                        let prefix = 'docker pull ';
+                        this.containerObj.docker = true
+                        this.containerObj.docker_example = prefix + current_version.images[i].image_name
                         if(current_version.images[i].image_type === 'Docker'){
                             original_type = "/static/images/docker.png";
                             prefix = 'docker pull ';
                             this.containerObj.docker = true
                             this.containerObj.docker_example = prefix + current_version.images[i].image_name
-                        }else if(current_version.images[i].image_type === 'Conda'){
+                        }
+                        if(current_version.images[i].image_type === 'Conda'){
                             original_type = "/static/images/conda.png";
                             prefix = 'conda install -c conda-forge -c bioconda ';
                             this.containerObj.conda = true
                             this.containerObj.conda_example = prefix + current_version.images[i].image_name
-                        }else if(current_version.images[i].image_type == 'Singularity'){
+                        }
+                        if(current_version.images[i].image_type == 'Singularity' || current_version.images[i].image_name.indexOf('depot.galaxyproject.org') !== -1){
                             this.containerObj.singularity = true
+                            original_type = "/static/images/singularity.png"
                             prefix = 'singularity run '
                             this.containerObj.singularity_example = prefix + current_version.images[i].image_name
                         }
@@ -530,8 +577,9 @@ export default {
 
     gotoDetails(id){
       //this.$router.push({name:'dataset',params:{id:id}});
-      this.$router.push({name:'tools',params:{id:id}});
       
+      this.$router.push({name:'tools',params:{id:id}})
+      this.tabName ='readme'
     },
     getSimilars(id){
         this.$http
@@ -562,9 +610,15 @@ export default {
                       }
                     this.similarProjects.push(item);
                 }
+                if (this.similarProjects.length == 0){
+                  this.similarNotFound = true
+                }
             })
 
     },
+    modalClose(){
+
+    }
   },
   beforeRouteUpdate (to, from, next) {
      this.toolInfo(to.params.id);
@@ -786,7 +840,7 @@ function abbreviateNumber(number){
       display: flex;
       align-items: center;
     }
-    .license-img{
+    .license-img2{
       /*margin-left: 10px;*/
     }
     .similarity-card{
