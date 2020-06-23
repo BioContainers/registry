@@ -118,7 +118,7 @@
                                             <div class="property-content" v-if="containerObj.identifiers">
                                                 <ul>
                                                     <li v-for="menuItem in containerObj.identifiers" class="nav-item">
-                                                        <a :href="menuItem.url" class="nav-link">{{ menuItem.text }}</a>
+                                                        <a :href="menuItem.url" class="nav-link" target='_blank'>{{ menuItem.text }}</a>
                                                     </li>
                                                 </ul>
                                             </div>
