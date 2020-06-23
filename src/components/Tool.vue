@@ -19,11 +19,9 @@
                                       <div class="description-container">{{containerObj.description}}</div>
                                       <div></div>
                                       <div>
-                                          <div v-if="containerObj.conda===true">
-                                              <img v-if="containerObj.conda===true" src="https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square&logo=anaconda" />
-                                              <img v-if="containerObj.docker===true" src="https://img.shields.io/badge/install%20with-docker-important.svg?style=flat-square&logo=docker" />
-                                              <img v-if="containerObj.singularity===true" src="https://img.shields.io/badge/install%20with-singularity-blue.svg?style=flat-square" />
-                                          </div>
+                                          <img v-if="containerObj.conda===true" src="https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square&logo=anaconda" />
+                                          <img v-if="containerObj.docker===true" src="https://img.shields.io/badge/install%20with-docker-important.svg?style=flat-square&logo=docker" />
+                                          <img v-if="containerObj.singularity===true" src="https://img.shields.io/badge/install%20with-singularity-blue.svg?style=flat-square" />
                                       </div>
                                   </div>
                                   <div class="middle" style="margin-bottom: 20px">
@@ -100,9 +98,9 @@
                                         <div>
                                             <div class="property-title"><strong>GitHub Repo</strong></div>
                                             <div v-if="containerObj.github_repo">
-                                                <gh-btns-watch slug="OpenGene/fastp" show-count/>
-                                                <gh-btns-star slug="OpenGene/fastp" show-count/>
-                                                <gh-btns-fork slug="OpenGene/fastp" show-count/>
+                                                <gh-btns-watch v-bind:slug="containerObj.github_repo" show-count/>
+                                                <gh-btns-star v-bind:slug="containerObj.github_repo" show-count/>
+                                                <gh-btns-fork v-bind:slug="containerObj.github_repo" show-count/>
                                             </div>
                                         </div>
                                       </div>
@@ -120,8 +118,7 @@
                     <TabPane label="Packages and Containers" icon="logo-buffer" name="package">
                         <Table class="tool-table" :columns="resultsTableCol" :data="containerObj.images"></Table>
                     </TabPane>
-                    <TabPane label="Similar Tools" icon="ios-apps" name="similar">
-                        <!-- <Table class="similars-table" :columns="similarTableCol" :data="similarProjects"></Table>-->
+                    <TabPane label="Similar Tools" icon="ios-apps" name="similar" :disabled="similarNotFound">
                         <div class="container-wrapper">
 
                             <Card v-for="item in similarProjects" class="card" v-bind:key="item.id">
@@ -375,6 +372,7 @@ export default {
             },
         ],
         tableData:[]
+        similarNotFound: false,
     }
   },
   methods:{
@@ -513,6 +511,7 @@ export default {
                         let original_type = "/static/images/docker.png";
                         let prefix = 'docker pull ';
                         this.containerObj.docker = true
+                        this.containerObj.docker_example = prefix + current_version.images[i].image_name
                         if(current_version.images[i].image_type === 'Docker'){
                             original_type = "/static/images/docker.png";
                             prefix = 'docker pull ';
@@ -527,6 +526,7 @@ export default {
                         }
                         if(current_version.images[i].image_type == 'Singularity' || current_version.images[i].image_name.indexOf('depot.galaxyproject.org') !== -1){
                             this.containerObj.singularity = true
+                            original_type = "/static/images/singularity.png"
                             prefix = 'singularity run '
                             this.containerObj.singularity_example = prefix + current_version.images[i].image_name
                         }
@@ -609,6 +609,9 @@ export default {
                         item.license = 'https://img.shields.io/badge/license-'+encodeURIComponent(resbody[i].license).replace(/-/g,'--') + '-lightgrey.svg';
                       }
                     this.similarProjects.push(item);
+                }
+                if (this.similarProjects.length == 0){
+                  this.similarNotFound = true
                 }
             })
 
