@@ -100,9 +100,9 @@
                                         <div>
                                             <div class="property-title"><strong>GitHub Repo</strong></div>
                                             <div v-if="containerObj.github_repo">
-                                                <gh-btns-watch slug="OpenGene/fastp" show-count/>
-                                                <gh-btns-star slug="OpenGene/fastp" show-count/>
-                                                <gh-btns-fork slug="OpenGene/fastp" show-count/>
+                                                <gh-btns-watch v-bind:slug="containerObj.github_repo" show-count/>
+                                                <gh-btns-star v-bind:slug="containerObj.github_repo" show-count/>
+                                                <gh-btns-fork v-bind:slug="containerObj.github_repo" show-count/>
                                             </div>
                                         </div>
                                       </div>
@@ -482,10 +482,13 @@ export default {
                             original_type = "/static/images/conda.png";
                             prefix = 'conda install -c conda-forge -c bioconda ';
                             this.containerObj.conda = true
+                            this.containerObj.docker = false
                             this.containerObj.conda_example = prefix + current_version.images[i].image_name
                         }
                         if(current_version.images[i].image_type == 'Singularity' || current_version.images[i].image_name.indexOf('depot.galaxyproject.org') !== -1){
                             this.containerObj.singularity = true
+                            original_type = "/static/images/singularity.png"
+                            this.containerObj.docker = false
                             prefix = 'singularity run '
                             this.containerObj.singularity_example = prefix + current_version.images[i].image_name
                         }
