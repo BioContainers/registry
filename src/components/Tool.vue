@@ -16,7 +16,16 @@
                              <Col span="16">
                                   <div style="margin-bottom: 20px">
                                       <div class="title-container">{{containerObj.name}}</div>
-                                      <div class="description-container">{{containerObj.description}}</div>
+                                      <div class="description-container" v-if="!containerObj.isMultiTool">{{containerObj.description}}</div>
+                                      <div class="description-container" v-if="containerObj.isMultiTool">
+                                          <div>This is a multitool container and package, a container that contains multiple bioinformatics tools. The contains the following tools:</div>
+                                          <div>
+                                              <a v-for="tool in containerObj.tools" v-bind:href="tool.url">
+                                                  <img v-bind:src="tool.image" />
+                                              </a>
+                                          </div>
+                                          <div><br></div>
+                                      </div>
                                       <div></div>
                                       <div>
                                           <img v-if="containerObj.conda===true" src="https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square&logo=anaconda" />
@@ -75,26 +84,26 @@
                                             <div class="property-content">{{containerObj.pulls}}</div>
                                         </div>
                                       </div>
-                                      <Divider class="divider"/>
-                                      <div class="property-wrapper">
+                                      <Divider class="divider" v-if="!containerObj.isMultiTool"/>
+                                      <div class="property-wrapper" v-if="!containerObj.isMultiTool">
                                         <div class="property-item">
                                             <div class="property-title"><strong>Homepage</strong></div>
                                             <div class="property-content"><a v-bind:href="containerObj.url">{{containerObj.url}}</a></div>
                                         </div>
                                       </div>
-                                      <Divider class="divider"/>
+                                      <Divider class="divider" v-if="!containerObj.isMultiTool"/>
                                       <div class="property-wrapper">
-                                        <div class="property-item">
+                                        <div class="property-item" v-if="!containerObj.isMultiTool">
                                             <div class="property-title"><strong>Versions</strong></div>
                                             <read-more more-str="" v-bind:text="containerObj.versions_text" link="#" less-str="" :max-chars="50"></read-more>
                                         </div>
-                                        <div class="property-item">
+                                        <div class="property-item" v-if="!containerObj.isMultiTool">
                                             <div class="property-title"><strong>License</strong></div>
                                             <div class="property-content"><img class="license-img2" :src="containerObj.license"/></div>
                                         </div>
                                       </div>
-                                      <Divider class="divider"/>
-                                      <div class="property-wrapper">
+                                      <Divider class="divider" v-if="!containerObj.isMultiTool"/>
+                                      <div class="property-wrapper" v-if="!containerObj.isMultiTool">
                                         <div>
                                             <div class="property-title"><strong>GitHub Repo</strong></div>
                                             <div v-if="containerObj.github_repo">
@@ -111,11 +120,11 @@
                                             <div class="property-content">{{containerObj.last_update}}</div>
                                         </div>
                                       </div>
-                                      <Divider class="divider"/>
-                                      <div class="property-wrapper">
-                                        <div class="property-item">
-                                            <div class="property-title"><strong>Identifiers</strong></div>
-                                            <div class="property-content" v-if="containerObj.identifiers">
+                                      <Divider class="divider" v-if="!containerObj.isMultiTool && containerObj.identifiers.length > 0"/>
+                                      <div class="property-wrapper" v-if="!containerObj.isMultiTool && containerObj.identifiers.length > 0">
+                                        <div class="property-item" v-if="!containerObj.isMultiTool">
+                                            <div class="property-title" v-if="!containerObj.isMultiTool && containerObj.identifiers.length > 0"><strong>Identifiers</strong></div>
+                                            <div class="property-content" v-if="containerObj.identifiers && !containerObj.isMultiTool">
                                                 <ul>
                                                     <li v-for="menuItem in containerObj.identifiers" class="nav-item">
                                                         <a :href="menuItem.url" class="nav-link" target='_blank'>{{ menuItem.text }}</a>
@@ -222,7 +231,10 @@ export default {
             conda: false,
             docker: false,
             singularity: false,
-            identifiers: []
+            identifiers: [],
+            isMultiTool: false,
+            tools: []
+
         },
         loading:true,
         dataFound:false,
@@ -490,7 +502,10 @@ export default {
                     identifiers: []
                 };
                 let parse_url = gh(this.containerObj.url);
-                this.containerObj.github_repo = parse_url.path
+                if (parse_url !== null){
+                    this.containerObj.github_repo = parse_url.path
+                }
+
                 console.log('this.containerObj',this.containerObj)
                 let found=false;
                 let versions = []
@@ -525,6 +540,22 @@ export default {
                     };
                     this.containerObj.identifiers.push(item);
                 }
+
+            //    If the containers is a mulled container.
+                 this.containerObj.tools = []
+                if (this.containerObj.name.indexOf('mulled-') !== -1){
+                    this.containerObj.isMultiTool = true
+
+                    for(let i = 0; i < resbody.contains.length; i++){
+                        let tool = resbody.contains[i]
+                        var item = {
+                            image: 'https://img.shields.io/static/v1?label=included%20tool&message=' + tool +'&color=yellow',
+                            url: "https://biocontainers.pro/#/tools/" + tool
+                        };
+                        this.containerObj.tools.push(item);
+                    }
+                }
+
             })
 
     },
