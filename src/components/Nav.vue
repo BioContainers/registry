@@ -16,6 +16,10 @@
                     <Icon type="logo-github"></Icon>
                     GitHub
                 </MenuItem>
+                <MenuItem name="api">
+                    <Icon type="ios-barcode-outline"></Icon>
+                    RestFul API
+                </MenuItem>
                 <MenuItem name="twitter">
                     <Icon type="logo-twitter"></Icon>
                     Twitter
@@ -78,6 +82,9 @@
                         break;
                     case 'scholar':
                         window.open('https://scholar.google.co.uk/citations?user=O6xG2-EAAAAJ');
+                        break;
+                    case 'api':
+                        window.open('https://api.biocontainers.pro/ga4gh/trs/v2/ui/');
                         break;
                 }
             } 
