@@ -20,8 +20,8 @@
                                       <div class="description-container" v-if="containerObj.isMultiTool">
                                           <div>This is a multitool container and package, a container that contains multiple bioinformatics tools. The contains the following tools</div>
                                           <div>
-                                              <a v-for="tool in containerObj.tools" href="tool.url">
-                                                  <img src="tool.image" />
+                                              <a v-for="tool in containerObj.tools" v-bind:href="tool.url">
+                                                  <img v-bind:src="tool.image" />
                                               </a>
                                           </div>
                                           <div></div>
@@ -542,18 +542,18 @@ export default {
                 }
 
             //    If the containers is a mulled container.
+                 this.containerObj.tools = []
                 if (this.containerObj.name.indexOf('mulled-') !== -1){
                     this.containerObj.isMultiTool = true
 
                     for(let i = 0; i < resbody.contains.length; i++){
                         let tool = resbody.contains[i]
                         var item = {
-                            image: 'https://img.shields.io/badge/include%20tool-'+tool+'-yellow',
+                            image: 'https://img.shields.io/static/v1?label=included%20tool&message=' + tool +'&color=yellow',
                             url: "https://biocontainers.pro/#/tools/" + tool
-                    };
-                    this.containerObj.tools.push(item);
-                }
-
+                        };
+                        this.containerObj.tools.push(item);
+                    }
                 }
 
             })
