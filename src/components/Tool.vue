@@ -88,7 +88,7 @@
                                       <div class="property-wrapper" v-if="!containerObj.isMultiTool">
                                         <div class="property-item">
                                             <div class="property-title"><strong>Homepage</strong></div>
-                                            <div class="property-content"><a v-bind:href="containerObj.url">{{containerObj.url}}</a></div>
+                                            <div class="property-content"><a v-bind:href="containerObj.url" target="_blank">{{containerObj.url}}</a></div>
                                         </div>
                                       </div>
                                       <Divider class="divider" v-if="!containerObj.isMultiTool"/>
