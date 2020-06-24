@@ -118,7 +118,7 @@
                                             <div class="property-content" v-if="containerObj.identifiers">
                                                 <ul>
                                                     <li v-for="menuItem in containerObj.identifiers" class="nav-item">
-                                                        <a :href="menuItem.url" class="nav-link">{{ menuItem.text }}</a>
+                                                        <a :href="menuItem.url" class="nav-link" target='_blank'>{{ menuItem.text }}</a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -540,14 +540,13 @@ export default {
                 this.containerObj.docker = false
                 this.containerObj.singularity = false
                 this.containerObj.last_update = ''
+                let original_type = "/static/images/docker.png";
+                let prefix = 'docker pull ';
+                this.containerObj.docker_example = ''
                 for(let j = 0 ; j < all_versions.length; j++){
                     let current_version = all_versions[j];
                     for(let i=0; i < current_version.images.length; i++){
-                        let original_type = "/static/images/docker.png";
-                        let prefix = 'docker pull ';
-                        this.containerObj.docker = true
-                        this.containerObj.docker_example = prefix + current_version.images[i].image_name
-                        if(current_version.images[i].image_type === 'Docker'){
+                        if(current_version.images[i].image_type === 'Docker' || (current_version.images[i].image_type !== 'Conda' && current_version.images[i].image_name.indexOf('depot.galaxyproject.org') === -1)){
                             original_type = "/static/images/docker.png";
                             prefix = 'docker pull ';
                             this.containerObj.docker = true
@@ -559,7 +558,7 @@ export default {
                             this.containerObj.conda = true
                             this.containerObj.conda_example = prefix + current_version.images[i].image_name
                         }
-                        if(current_version.images[i].image_type == 'Singularity' || current_version.images[i].image_name.indexOf('depot.galaxyproject.org') !== -1){
+                        if(current_version.images[i].image_type === 'Singularity' || current_version.images[i].image_name.indexOf('depot.galaxyproject.org') !== -1){
                             this.containerObj.singularity = true
                             original_type = "/static/images/singularity.png"
                             prefix = 'singularity run '
