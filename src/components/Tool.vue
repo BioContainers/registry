@@ -18,13 +18,13 @@
                                       <div class="title-container">{{containerObj.name}}</div>
                                       <div class="description-container" v-if="!containerObj.isMultiTool">{{containerObj.description}}</div>
                                       <div class="description-container" v-if="containerObj.isMultiTool">
-                                          <div>This is a multitool container and package, a container that contains multiple bioinformatics tools. The contains the following tools</div>
+                                          <div>This is a multitool container and package, a container that contains multiple bioinformatics tools. The contains the following tools:</div>
                                           <div>
                                               <a v-for="tool in containerObj.tools" v-bind:href="tool.url">
                                                   <img v-bind:src="tool.image" />
                                               </a>
                                           </div>
-                                          <div></div>
+                                          <div><br></div>
                                       </div>
                                       <div></div>
                                       <div>
