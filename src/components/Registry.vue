@@ -13,12 +13,12 @@
           </div>
           <div class="search-options-wrapper">
               <div class="filter-wrapper">
-                  <div class="filter">
-                        <span class="name">Filters:</span>
-                        <ButtonGroup>
-                            <Button class="filter-button" v-for="(item ,index) in filters" :type="item.type" :key="index" @click="filterClick(index)">{{item.name}}</Button>
-                        </ButtonGroup>
-                  </div>
+<!--                  <div class="filter">-->
+<!--                        <span class="name">Filters:</span>-->
+<!--                        <ButtonGroup>-->
+<!--                            <Button class="filter-button" v-for="(item ,index) in filters" :type="item.type" :key="index" @click="filterClick(index)">{{item.name}}</Button>-->
+<!--                        </ButtonGroup>-->
+<!--                  </div>-->
                   <div class="sort">
                         <span class="name">Sorts by:</span>
                         <div class="sortOption">
