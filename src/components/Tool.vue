@@ -16,7 +16,16 @@
                              <Col span="16">
                                   <div style="margin-bottom: 20px">
                                       <div class="title-container">{{containerObj.name}}</div>
-                                      <div class="description-container">{{containerObj.description}}</div>
+                                      <div class="description-container" v-if="!containerObj.isMultiTool">{{containerObj.description}}</div>
+                                      <div class="description-container" v-if="containerObj.isMultiTool">
+                                          <div>This is a multitool container and package, a container that contains multiple bioinformatics tools. The contains the following tools:</div>
+                                          <div>
+                                              <a v-for="tool in containerObj.tools" v-bind:href="tool.url">
+                                                  <img v-bind:src="tool.image" />
+                                              </a>
+                                          </div>
+                                          <div><br></div>
+                                      </div>
                                       <div></div>
                                       <div>
                                           <img v-if="containerObj.conda===true" src="https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square&logo=anaconda" />
@@ -75,26 +84,26 @@
                                             <div class="property-content">{{containerObj.pulls}}</div>
                                         </div>
                                       </div>
-                                      <Divider class="divider"/>
-                                      <div class="property-wrapper">
+                                      <Divider class="divider" v-if="!containerObj.isMultiTool"/>
+                                      <div class="property-wrapper" v-if="!containerObj.isMultiTool">
                                         <div class="property-item">
                                             <div class="property-title"><strong>Homepage</strong></div>
-                                            <div class="property-content">{{containerObj.url}}</div>
+                                            <div class="property-content"><a v-bind:href="containerObj.url" target="_blank">{{containerObj.url}}</a></div>
                                         </div>
                                       </div>
-                                      <Divider class="divider"/>
+                                      <Divider class="divider" v-if="!containerObj.isMultiTool"/>
                                       <div class="property-wrapper">
-                                        <div class="property-item">
+                                        <div class="property-item" v-if="!containerObj.isMultiTool">
                                             <div class="property-title"><strong>Versions</strong></div>
                                             <read-more more-str="" v-bind:text="containerObj.versions_text" link="#" less-str="" :max-chars="50"></read-more>
                                         </div>
-                                        <div class="property-item">
+                                        <div class="property-item" v-if="!containerObj.isMultiTool">
                                             <div class="property-title"><strong>License</strong></div>
                                             <div class="property-content"><img class="license-img2" :src="containerObj.license"/></div>
                                         </div>
                                       </div>
-                                      <Divider class="divider"/>
-                                      <div class="property-wrapper">
+                                      <Divider class="divider" v-if="!containerObj.isMultiTool"/>
+                                      <div class="property-wrapper" v-if="!containerObj.isMultiTool">
                                         <div>
                                             <div class="property-title"><strong>GitHub Repo</strong></div>
                                             <div v-if="containerObj.github_repo">
@@ -109,6 +118,19 @@
                                         <div class="property-item">
                                             <div class="property-title"><strong>Last Update</strong></div>
                                             <div class="property-content">{{containerObj.last_update}}</div>
+                                        </div>
+                                      </div>
+                                      <Divider class="divider" v-if="!containerObj.isMultiTool && containerObj.identifiers.length > 0"/>
+                                      <div class="property-wrapper" v-if="!containerObj.isMultiTool && containerObj.identifiers.length > 0">
+                                        <div class="property-item" v-if="!containerObj.isMultiTool">
+                                            <div class="property-title" v-if="!containerObj.isMultiTool && containerObj.identifiers.length > 0"><strong>Identifiers</strong></div>
+                                            <div class="property-content" v-if="containerObj.identifiers && !containerObj.isMultiTool">
+                                                <ul>
+                                                    <li v-for="menuItem in containerObj.identifiers" class="nav-item">
+                                                        <a :href="menuItem.url" class="nav-link" target='_blank'>{{ menuItem.text }}</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
                                       </div>
                                   </div>
@@ -173,6 +195,18 @@ Vue.use(VueGitHubButtons, { useCache: true });
 var gh = require('parse-github-url');
 
 import store from "@/store/store.js"
+
+function retrieveURL(identifier) {
+    let url = ''
+    if (identifier.indexOf('biotools') != -1){
+        url = 'https://bio.tools/' + identifier.replace('biotools:', '')
+    }
+    if(identifier.indexOf('PMID') != -1){
+        url = 'https://pubmed.ncbi.nlm.nih.gov/' + identifier.replace('PMID:', '')
+    }
+    return url
+}
+
 // import VulnerabilitiesModal from './VulnerabilitiesModal'
 export default {
   name: 'tools',
@@ -196,7 +230,11 @@ export default {
             similars:[],
             conda: false,
             docker: false,
-            singularity: false
+            singularity: false,
+            identifiers: [],
+            isMultiTool: false,
+            tools: []
+
         },
         loading:true,
         dataFound:false,
@@ -460,11 +498,14 @@ export default {
                     // url: resbody.url,
                     versions:'',
                     images:[],
-                    keywords:resbody.tool_tags
-
+                    keywords:resbody.tool_tags,
+                    identifiers: []
                 };
                 let parse_url = gh(this.containerObj.url);
-                this.containerObj.github_repo = parse_url.path
+                if (parse_url !== null){
+                    this.containerObj.github_repo = parse_url.path
+                }
+
                 console.log('this.containerObj',this.containerObj)
                 let found=false;
                 let versions = []
@@ -490,6 +531,31 @@ export default {
                 versions.reverse();
                 this.containerObj.versions_text = versions.join(', ')
                 console.log('versions', this.containerObj.versions_text)
+
+                for(let i = 0; i < resbody.identifiers.length; i++){
+                    let identifier = resbody.identifiers[i]
+                    var item = {
+                        text: identifier,
+                        url: retrieveURL(identifier)
+                    };
+                    this.containerObj.identifiers.push(item);
+                }
+
+            //    If the containers is a mulled container.
+                 this.containerObj.tools = []
+                if (this.containerObj.name.indexOf('mulled-') !== -1){
+                    this.containerObj.isMultiTool = true
+
+                    for(let i = 0; i < resbody.contains.length; i++){
+                        let tool = resbody.contains[i]
+                        var item = {
+                            image: 'https://img.shields.io/static/v1?label=included%20tool&message=' + tool +'&color=yellow',
+                            url: "https://biocontainers.pro/#/tools/" + tool
+                        };
+                        this.containerObj.tools.push(item);
+                    }
+                }
+
             })
 
     },
@@ -505,14 +571,13 @@ export default {
                 this.containerObj.docker = false
                 this.containerObj.singularity = false
                 this.containerObj.last_update = ''
+                let original_type = "/static/images/docker.png";
+                let prefix = 'docker pull ';
+                this.containerObj.docker_example = ''
                 for(let j = 0 ; j < all_versions.length; j++){
                     let current_version = all_versions[j];
                     for(let i=0; i < current_version.images.length; i++){
-                        let original_type = "/static/images/docker.png";
-                        let prefix = 'docker pull ';
-                        this.containerObj.docker = true
-                        this.containerObj.docker_example = prefix + current_version.images[i].image_name
-                        if(current_version.images[i].image_type === 'Docker'){
+                        if(current_version.images[i].image_type === 'Docker' || (current_version.images[i].image_type !== 'Conda' && current_version.images[i].image_name.indexOf('depot.galaxyproject.org') === -1)){
                             original_type = "/static/images/docker.png";
                             prefix = 'docker pull ';
                             this.containerObj.docker = true
@@ -524,7 +589,7 @@ export default {
                             this.containerObj.conda = true
                             this.containerObj.conda_example = prefix + current_version.images[i].image_name
                         }
-                        if(current_version.images[i].image_type == 'Singularity' || current_version.images[i].image_name.indexOf('depot.galaxyproject.org') !== -1){
+                        if(current_version.images[i].image_type === 'Singularity' || current_version.images[i].image_name.indexOf('depot.galaxyproject.org') !== -1){
                             this.containerObj.singularity = true
                             original_type = "/static/images/singularity.png"
                             prefix = 'singularity run '

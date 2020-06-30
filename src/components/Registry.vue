@@ -79,8 +79,16 @@
                         <div class="left">
                             <div class="description-wrapper">
                               <!--<Input v-model="item.description" disabled type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="" />-->
-                              <read-more more-str="" :text="item.description" link="#" less-str="read less" :max-chars="120"></read-more>
-                              <img class="license-img" :src="item.license"/>
+                              <read-more v-if="!item.multiTool" more-str="" :text="item.description" link="#" less-str="read less" :max-chars="120"></read-more>
+                              <img v-if="!item.multiTool" class="license-img" :src="item.license"/>
+                              <div v-if="item.multiTool">
+                                  <div>This is a multitool container. The following tools are part of the container:</div>
+                                  <div>
+                                      <a v-for="tool in item.contains" v-bind:href="tool.url">
+                                          <img v-bind:src="tool.image" />
+                                      </a>
+                                  </div>
+                              </div>
                             </div>
                             <div class="state-wrapper">
                                 {{item.state}}
@@ -347,8 +355,27 @@ export default {
                         state:'',
                         pulls:abbreviateNumber(res.body[i].pulls),
                         color:res.body[i].verified ? '#19be6b': '#c5c8ce',
-                        license:''
+                        license:'',
+                        multiTool: false,
+                        contains: [],
+                        contains_text: ''
                       };
+
+                      if(item.toolname.indexOf('mulled-') !== -1){
+                          item.multiTool = true
+                          if (res.body[i].contains !== null){
+                              for(let j = 0; j <res.body[i].contains.length; j++){
+                                  var container = {
+                                          image: 'https://img.shields.io/static/v1?label=included%20tool&message=' + res.body[i].contains[j] +'&color=yellow',
+                                          url: "https://biocontainers.pro/#/tools/" + res.body[i].contains[j]
+                                   };
+                                  item.contains.push(container)
+                              }
+                          }
+                      }
+                      if(item.contains.length > 0)
+                          item.contains_text = item.contains.join(', ')
+
                       let found=false;
                       for(let j in this.licenseColor){
                         if(res.body[i].license&&res.body[i].license.match(j)){
