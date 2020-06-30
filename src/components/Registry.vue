@@ -9,7 +9,7 @@
       <div class="content">
           <h1>Search</h1>
           <div class="search-wrapper">
-            <Input v-model="keywords" icon="ios-search" placeholder="Search" style="width:100%" @on-enter="search"/>
+            <Input v-model="keywords" icon="ios-search" placeholder="Search" style="width:100%" @on-enter="addKeyword"/>
           </div>
           <div class="search-options-wrapper">
               <div class="filter-wrapper">
@@ -35,10 +35,25 @@
                             </Select>
                         </div>
                   </div>
+                  <div class="sort">
+                        <span class="name">Facets</span>
+                        <div class="sortOption">
+                            <Select v-model="facetName" style="width:90px" @on-change="facetNameChange"> 
+                                <Option v-for="item in facetNameArray" :value="item" :key="item">{{item}}</Option>
+                            </Select>
+                            <Icon type="ios-arrow-forward" style="font-size: 12px"/>
+                            <Select class="facet-value-select" v-model="facetValue" style="width:150px;position: relative;" @on-change="facetValueChange" filterable>
+                                <Option v-for="item in facetValueArray" :value="item.value" :key="item.value">{{ item.value }} ({{item.count}})</Option> 
+                            </Select>
+                        </div>
+                  </div>
               </div>
               <div class="search-button-wrapper">
                   <Button type="primary" @click="search">Search</Button>
               </div>
+          </div>
+          <div class="tag-wrapper" style="margin-top: 10px;" >
+            <Tag v-for="item in tagsArray" type="border" :color="item.value?'warning':'primary'" :key="item.name+item.value" :name="item.name+item.value" closable @on-close="removeFacetTag">{{item.name}}<span v-if="item.value">-></span>{{item.value}}</Tag>
           </div>
           <div class="container-wrapper">
 
@@ -227,7 +242,12 @@ export default {
           BSD:'yellow',
           CC:'blueviolet',
           Artistic:'important'
-        }
+        },
+        facetNameArray:[],
+        facetValueArray:[],
+        facetValue:'',
+        facetName:'',
+        tagsArray:[]
     }
   },
   methods:{
@@ -373,9 +393,94 @@ export default {
       //this.$router.push({name:'dataset',params:{id:id}});
       this.$router.push({name:'tools',params:{id:id}});
     },
+    getFacets(){
+        this.$http
+            .get(this.$store.state.baseApiURL + '/ga4gh/trs/v2/facets')
+            .then(function(res){
+              let tempLength = res.body.length;
+              if(tempLength > 0){
+                  this.facetObj = {}
+                  this.facetName = res.body[0].facet
+                  this.facetValueArray = res.body[0].values
+                  for(let i in res.body){
+                    let item = res.body[i]
+                    this.facetNameArray.push(item.facet)
+                    this.facetObj[item.facet] = item.values
+                  }
+              }
+              else{
+                this.$Notice.error({
+                    title: 'No facets: Server Error',
+                    desc: err.body.error
+                });
+              }
+            },function(err){
+                console.log('err',err);
+                this.$Notice.error({
+                    title: 'No facets: Server Error',
+                    desc: err.body.error
+                });
+            });
+    },
+    facetNameChange(index){
+      this.facetValueArray = this.facetObj[index]
+      this.facetValue=''
+    }, 
+    facetValueChange(index){
+      for(let i in this.tagsArray){
+        if(this.tagsArray[i].name == this.facetName && this.tagsArray[i].value == index){
+          this.facetValue=''
+          this.$Notice.error({
+              title: 'Repeated Facets',
+              desc: 'Do not add the repeated facets!'
+          });
+          return
+        }
+      }
+      if(index){
+          let item = {
+            name:this.facetName,
+            value:index
+          }
+          this.tagsArray.push(item)
+      }
+    },
+    removeFacetTag(event, name){
+      console.log('name',name)
+      for(let i in this.tagsArray){
+        if((this.tagsArray[i].name+this.tagsArray[i].value) == name){
+            this.tagsArray.splice(i, 1);
+        }
+      }
+    },
+    addKeyword(){
+      for(let i in this.tagsArray){
+        if(this.tagsArray[i].name == this.keywords){
+          this.$Notice.error({
+              title: 'Repeated Keywords',
+              desc: 'Do not add the repeated keywords!'
+          });
+          return
+        }
+      }
+      if(this.keywords){
+          let item = {
+            name:this.keywords,
+            value:''
+          }
+          this.tagsArray.push(item)
+          this.keywords = ''
+      }
+    }
+  },
+  watch:{
+    tagsArray: function(val,oldVal){
+          console.log(val)
+    },
   },
   mounted(){
     this.search();
+    this.getFacets();
   }
 }
 
@@ -422,6 +527,7 @@ function abbreviateNumber(number){
     }
     .sortOption{
       display: inline-block;
+      position: relative;
     }
     .filter-wrapper .name{
       font-size: 0.875rem
@@ -630,6 +736,9 @@ function abbreviateNumber(number){
     }
     .description-wrapper .ivu-input[disabled]{
       background: none;
+    }
+    .facet-value-select .ivu-select-dropdown{
+      max-width: 300px;
     }
     /*
     table tr:last-child td:first-child {
