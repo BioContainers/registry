@@ -337,6 +337,8 @@ export default {
 
         this.query.sort_field = this.sortType
         this.query.sort_order = this.sortOrder 
+
+        console.log('this.query.facets',this.query.facets)
         this.$http
             .get(this.$store.state.baseApiURL + '/ga4gh/trs/v2/tools',{params:this.query})
             .then(function(res){
@@ -422,7 +424,7 @@ export default {
     },
     getFacets(){
         this.$http
-            .get(this.$store.state.baseApiURL + '/ga4gh/trs/v2/facets')
+            .get(this.$store.state.baseApiURL + 'ga4gh/trs/v2/facets')
             .then(function(res){
               let tempLength = res.body.length;
               if(tempLength > 0){
@@ -502,7 +504,15 @@ export default {
   },
   watch:{
     tagsArray: function(val,oldVal){
-          console.log(val)
+          this.query.facets = ''
+          for(let i in val){
+            if(val[i].value){// it is a facet, if value is null, it is the keyword
+              this.query.facets+=val[i].name+':'+val[i].value+','
+            }
+          }
+          let reg=/,$/gi
+          this.query.facets=this.query.facets.replace(reg,"");
+          console.log('watch',this.query.facets)
     },
   },
   mounted(){
