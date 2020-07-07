@@ -37,7 +37,7 @@
                         </div>
                   </div>
                   <div class="sort">
-                        <span class="name">Facets</span>
+                        <span class="name">Refine Results:</span>
                         <div class="sortOption">
                             <Select v-model="facetName" style="width:90px" @on-change="facetNameChange"> 
                                 <Option v-for="item in facetNameArray" :value="item" :key="item">{{item}}</Option>
