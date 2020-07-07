@@ -9,7 +9,8 @@
       <div class="content">
           <h1>Search</h1>
           <div class="search-wrapper">
-            <Input v-model="keywords" icon="ios-search" placeholder="Search" style="width:100%" @on-enter="addKeyword"/>
+            <!-- <Input v-model="keywords" icon="ios-search" placeholder="Search" style="width:100%" @on-enter="addKeyword"/> -->
+            <Input v-model="keywords" icon="ios-search" placeholder="Search" style="width:100%" @on-enter="search"/>
           </div>
           <div class="search-options-wrapper">
               <div class="filter-wrapper">
