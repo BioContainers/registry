@@ -9,16 +9,17 @@
       <div class="content">
           <h1>Search</h1>
           <div class="search-wrapper">
+            <!-- <Input v-model="keywords" icon="ios-search" placeholder="Search" style="width:100%" @on-enter="addKeyword"/> -->
             <Input v-model="keywords" icon="ios-search" placeholder="Search" style="width:100%" @on-enter="search"/>
           </div>
           <div class="search-options-wrapper">
               <div class="filter-wrapper">
-                  <div class="filter">
-                        <span class="name">Filters:</span>
-                        <ButtonGroup>
-                            <Button class="filter-button" v-for="(item ,index) in filters" :type="item.type" :key="index" @click="filterClick(index)">{{item.name}}</Button>
-                        </ButtonGroup>
-                  </div>
+<!--                  <div class="filter">-->
+<!--                        <span class="name">Filters:</span>-->
+<!--                        <ButtonGroup>-->
+<!--                            <Button class="filter-button" v-for="(item ,index) in filters" :type="item.type" :key="index" @click="filterClick(index)">{{item.name}}</Button>-->
+<!--                        </ButtonGroup>-->
+<!--                  </div>-->
                   <div class="sort">
                         <span class="name">Sorts by:</span>
                         <div class="sortOption">
@@ -35,10 +36,25 @@
                             </Select>
                         </div>
                   </div>
+                  <div class="sort">
+                        <span class="name">Refine Results:</span>
+                        <div class="sortOption">
+                            <Select v-model="facetName" style="width:90px" @on-change="facetNameChange"> 
+                                <Option v-for="item in facetNameArray" :value="item" :key="item">{{item}}</Option>
+                            </Select>
+                            <Icon type="ios-arrow-forward" style="font-size: 12px"/>
+                            <Select class="facet-value-select" v-model="facetValue" style="width:150px;position: relative;" @on-change="facetValueChange" filterable>
+                                <Option v-for="item in facetValueArray" :value="item.value" :key="item.value">{{ item.value }} ({{item.count}})</Option> 
+                            </Select>
+                        </div>
+                  </div>
               </div>
               <div class="search-button-wrapper">
                   <Button type="primary" @click="search">Search</Button>
               </div>
+          </div>
+          <div class="tag-wrapper" style="margin-top: 10px;" >
+            <Tag v-for="item in tagsArray" type="border" :color="item.value?'warning':'primary'" :key="item.name+item.value" :name="item.name+item.value" closable @on-close="removeFacetTag">{{item.name}}<span v-if="item.value">-></span>{{item.value}}</Tag>
           </div>
           <div class="container-wrapper">
 
@@ -64,8 +80,16 @@
                         <div class="left">
                             <div class="description-wrapper">
                               <!--<Input v-model="item.description" disabled type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="" />-->
-                              <read-more more-str="" :text="item.description" link="#" less-str="read less" :max-chars="120"></read-more>
-                              <img class="license-img" :src="item.license"/>
+                              <read-more v-if="!item.multiTool" more-str="" :text="item.description" link="#" less-str="read less" :max-chars="120"></read-more>
+                              <img v-if="!item.multiTool" class="license-img" :src="item.license"/>
+                              <div v-if="item.multiTool">
+                                  <div>This is a multitool container. The following tools are part of the container:</div>
+                                  <div>
+                                      <a v-for="tool in item.contains" v-bind:href="tool.url">
+                                          <img v-bind:src="tool.image" />
+                                      </a>
+                                  </div>
+                              </div>
                             </div>
                             <div class="state-wrapper">
                                 {{item.state}}
@@ -227,7 +251,12 @@ export default {
           BSD:'yellow',
           CC:'blueviolet',
           Artistic:'important'
-        }
+        },
+        facetNameArray:[],
+        facetValueArray:[],
+        facetValue:'',
+        facetName:'',
+        tagsArray:[]
     }
   },
   methods:{
@@ -309,8 +338,10 @@ export default {
 
         this.query.sort_field = this.sortType
         this.query.sort_order = this.sortOrder 
+
+        console.log('this.query.facets',this.query.facets)
         this.$http
-            .get(this.$store.state.baseApiURL + '/api/ga4gh/v2/tools',{params:this.query})
+            .get(this.$store.state.baseApiURL + '/ga4gh/trs/v2/tools',{params:this.query})
             .then(function(res){
               let tempLength = res.body.length;
               if(tempLength > 0){
@@ -321,14 +352,33 @@ export default {
                   for(let i=0; i<tempLength; i++){
                       var item = {
                         id:res.body[i].id,
-                        toolname:res.body[i].toolname.toUpperCase(),
+                        toolname:res.body[i].name,
                         description:res.body[i].description ? res.body[i].description:'Tool description is coming',
                         tags:['tag1','tag2','tag2'],
                         state:'',
                         pulls:abbreviateNumber(res.body[i].pulls),
                         color:res.body[i].verified ? '#19be6b': '#c5c8ce',
-                        license:''
+                        license:'',
+                        multiTool: false,
+                        contains: [],
+                        contains_text: ''
                       };
+
+                      if(item.toolname.indexOf('mulled-') !== -1){
+                          item.multiTool = true
+                          if (res.body[i].contains !== null){
+                              for(let j = 0; j <res.body[i].contains.length; j++){
+                                  var container = {
+                                          image: 'https://img.shields.io/static/v1?label=included%20tool&message=' + res.body[i].contains[j] +'&color=yellow',
+                                          url: "https://biocontainers.pro/#/tools/" + res.body[i].contains[j]
+                                   };
+                                  item.contains.push(container)
+                              }
+                          }
+                      }
+                      if(item.contains.length > 0)
+                          item.contains_text = item.contains.join(', ')
+
                       let found=false;
                       for(let j in this.licenseColor){
                         if(res.body[i].license&&res.body[i].license.match(j)){
@@ -373,9 +423,102 @@ export default {
       //this.$router.push({name:'dataset',params:{id:id}});
       this.$router.push({name:'tools',params:{id:id}});
     },
+    getFacets(){
+        this.$http
+            .get(this.$store.state.baseApiURL + 'ga4gh/trs/v2/facets')
+            .then(function(res){
+              let tempLength = res.body.length;
+              if(tempLength > 0){
+                  this.facetObj = {}
+                  this.facetName = res.body[0].facet
+                  this.facetValueArray = res.body[0].values
+                  for(let i in res.body){
+                    let item = res.body[i]
+                    this.facetNameArray.push(item.facet)
+                    this.facetObj[item.facet] = item.values
+                  }
+              }
+              else{
+                this.$Notice.error({
+                    title: 'No facets: Server Error',
+                    desc: err.body.error
+                });
+              }
+            },function(err){
+                console.log('err',err);
+                this.$Notice.error({
+                    title: 'No facets: Server Error',
+                    desc: err.body.error
+                });
+            });
+    },
+    facetNameChange(index){
+      this.facetValueArray = this.facetObj[index]
+      this.facetValue=''
+    }, 
+    facetValueChange(index){
+      for(let i in this.tagsArray){
+        if(this.tagsArray[i].name == this.facetName && this.tagsArray[i].value == index){
+          this.facetValue=''
+          this.$Notice.error({
+              title: 'Repeated Facets',
+              desc: 'Do not add the repeated facets!'
+          });
+          return
+        }
+      }
+      if(index){
+          let item = {
+            name:this.facetName,
+            value:index
+          }
+          this.tagsArray.push(item)
+      }
+    },
+    removeFacetTag(event, name){
+      console.log('name',name)
+      for(let i in this.tagsArray){
+        if((this.tagsArray[i].name+this.tagsArray[i].value) == name){
+            this.tagsArray.splice(i, 1);
+        }
+      }
+    },
+    addKeyword(){
+      for(let i in this.tagsArray){
+        if(this.tagsArray[i].name == this.keywords){
+          this.$Notice.error({
+              title: 'Repeated Keywords',
+              desc: 'Do not add the repeated keywords!'
+          });
+          return
+        }
+      }
+      if(this.keywords){
+          let item = {
+            name:this.keywords,
+            value:''
+          }
+          this.tagsArray.push(item)
+          this.keywords = ''
+      }
+    }
+  },
+  watch:{
+    tagsArray: function(val,oldVal){
+          this.query.facets = ''
+          for(let i in val){
+            if(val[i].value){// it is a facet, if value is null, it is the keyword
+              this.query.facets+=val[i].name+':'+val[i].value+','
+            }
+          }
+          let reg=/,$/gi
+          this.query.facets=this.query.facets.replace(reg,"");
+          console.log('watch',this.query.facets)
+    },
   },
   mounted(){
     this.search();
+    this.getFacets();
   }
 }
 
@@ -422,6 +565,7 @@ function abbreviateNumber(number){
     }
     .sortOption{
       display: inline-block;
+      position: relative;
     }
     .filter-wrapper .name{
       font-size: 0.875rem
@@ -630,6 +774,9 @@ function abbreviateNumber(number){
     }
     .description-wrapper .ivu-input[disabled]{
       background: none;
+    }
+    .facet-value-select .ivu-select-dropdown{
+      max-width: 300px;
     }
     /*
     table tr:last-child td:first-child {
