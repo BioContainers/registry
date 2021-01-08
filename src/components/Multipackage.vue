@@ -77,13 +77,13 @@ export default {
         //downloadName:'',
         createContainerValue: '2pg_cartesian=1.0.1,_license=1.1,_nb_ext_conf=0.3.0,abawaca=1.00,abricate=0.4,abstract-rendering=0.5.1,abundancebin=1.0.1',
         containerNameValue:'quay.io/biocontainers/mulled-v2-87f6cdd7eada4e4f6f2fc092e7820d826d5aeeaa:5b8a8a59d2a5385e45cbe82909bf44e7544071f1',
-        // dataApi1: 'static/repodata/anaconda/repodata.json', 
+        // dataApi1: 'static/repodata/anaconda/repodata.json',
         // dataApi2: 'static/repodata/bioconda/repodata.json',
-        // dataApi3: 'static/repodata/conda-forge/repodata.json', 
-        dataApi1: 'static/repodata/anaconda/repodata.json.gz', 
+        // dataApi3: 'static/repodata/conda-forge/repodata.json',
+        dataApi1: 'static/repodata/anaconda/repodata.json.gz',
         dataApi2: 'static/repodata/bioconda/repodata.json.gz',
-        dataApi3: 'static/repodata/conda-forge/repodata.json.gz', 
-        // dataApitest: 'static/repodata/repodata.json.gz', 
+        dataApi3: 'static/repodata/conda-forge/repodata.json.gz',
+        // dataApitest: 'static/repodata/repodata.json.gz',
         resultsTableCol:[
             {
                 title: 'Name',
@@ -246,9 +246,9 @@ export default {
               condaforgeBody = JSON.parse(result3)
               // var json = JSON.parse(result)
               // console.timeEnd()
-              console.log('anacondaBody',anacondaBody) 
-              console.log('biocondaBody',biocondaBody) 
-              console.log('condaforgeBody',condaforgeBody) 
+              console.log('anacondaBody',anacondaBody)
+              console.log('biocondaBody',biocondaBody)
+              console.log('condaforgeBody',condaforgeBody)
             } catch (err) {
               console.log('pako',err)
             }
@@ -256,8 +256,8 @@ export default {
             let anaconda = this.processData(anacondaBody, 'anaconda');
             let bioconda = this.processData(biocondaBody, 'bioconda');
             let condaforge = this.processData(condaforgeBody, 'conda-forge');
-            
-           
+
+
             let packages = union(anaconda, bioconda, condaforge);
 
             this.packages = packages.sort((a,b)=>{
