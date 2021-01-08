@@ -21,6 +21,7 @@
     "less-loader": "^4.1.0",
     "lodash": "^4.17.19",
     "moment": "^2.22.2",
+    "pako": "^2.0.2",
     "parse-github-url": "^1.0.2",
     "vue": "^2.5.2",
     "vue-analytics": "^5.16.3",
