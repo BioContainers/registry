@@ -82,7 +82,7 @@ export default {
         // dataApi3: 'static/repodata/conda-forge/repodata.json',
         dataApi1: 'static/repodata/anaconda/repodata.json.gz',
         dataApi2: 'static/repodata/bioconda/repodata.json.gz',
-        dataApi3: 'static/repodata/conda-forge/repodata.json.gz',
+        dataApi3: 'static/repodata/condaforge/repodata.json.gz',
         // dataApitest: 'static/repodata/repodata.json.gz',
         resultsTableCol:[
             {
@@ -255,7 +255,7 @@ export default {
 
             let anaconda = this.processData(anacondaBody, 'anaconda');
             let bioconda = this.processData(biocondaBody, 'bioconda');
-            let condaforge = this.processData(condaforgeBody, 'conda-forge');
+            let condaforge = this.processData(condaforgeBody, 'condaforge');
 
 
             let packages = union(anaconda, bioconda, condaforge);
