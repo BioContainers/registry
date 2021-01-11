@@ -259,6 +259,12 @@ export default {
         tagsArray:[]
     }
   },
+  beforeRouteUpdate:function (to, from, next) {
+        console.log(111)
+        this.updateCondition(to.query)
+        this.search();
+        next();
+    },
   methods:{
     rowClick(row){
       console.log('row',row);
@@ -295,26 +301,78 @@ export default {
     },
     sortTypeClick(index){
       console.log(this.sortType)
-      this.search();
-        /*
-          for(let i in this.sorts){
-              if(i == index)
-                this.sorts[i].type = 'primary';
-              else
-                this.sorts[i].type = 'default';
-          }*/
+      this.query.sort_field = this.sortType
+      this.$router.push({name: 'Registry', query: this.query});
+      // this.search();
+        
+      
     },
     sortOrderClick(index){
-      console.log(this.sortOrder)
-      this.search();
-        /*
-          for(let i in this.sorts){
-              if(i == index)
-                this.sorts[i].type = 'primary';
-              else
-                this.sorts[i].type = 'default';
-          }*/
+      this.query.sort_order = this.sortOrder 
+      this.$router.push({name: 'Registry', query: this.query});
+      // this.search();
     },
+    submitSearch(){
+      console.log(123)
+      
+      
+    },
+    updateCondition(q){
+          console.log('222',this.$route.query)
+          let query = q || this.$route.query;
+          let offsetFound = false
+          let limitFound = false
+          let sortfieldFound = false
+          let sortOrderFound = false
+          let keywordFound = false
+          for(let i in query){
+              if(i == 'all_fields_search' || i == 'description' || i == 'id' || i == 'toolname'){
+                 keywordFound = true
+                 this.keywords = query[i]
+              }
+              else if(i =='offset'){
+                offsetFound = true
+                try{
+                  this.current=(parseInt(query['offset'])-1)/parseInt(query['limit']) + 1;
+                }
+                catch(e){
+                  this.current=1
+                }
+                //console.log(this.currentPage );
+              }
+              else if(i =='limit'){
+                  limitFound = true
+                  let tempPageSize = parseInt(query[i]);
+                  if(tempPageSize == 10 || tempPageSize == 20 || tempPageSize == 30 || tempPageSize == 40)
+                    this.pageSize = parseInt(query[i]);
+                  else 
+                    this.pageSize = 20;
+              }
+              else if(i =='sort_field'){
+                console.log('query',query)
+
+                console.log('sort_field found',query[i])
+                sortfieldFound = true
+                this.sortType = query[i]
+                
+              }
+              else if(i =='sort_order'){ 
+                sortOrderFound = true
+                this.sortOrder = query[i]
+                
+              }
+          }
+          if(!keywordFound)
+              this.keywords = '';
+          if(!sortOrderFound)
+              this.sortOrder = 'asc'
+          if(!sortfieldFound)
+              this.sortType = 'default'
+          if(!limitFound)
+              this.pageSize = 20;
+          if(!offsetFound)  
+              this.current = 1;
+      },
     search(){
         this.loading=true;
         this.dataFound=false;
@@ -332,14 +390,13 @@ export default {
           this.query.id = this.keywords;
         else if(this.filter == 'Name')
           this.query.toolname = this.keywords;
-        else if(this.filter == 'All'){
+        else if(this.filter == 'All'){ // currently filter is always "All"
           this.query['all_fields_search'] = this.keywords;
         }
 
+        this.query.sort_order = this.sortOrder
         this.query.sort_field = this.sortType
-        this.query.sort_order = this.sortOrder 
-
-        console.log('this.query.facets',this.query.facets)
+        // this.$router.push({name: 'Registry', query: this.query});
         this.$http
             .get(this.$store.state.baseApiURL + '/ga4gh/trs/v2/tools',{params:this.query})
             .then(function(res){
@@ -411,12 +468,14 @@ export default {
       this.current=page;
       this.query.offset = parseInt(this.pageSize) * (parseInt(page)-1) + 1;
       console.log(page,this.pageSize,this.query.offset);
-      this.search();
+      this.$router.push({name: 'Registry', query: this.query});
+      // this.search();
     },
     pageSizeChange(pageSize){
       this.pageSize = pageSize;
       this.query.limit = this.pageSize;
-      this.search();
+      this.$router.push({name: 'Registry', query: this.query});
+      // this.search();
     },
     gotoContainerDetails(id){
       console.log('ididididid',id);
@@ -517,6 +576,7 @@ export default {
     },
   },
   mounted(){
+    this.updateCondition();
     this.search();
     this.getFacets();
   }

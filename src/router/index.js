@@ -21,7 +21,7 @@ export default new Router({
         component: Index
       },
       {
-        path: '/registry/',
+        path: '/registry',
         name: 'Registry',
         component: Registry
 
