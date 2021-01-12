@@ -10,7 +10,7 @@
           <h1>Search</h1>
           <div class="search-wrapper">
             <!-- <Input v-model="keywords" icon="ios-search" placeholder="Search" style="width:100%" @on-enter="addKeyword"/> -->
-            <Input v-model="keywords" icon="ios-search" placeholder="Search" style="width:100%" @on-enter="search"/>
+            <Input v-model="keywords" icon="ios-search" placeholder="Search" style="width:100%" @on-enter="submitSearch"/>
           </div>
           <div class="search-options-wrapper">
               <div class="filter-wrapper">
@@ -50,7 +50,7 @@
                   </div>
               </div>
               <div class="search-button-wrapper">
-                  <Button type="primary" @click="search">Search</Button>
+                  <Button type="primary" @click="submitSearch">Search</Button>
               </div>
           </div>
           <div class="tag-wrapper" style="margin-top: 10px;" >
@@ -107,7 +107,7 @@
 
           </div>
           <div class="page-wrapper">
-              <Page :total="total" :current="current" :page-size="pageSize" size="small" show-elevator show-sizer @on-change="pageChange" @on-page-size-change="pageSizeChange"/>
+              <Page :total="total" :current="page" :page-size="pageSize" size="small" show-elevator show-sizer @on-change="pageChange" @on-page-size-change="pageSizeChange"/>
           </div>
       </div>
   </div>
@@ -126,7 +126,7 @@ export default {
     return {
         keywords:'',
         total:1000,
-        current:1,
+        page:1,
         pageSize:30,
         cardList:[],
         loading:true,
@@ -240,10 +240,6 @@ export default {
                 value:'desc',
             },
         ],
-        query:{
-          offset:0,
-          limit:30
-        },
         licenseColor:{
           Apache: 'brightgreen',
           MIT:'green',
@@ -260,9 +256,9 @@ export default {
     }
   },
   beforeRouteUpdate:function (to, from, next) {
-        console.log(111)
+        console.log('beforeRouteUpdate',to.query)
         this.updateCondition(to.query)
-        this.search();
+        this.search(to.query);
         next();
     },
   methods:{
@@ -301,24 +297,24 @@ export default {
     },
     sortTypeClick(index){
       console.log(this.sortType)
-      this.query.sort_field = this.sortType
-      this.$router.push({name: 'Registry', query: this.query});
+      // this.query.sort_field = this.sortType
+      // this.$router.push({name: 'Registry', query: this.query});
       // this.search();
         
       
     },
     sortOrderClick(index){
-      this.query.sort_order = this.sortOrder 
-      this.$router.push({name: 'Registry', query: this.query});
+      // this.query.sort_order = this.sortOrder 
+      // this.$router.push({name: 'Registry', query: this.query});
       // this.search();
     },
     submitSearch(){
-      console.log(123)
-      
+      console.log('submitSearch')
+      this.$router.push({name: 'Registry', query: this.query});
       
     },
     updateCondition(q){
-          console.log('222',this.$route.query)
+          console.log('updateCondition',this.$route.query)
           let query = q || this.$route.query;
           let offsetFound = false
           let limitFound = false
@@ -333,10 +329,10 @@ export default {
               else if(i =='offset'){
                 offsetFound = true
                 try{
-                  this.current=(parseInt(query['offset'])-1)/parseInt(query['limit']) + 1;
+                  this.page=(parseInt(query['offset'])-1)/parseInt(query['limit']) + 1;
                 }
                 catch(e){
-                  this.current=1
+                  this.page=1
                 }
                 //console.log(this.currentPage );
               }
@@ -354,7 +350,7 @@ export default {
                 console.log('sort_field found',query[i])
                 sortfieldFound = true
                 this.sortType = query[i]
-                
+                console.log('this.sortType',this.sortType)
               }
               else if(i =='sort_order'){ 
                 sortOrderFound = true
@@ -362,43 +358,48 @@ export default {
                 
               }
           }
-          if(!keywordFound)
-              this.keywords = '';
-          if(!sortOrderFound)
-              this.sortOrder = 'asc'
-          if(!sortfieldFound)
-              this.sortType = 'default'
-          if(!limitFound)
-              this.pageSize = 20;
-          if(!offsetFound)  
-              this.current = 1;
+          // if(!keywordFound)
+          //     this.keywords = '';
+          // if(!sortOrderFound)
+          //     this.sortOrder = 'asc'
+          // if(!sortfieldFound)
+          //     this.sortType = 'default'  
+          // if(!limitFound)
+          //     this.pageSize = 20;
+          // if(!offsetFound)  
+          //     this.page = 1;
       },
-    search(){
+    search(q){
+
         this.loading=true;
         this.dataFound=false;
         this.cardList=[];
-        if(this.query.description)
-          delete this.query.description;
-        if(this.query.id)
-          delete this.query.id;
-        if(this.query.toolname)
-          delete this.query.toolname;
+        let query = q || this.$route.query;
+
+
+        if(query.description)
+          delete query.description;
+        if(query.id)
+          delete query.id;
+        if(query.toolname)
+          delete query.toolname;
 
         if(this.filter == 'Description')
-         this.query.description = this.keywords;
+          query.description = this.keywords;
         else if(this.filter == 'ID')
-          this.query.id = this.keywords;
+          query.id = this.keywords;
         else if(this.filter == 'Name')
-          this.query.toolname = this.keywords;
+          query.toolname = this.keywords;
         else if(this.filter == 'All'){ // currently filter is always "All"
-          this.query['all_fields_search'] = this.keywords;
+          query['all_fields_search'] = this.keywords;
         }
 
-        this.query.sort_order = this.sortOrder
-        this.query.sort_field = this.sortType
+        query.sort_order = this.sortOrder
+        query.sort_field = this.sortType
+        console.log('search',query)
         // this.$router.push({name: 'Registry', query: this.query});
         this.$http
-            .get(this.$store.state.baseApiURL + '/ga4gh/trs/v2/tools',{params:this.query})
+            .get(this.$store.state.baseApiURL + '/ga4gh/trs/v2/tools',{params:query})
             .then(function(res){
               let tempLength = res.body.length;
               if(tempLength > 0){
@@ -465,9 +466,9 @@ export default {
             });
     },
     pageChange(page){
-      this.current=page;
-      this.query.offset = parseInt(this.pageSize) * (parseInt(page)-1) + 1;
-      console.log(page,this.pageSize,this.query.offset);
+      this.page=page;
+      this.query.offset = parseInt(this.pageSize) * (parseInt(this.page)-1) + 1;
+      console.log('pageChange',page,this.pageSize,this.query.offset);
       this.$router.push({name: 'Registry', query: this.query});
       // this.search();
     },
@@ -575,7 +576,36 @@ export default {
           console.log('watch',this.query.facets)
     },
   },
+  computed:{
+      //this variable is not used anymore and only for updating this.normalQuery;
+      query:function(){
+          let normalQuery = {}
+
+
+          if(this.filter == 'Description')
+            normalQuery.description = this.keywords;
+          else if(this.filter == 'ID')
+            normalQuery.id = this.keywords;
+          else if(this.filter == 'Name')
+            normalQuery.toolname = this.keywords;
+          else if(this.filter == 'All'){ // currently filter is always "All"
+            normalQuery['all_fields_search'] = this.keywords;
+          }
+
+          if(this.sortOrder)
+            normalQuery.sort_order = this.sortOrder
+          if(this.sortType)
+            normalQuery.sort_field = this.sortType
+
+          normalQuery.offset = parseInt(this.pageSize) * (parseInt(this.page)-1);
+          normalQuery.limit = this.pageSize;
+          console.log('this.normalQuery',this.normalQuery);
+          //return '?'+keyword+filter+page+pageSize;
+          return normalQuery;
+      }
+    },
   mounted(){
+    console.log('mounted')
     this.updateCondition();
     this.search();
     this.getFacets();
