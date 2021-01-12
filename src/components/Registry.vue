@@ -329,7 +329,8 @@ export default {
               else if(i =='offset'){
                 offsetFound = true
                 try{
-                  this.page=(parseInt(query['offset'])-1)/parseInt(query['limit']) + 1;
+                  this.page= Math.round((parseInt(query['offset'])-1)/parseInt(query['limit'])) + 1;
+                  console.log('this.page',this.page)
                 }
                 catch(e){
                   this.page=1
@@ -356,6 +357,21 @@ export default {
                 sortOrderFound = true
                 this.sortOrder = query[i]
                 
+              }
+              else if(i == 'facets'){
+                if(query[i]){
+                  this.tagsArray = []
+                  let filterArray = query[i].split(',');
+                  for(let i=0; i<filterArray.length;i++){
+                      let facetsArray = filterArray[i].split(':')
+                      let item = {
+                        name:facetsArray[0],
+                        value:facetsArray[1],
+                      }
+                      this.tagsArray.push(item)
+                  }
+                }
+                console.log('ready to get facets',query[i])
               }
           }
           // if(!keywordFound)
@@ -407,6 +423,7 @@ export default {
                   let offset = res.headers.map.last_page[0].split('&')[1].split('=')[1];
                   this.total = parseInt(limit)+parseInt(offset);
                   this.dataFound=true;
+                  this.facetValue = '' //clear the faceValue Input
                   for(let i=0; i<tempLength; i++){
                       var item = {
                         id:res.body[i].id,
@@ -467,7 +484,7 @@ export default {
     },
     pageChange(page){
       this.page=page;
-      this.query.offset = parseInt(this.pageSize) * (parseInt(this.page)-1) + 1;
+      this.query.offset = parseInt(this.pageSize) * (parseInt(this.page)-1);
       console.log('pageChange',page,this.pageSize,this.query.offset);
       this.$router.push({name: 'Registry', query: this.query});
       // this.search();
@@ -497,6 +514,9 @@ export default {
                     this.facetNameArray.push(item.facet)
                     this.facetObj[item.facet] = item.values
                   }
+                  // console.log('this.facetObj',res.body[0])
+                  this.updateCondition();
+                  this.search();
               }
               else{
                 this.$Notice.error({
@@ -512,13 +532,13 @@ export default {
                 });
             });
     },
-    facetNameChange(index){
-      this.facetValueArray = this.facetObj[index]
+    facetNameChange(val){
+      this.facetValueArray = this.facetObj[val]
       this.facetValue=''
     }, 
-    facetValueChange(index){
+    facetValueChange(val){
       for(let i in this.tagsArray){
-        if(this.tagsArray[i].name == this.facetName && this.tagsArray[i].value == index){
+        if(this.tagsArray[i].name == this.facetName && this.tagsArray[i].value == val){
           this.facetValue=''
           this.$Notice.error({
               title: 'Repeated Facets',
@@ -527,12 +547,13 @@ export default {
           return
         }
       }
-      if(index){
+      if(val){
           let item = {
             name:this.facetName,
-            value:index
+            value:val
           }
           this.tagsArray.push(item)
+          this.facetValue=''
       }
     },
     removeFacetTag(event, name){
@@ -543,25 +564,25 @@ export default {
         }
       }
     },
-    addKeyword(){
-      for(let i in this.tagsArray){
-        if(this.tagsArray[i].name == this.keywords){
-          this.$Notice.error({
-              title: 'Repeated Keywords',
-              desc: 'Do not add the repeated keywords!'
-          });
-          return
-        }
-      }
-      if(this.keywords){
-          let item = {
-            name:this.keywords,
-            value:''
-          }
-          this.tagsArray.push(item)
-          this.keywords = ''
-      }
-    }
+      // addKeyword(){
+      //   for(let i in this.tagsArray){
+      //     if(this.tagsArray[i].name == this.keywords){
+      //       this.$Notice.error({
+      //           title: 'Repeated Keywords',
+      //           desc: 'Do not add the repeated keywords!'
+      //       });
+      //       return
+      //     }
+      //   }
+      //   if(this.keywords){
+      //       let item = {
+      //         name:this.keywords,
+      //         value:''
+      //       }
+      //       this.tagsArray.push(item)
+      //       this.keywords = ''
+      //   }
+      // }
   },
   watch:{
     tagsArray: function(val,oldVal){
@@ -580,8 +601,6 @@ export default {
       //this variable is not used anymore and only for updating this.normalQuery;
       query:function(){
           let normalQuery = {}
-
-
           if(this.filter == 'Description')
             normalQuery.description = this.keywords;
           else if(this.filter == 'ID')
@@ -599,15 +618,12 @@ export default {
 
           normalQuery.offset = parseInt(this.pageSize) * (parseInt(this.page)-1);
           normalQuery.limit = this.pageSize;
-          console.log('this.normalQuery',this.normalQuery);
-          //return '?'+keyword+filter+page+pageSize;
           return normalQuery;
       }
     },
   mounted(){
     console.log('mounted')
-    this.updateCondition();
-    this.search();
+    
     this.getFacets();
   }
 }
