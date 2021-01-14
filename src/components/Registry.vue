@@ -355,8 +355,7 @@ export default {
               }
               else if(i =='sort_order'){ 
                 sortOrderFound = true
-                this.sortOrder = query[i]
-                
+                this.sortOrder = query[i]         
               }
               else if(i == 'facets'){
                 if(query[i]){
@@ -371,6 +370,7 @@ export default {
                       this.tagsArray.push(item)
                   }
                 }
+                this.facets = query[i]
                 console.log('ready to get facets',query[i])
               }
           }
@@ -386,12 +386,10 @@ export default {
           //     this.page = 1;
       },
     search(q){
-
         this.loading=true;
         this.dataFound=false;
         this.cardList=[];
         let query = q || this.$route.query;
-
 
         if(query.description)
           delete query.description;
@@ -533,8 +531,10 @@ export default {
             });
     },
     facetNameChange(val){
+      console.log('before facetNameChange',this.facetValue)
       this.facetValueArray = this.facetObj[val]
       this.facetValue=''
+      console.log('after facetNameChange',this.facetValue)
     }, 
     facetValueChange(val){
       for(let i in this.tagsArray){
@@ -610,6 +610,9 @@ export default {
           else if(this.filter == 'All'){ // currently filter is always "All"
             normalQuery['all_fields_search'] = this.keywords;
           }
+
+          if(this.facets)
+            normalQuery.facets = this.facets
 
           if(this.sortOrder)
             normalQuery.sort_order = this.sortOrder
