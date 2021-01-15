@@ -1,4 +1,4 @@
-name: Biocontainer API publish Docker image
+name: Biocontainer Web publish Docker image
 env:
   IMAGE_NAME: biocontainer-web
 
