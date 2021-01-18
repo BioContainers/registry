@@ -2,7 +2,7 @@
     <div class="nav-container">
         <Menu mode="horizontal" active-name="1" @on-select="menuSelect">
             <a class="logo" @click="gotoHome">
-                <img src="static/logo/biocontainers-logo.png" width="40" height="40">BioContainers</a>
+                <img src="/static/logo/biocontainers-logo.png" width="40" height="40">BioContainers</a>
             <div class="menu">
                 <MenuItem name="registry">
                     <Icon type="ios-search"></Icon>

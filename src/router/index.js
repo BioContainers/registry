@@ -10,22 +10,22 @@ import Multipackage from '@/components/Multipackage'
 
 Vue.use(Router);
 
-export default new Router({
-  // mode: 'history',
+let router = new Router({
+  mode: 'history',
   base: location.hostname.match(/localhost/)?'':'/',
   //   base:'',
   routes: [
-      {
-        path: '/',
-        name: 'Index',
-        component: Index
-      },
-      {
-        path: '/registry/',
-        name: 'Registry',
-        component: Registry
+    {
+      path: '/',
+      name: 'Index',
+      component: Index
+    },
+    {
+      path: '/registry',
+      name: 'Registry',
+      component: Registry
 
-      },
+    },
     {
       path: '/tools/:id',
       name: 'tools',
@@ -47,4 +47,17 @@ export default new Router({
       component: NotFound,
     },
   ]
-})
+});
+
+export default router;
+
+
+router.beforeEach((to, from, next) => {
+  // Redirect if fullPath begins with a hash (ignore hashes later in path)
+  if (to.fullPath.substr(0,2) === "/#") {
+    const path = to.fullPath.substr(2);
+    next(path);
+    return;
+  }
+  next();
+});
