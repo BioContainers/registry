@@ -71,8 +71,8 @@
                                   <div class="foot">
                                       <div><strong>Keyword</strong></div>
                                       <Divider class="divider"/>
-                                      <div class="tag-wrapper" >
-                                          <Tag v-for="item in containerObj.keywords" v-bind:key="item" color="warning" style="margin-right:5px;height:30px;font-size:16px;line-height:30px;">{{item}}</Tag>
+                                      <div class="tag-button-wrapper" >
+                                          <Button v-for="item in containerObj.keywords" v-bind:key="item" style="margin-right:5px;height:30px;font-size:16px;line-height:30px; background: #f90; padding: 0 8px;" @click="search(item)">{{item}}</Button>
                                       </div>
                                   </div>
                              </Col>
@@ -683,6 +683,9 @@ export default {
     },
     modalClose(){
 
+    },
+    search(item){
+      this.$router.push({name: 'Registry', query: {all_fields_search:item,sort_order:'asc',sort_field:'default',offset:0,limit:30}});
     }
   },
   beforeRouteUpdate (to, from, next) {
@@ -876,9 +879,9 @@ function abbreviateNumber(number){
       margin-bottom: 5px;
       white-space: normal;
     }
-    .tag-wrapper{
-      margin-bottom: 5px;
-      display: inline-block;
+    .tag-button-wrapper button:hover{
+      opacity: 0.8;
+      color: #747b8b;
     }
     .card{
       display: inline-block;
@@ -969,10 +972,6 @@ function abbreviateNumber(number){
       white-space: normal;
       width: 100%;
       text-align:justify;
-    }
-    .tag-wrapper{
-      margin-bottom: 5px;
-      display: inline-block;
     }
     .card{
       display: inline-block;
