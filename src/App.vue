@@ -19,9 +19,6 @@ export default {
           console.log('location.origin',location.origin);
           this.$router.replace({ path: redirect.replace(location.origin+this.$router.options.base,'/') });
         }
-        if(window.location.href.match('#')){
-          window.location.href = window.location.href.replace('/#', '')
-        }
   },
 }
 </script>
