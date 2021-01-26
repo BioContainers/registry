@@ -82,7 +82,7 @@
                           <p class="title">Resources</p>
                           <p class="sub-title">We provide multiple tools and resources to work with containers</p>
                           <a class="button" @click="onSelectMulti()">Multi-tools</a>
-                          <a class="button" href="https://api.biocontainers.pro/api/ga4gh/v2/ui/">TRS API</a>
+                          <a class="button" href="https://api.biocontainers.pro/ga4gh/trs/v2/ui/">TRS API</a>
                       </div>
                     </Col>
                 </Row>
