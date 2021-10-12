@@ -85,8 +85,8 @@
                               <div v-if="item.multiTool">
                                   <div>This is a multitool container. The following tools are part of the container:</div>
                                   <div>
-                                      <a v-for="tool in item.contains" v-bind:href="tool.url">
-                                          <img v-bind:src="tool.image" />
+                                      <a v-for="tool in item.contains" v-bind:href="tool.url" v-bind:key="tool.url">
+                                          <img  v-bind:src="tool.image" />
                                       </a>
                                   </div>
                               </div>
@@ -125,7 +125,7 @@ export default {
   data () {
     return {
         keywords:'',
-        total:1000,
+        total:0,
         page:1,
         pageSize:30,
         cardList:[],
@@ -256,14 +256,14 @@ export default {
     }
   },
   beforeRouteUpdate:function (to, from, next) {
-        console.log('beforeRouteUpdate',to.query)
+        console.debug('beforeRouteUpdate',to.query)
         this.updateCondition(to.query)
         this.search(to.query);
         next();
     },
   methods:{
     rowClick(row){
-      console.log('row',row);
+      console.debug('row',row);
         this.$router.push({name:'Containerdetails',params:{id:row.ID}});
     },
     filterClick(index){
@@ -296,7 +296,7 @@ export default {
         }*/
     },
     sortTypeClick(index){
-      console.log(this.sortType)
+      console.debug(this.sortType)
       // this.query.sort_field = this.sortType
       // this.$router.push({name: 'Registry', query: this.query});
       // this.search();
@@ -309,12 +309,12 @@ export default {
       // this.search();
     },
     submitSearch(){
-      console.log('submitSearch')
+      console.debug('submitSearch')
       this.$router.push({name: 'Registry', query: this.query});
       
     },
     updateCondition(q){
-          console.log('updateCondition',this.$route.query)
+          console.debug('updateCondition',this.$route.query)
           let query = q || this.$route.query;
           let offsetFound = false
           let limitFound = false
@@ -330,7 +330,7 @@ export default {
                 offsetFound = true
                 try{
                   this.page= Math.round((parseInt(query['offset'])-1)/parseInt(query['limit'])) + 1;
-                  console.log('this.page',this.page)
+                  console.debug('this.page',this.page)
                 }
                 catch(e){
                   this.page=1
@@ -346,12 +346,12 @@ export default {
                     this.pageSize = 20;
               }
               else if(i =='sort_field'){
-                console.log('query',query)
+                console.debug('query',query)
 
-                console.log('sort_field found',query[i])
+                console.debug('sort_field found',query[i])
                 sortfieldFound = true
                 this.sortType = query[i]
-                console.log('this.sortType',this.sortType)
+                console.debug('this.sortType',this.sortType)
               }
               else if(i =='sort_order'){ 
                 sortOrderFound = true
@@ -371,7 +371,7 @@ export default {
                   }
                 }
                 this.facets = query[i]
-                console.log('ready to get facets',query[i])
+                console.debug('ready to get facets',query[i])
               }
           }
           // if(!keywordFound)
@@ -386,6 +386,7 @@ export default {
           //     this.page = 1;
       },
     search(q){
+      return new Promise((resolve, reject) => {
         this.loading=true;
         this.dataFound=false;
         this.cardList=[];
@@ -410,15 +411,26 @@ export default {
 
         query.sort_order = this.sortOrder
         query.sort_field = this.sortType
-        console.log('search',query)
+        console.debug('search',query)
         // this.$router.push({name: 'Registry', query: this.query});
         this.$http
-            .get(this.$store.state.baseApiURL + '/ga4gh/trs/v2/tools',{params:query})
+            .get(this.$store.state.baseApiURL + 'ga4gh/trs/v2/tools',{params:query})
             .then(function(res){
               let tempLength = res.body.length;
               if(tempLength > 0){
-                  let limit = res.headers.map.last_page[0].split('&')[0].split('=')[1];
-                  let offset = res.headers.map.last_page[0].split('&')[1].split('=')[1];
+                let pageelts = res.headers.map.last_page[0].split('&')
+                let limit=0;
+                let offset=0;
+                for(let e=0;e<pageelts.length;e++) {
+                  let pageelt = pageelts[e].split('=');
+                  if (pageelt[0] == 'limit') {
+                    limit = pageelt[1]
+                  } else if (pageelt[0] == 'offset') {
+                    offset = pageelt[1]
+                  }
+                }
+                  //let limit = res.headers.map.last_page[0].split('&')[0].split('=')[1];
+                  //let offset = res.headers.map.last_page[0].split('&')[1].split('=')[1];
                   this.total = parseInt(limit)+parseInt(offset);
                   this.dataFound=true;
                   this.facetValue = '' //clear the faceValue Input
@@ -469,21 +481,24 @@ export default {
               else{
                 this.dataFound=false;
               }
+              resolve();
               this.loading=false;
             },function(err){
-                console.log('err',err);
+                console.error('err',err);
                 this.dataFound=false;
                 this.loading=false;
                 this.$Notice.error({
                     title: 'Server Error',
                     desc: err.body.error
                 });
+                reject();
             });
+      });
     },
     pageChange(page){
       this.page=page;
       this.query.offset = parseInt(this.pageSize) * (parseInt(this.page)-1);
-      console.log('pageChange',page,this.pageSize,this.query.offset);
+      console.debug('pageChange',page,this.pageSize,this.query.offset);
       this.$router.push({name: 'Registry', query: this.query});
       // this.search();
     },
@@ -494,7 +509,7 @@ export default {
       // this.search();
     },
     gotoContainerDetails(id){
-      console.log('ididididid',id);
+      console.debug('ididididid',id);
       //this.$router.push({name:'dataset',params:{id:id}});
       this.$router.push({name:'tools',params:{id:id}});
     },
@@ -513,8 +528,8 @@ export default {
                     this.facetObj[item.facet] = item.values
                   }
                   // console.log('this.facetObj',res.body[0])
-                  this.updateCondition();
-                  this.search();
+                  //this.updateCondition();
+                  //this.search();
               }
               else{
                 this.$Notice.error({
@@ -523,7 +538,7 @@ export default {
                 });
               }
             },function(err){
-                console.log('err',err);
+                console.error('err',err);
                 this.$Notice.error({
                     title: 'No facets: Server Error',
                     desc: err.body.error
@@ -531,10 +546,10 @@ export default {
             });
     },
     facetNameChange(val){
-      console.log('before facetNameChange',this.facetValue)
+      console.debug('before facetNameChange',this.facetValue)
       this.facetValueArray = this.facetObj[val]
       this.facetValue=''
-      console.log('after facetNameChange',this.facetValue)
+      console.debug('after facetNameChange',this.facetValue)
     }, 
     facetValueChange(val){
       for(let i in this.tagsArray){
@@ -557,7 +572,7 @@ export default {
       }
     },
     removeFacetTag(event, name){
-      console.log('name',name)
+      console.debug('name',name)
       for(let i in this.tagsArray){
         if((this.tagsArray[i].name+this.tagsArray[i].value) == name){
             this.tagsArray.splice(i, 1);
@@ -594,7 +609,7 @@ export default {
           }
           let reg=/,$/gi
           this.query.facets=this.query.facets.replace(reg,"");
-          console.log('watch',this.query.facets)
+          console.debug('watch',this.query.facets)
     },
   },
   computed:{
@@ -625,9 +640,11 @@ export default {
       }
     },
   mounted(){
-    console.log('mounted')
-    
+    console.debug('mounted')
+    this.updateCondition();
+    this.search();
     this.getFacets();
+
   }
 }
 
