@@ -100,11 +100,14 @@
                       </div>
                   </Card>
                   </div>
-                  <div v-if="!dataFound" class="no-data-container">
-                      No Data...
+                  <div v-if="!firstSearchState" class="no-data-container">
+                      Input the keyword for search...
                   </div>
-
-
+                  <div v-else>
+                       <div v-if="!dataFound" class="no-data-container">
+                          No matched Data
+                      </div>
+                  </div>
           </div>
           <div class="page-wrapper">
               <Page :total="total" :current="page" :page-size="pageSize" size="small" show-elevator show-sizer @on-change="pageChange" @on-page-size-change="pageSizeChange"/>
@@ -129,7 +132,7 @@ export default {
         page:1,
         pageSize:30,
         cardList:[],
-        loading:true,
+        loading:false,
         dataFound:false,
         filter:'All',
         resultsTableCol:[
@@ -252,7 +255,8 @@ export default {
         facetValueArray:[],
         facetValue:'',
         facetName:'',
-        tagsArray:[]
+        tagsArray:[],
+        firstSearchState:false
     }
   },
   beforeRouteUpdate:function (to, from, next) {
@@ -310,6 +314,7 @@ export default {
     },
     submitSearch(){
       console.debug('submitSearch')
+      this.firstSearchState = true
       this.$router.push({name: 'Registry', query: this.query});
       
     },
@@ -642,7 +647,7 @@ export default {
   mounted(){
     console.debug('mounted')
     this.updateCondition();
-    this.search();
+    // this.search();
     this.getFacets();
 
   }
