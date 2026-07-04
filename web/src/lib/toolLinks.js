@@ -36,6 +36,15 @@ export function maintainerUrl(handle) {
   return `https://github.com/${handle}`
 }
 
+// When a registry search finds nothing, offer to search the upstream registries directly.
+export function externalSearchLinks(keyword) {
+  const q = encodeURIComponent((keyword || '').trim())
+  return [
+    { label: 'quay.io / biocontainers', url: `https://quay.io/search?q=${q}` },
+    { label: 'DockerHub / biocontainers', url: `https://hub.docker.com/search?q=${q}` },
+  ]
+}
+
 // Framework papers to cite when using a container.
 const BIOCONTAINERS_PAPER = {
   key: 'biocontainers',

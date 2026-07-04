@@ -57,7 +57,20 @@
           <span class="ver">v{{ item.latest_version }} · {{ item.versionCount }} versions</span>
         </div>
       </Card>
-      <div v-if="!loading && !pageItems.length" class="no-data">No matching tools.</div>
+      <div v-if="!loading && !pageItems.length" class="no-data">
+        <p>No matching tools in this registry.</p>
+        <p class="ext-search">
+          Search the source registries directly for
+          <strong>{{ keywords || 'this tool' }}</strong>:
+          <a
+            v-for="l in externalSearchLinks(keywords)"
+            :key="l.label"
+            :href="l.url"
+            target="_blank"
+            class="ext-link"
+          >{{ l.label }}</a>
+        </p>
+      </div>
     </div>
 
     <Page
@@ -76,6 +89,7 @@ import { ref, computed, onMounted } from 'vue'
 import { loadIndex, loadFacets } from '../lib/dataClient.js'
 import { buildIndex, runSearch } from '../lib/search.js'
 import { applyFacet, sortRecords, paginate } from '../lib/registryState.js'
+import { externalSearchLinks } from '../lib/toolLinks.js'
 
 const keywords = ref('')
 const sortKey = ref('name')
@@ -179,6 +193,18 @@ onMounted(async () => {
   text-align: center;
   color: #808695;
   padding: 40px;
+}
+.ext-search {
+  margin-top: 8px;
+}
+.ext-link {
+  display: inline-block;
+  margin-left: 10px;
+  padding: 3px 10px;
+  border: 1px solid #2d8cf0;
+  border-radius: 14px;
+  color: #2d8cf0;
+  font-size: 13px;
 }
 .pager {
   margin-top: 16px;

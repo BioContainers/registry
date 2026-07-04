@@ -1,5 +1,5 @@
 import { it, expect } from 'vitest'
-import { parseIdentifier, isBioconda, registryLinks, maintainerUrl, citations } from '../src/lib/toolLinks.js'
+import { parseIdentifier, isBioconda, registryLinks, maintainerUrl, citations, externalSearchLinks } from '../src/lib/toolLinks.js'
 
 it('parses identifiers into links', () => {
   expect(parseIdentifier('biotools:samtools')).toEqual({
@@ -22,6 +22,12 @@ it('registryLinks only for bioconda tools', () => {
 
 it('maintainerUrl', () => {
   expect(maintainerUrl('alice')).toBe('https://github.com/alice')
+})
+
+it('externalSearchLinks point at quay.io and DockerHub with the encoded keyword', () => {
+  const links = externalSearchLinks('bwa mem')
+  expect(links[0].url).toBe('https://quay.io/search?q=bwa%20mem')
+  expect(links[1].url).toBe('https://hub.docker.com/search?q=bwa%20mem')
 })
 
 it('citations: bioconda cites both, dockerfile cites biocontainers only', () => {
