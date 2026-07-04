@@ -31,8 +31,20 @@ def _resolve_jinja(text: str) -> str:
     return out
 
 
+def _str_list(value):
+    if isinstance(value, list):
+        return [str(x).strip() for x in value if str(x).strip()]
+    if value:
+        return [str(value).strip()]
+    return []
+
+
 def parse_meta(text: str) -> dict:
-    result = {"home": "", "license": "", "summary": "", "version": ""}
+    result = {
+        "home": "", "license": "", "summary": "", "version": "",
+        "description": "", "doc_url": "", "dev_url": "", "license_family": "",
+        "identifiers": [], "maintainers": [],
+    }
     try:
         doc = yaml.safe_load(_resolve_jinja(text)) or {}
     except yaml.YAMLError:
@@ -42,9 +54,18 @@ def parse_meta(text: str) -> dict:
     about = doc.get("about", {}) or {}
     if not isinstance(about, dict):
         about = {}
+    extra = doc.get("extra", {}) or {}
+    if not isinstance(extra, dict):
+        extra = {}
     result["home"] = str(about.get("home", "") or "")
     result["license"] = str(about.get("license", "") or "")
+    result["license_family"] = str(about.get("license_family", "") or "")
     result["summary"] = str(about.get("summary", "") or "").strip()
+    result["description"] = str(about.get("description", "") or "").strip()
+    result["doc_url"] = str(about.get("doc_url", "") or "")
+    result["dev_url"] = str(about.get("dev_url", "") or "")
+    result["identifiers"] = _str_list(extra.get("identifiers"))
+    result["maintainers"] = _str_list(extra.get("recipe-maintainers"))
     package = doc.get("package", {}) or {}
     if isinstance(package, dict):
         result["version"] = str(package.get("version", "") or "").strip()

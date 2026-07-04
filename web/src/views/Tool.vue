@@ -6,6 +6,9 @@
           <Col span="16">
             <h1>{{ tool.name }}</h1>
             <p class="desc">{{ tool.description || 'No description available.' }}</p>
+            <p class="long-desc" v-if="tool.long_description && tool.long_description !== tool.description">
+              {{ tool.long_description }}
+            </p>
             <div class="badges">
               <Tag v-if="flags.conda" color="green">conda</Tag>
               <Tag v-if="flags.docker" color="blue">docker</Tag>
@@ -47,20 +50,54 @@
               <strong>Downloads</strong>
               <div>{{ tool.total_pulls.toLocaleString() }}</div>
             </div>
-            <Divider v-if="tool.total_pulls > 0" />
-            <div class="prop" v-if="tool.home_url">
-              <strong>Homepage</strong>
-              <div><a :href="tool.home_url" target="_blank">{{ tool.home_url }}</a></div>
-            </div>
-            <Divider v-if="tool.home_url" />
+
             <div class="prop">
               <strong>Versions</strong>
-              <div>{{ tool.versions.length }}</div>
+              <div>{{ tool.versions.length }} · latest {{ tool.versions[0]?.version }}</div>
             </div>
-            <Divider />
-            <div class="prop" v-if="tool.license">
+
+            <div class="prop" v-if="tool.license || tool.license_family">
               <strong>License</strong>
-              <div>{{ tool.license }}</div>
+              <div>{{ tool.license || tool.license_family }}</div>
+            </div>
+
+            <div class="prop links" v-if="tool.home_url || tool.doc_url || tool.dev_url">
+              <strong>Links</strong>
+              <div v-if="tool.home_url"><a :href="tool.home_url" target="_blank">Homepage</a></div>
+              <div v-if="tool.doc_url"><a :href="tool.doc_url" target="_blank">Documentation</a></div>
+              <div v-if="tool.dev_url"><a :href="tool.dev_url" target="_blank">Source repository</a></div>
+            </div>
+
+            <div class="prop links" v-if="identifierLinks.length">
+              <strong>Identifiers</strong>
+              <div v-for="ide in identifierLinks" :key="ide.label">
+                <a v-if="ide.url" :href="ide.url" target="_blank">{{ ide.label }}</a>
+                <span v-else>{{ ide.label }}</span>
+              </div>
+            </div>
+
+            <div class="prop links" v-if="registryLinks(tool).length">
+              <strong>Registry &amp; recipe</strong>
+              <div v-for="l in registryLinks(tool)" :key="l.label">
+                <a :href="l.url" target="_blank">{{ l.label }}</a>
+              </div>
+            </div>
+
+            <div class="prop" v-if="tool.dependencies && tool.dependencies.length">
+              <strong>Dependencies</strong>
+              <div class="deps">
+                <Tag v-for="d in tool.dependencies.slice(0, 15)" :key="d" size="small">{{ d }}</Tag>
+                <span v-if="tool.dependencies.length > 15" class="more">
+                  +{{ tool.dependencies.length - 15 }} more
+                </span>
+              </div>
+            </div>
+
+            <div class="prop links" v-if="tool.maintainers && tool.maintainers.length">
+              <strong>Maintainers</strong>
+              <div v-for="m in tool.maintainers" :key="m">
+                <a :href="maintainerUrl(m)" target="_blank">@{{ m }}</a>
+              </div>
             </div>
           </Col>
         </Row>
@@ -93,6 +130,7 @@ import {
   singularityCommand,
   versionContainers,
 } from '../lib/containers.js'
+import { parseIdentifier, registryLinks, maintainerUrl } from '../lib/toolLinks.js'
 
 const route = useRoute()
 const tool = ref(null)
@@ -102,6 +140,7 @@ const flags = computed(() => (tool.value ? installFlags(tool.value) : {}))
 const conda = computed(() => (tool.value ? condaCommand(tool.value) : null))
 const docker = computed(() => (tool.value ? dockerCommand(tool.value) : null))
 const singularity = computed(() => (tool.value ? singularityCommand(tool.value) : null))
+const identifierLinks = computed(() => (tool.value?.identifiers || []).map(parseIdentifier))
 
 async function load(id) {
   tool.value = null
@@ -123,8 +162,22 @@ watch(
 .desc {
   color: #515a6e;
 }
+.long-desc {
+  color: #515a6e;
+  margin: 8px 0 4px;
+  white-space: pre-wrap;
+}
 .badges {
   margin: 12px 0;
+}
+.prop.links a {
+  color: #2d8cf0;
+}
+.deps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
 }
 .usage-block {
   margin-bottom: 18px;

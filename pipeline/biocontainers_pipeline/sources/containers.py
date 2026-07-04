@@ -21,6 +21,7 @@ def parse_dockerfile_labels(text: str) -> dict:
         "home": labels.get("about.home", "").strip(),
         "license": labels.get("about.license", "").strip(),
         "software": labels.get("software", "").strip(),
+        "biotools": labels.get("extra.identifiers.biotools", "").strip(),
     }
 
 

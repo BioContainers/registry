@@ -44,6 +44,18 @@ def tool_detail(t):
         "license": t.license,
         "versions": [_version_out(v) for v in t.versions],
     }
+    # Optional enrichment — emitted only when present, to keep files small.
+    for key, value in (
+        ("long_description", t.long_description),
+        ("doc_url", t.doc_url),
+        ("dev_url", t.dev_url),
+        ("license_family", t.license_family),
+        ("identifiers", t.identifiers),
+        ("maintainers", t.maintainers),
+        ("dependencies", t.dependencies),
+    ):
+        if value:
+            d[key] = value
     if t.total_pulls:
         d["total_pulls"] = round_sig(t.total_pulls)
     return d

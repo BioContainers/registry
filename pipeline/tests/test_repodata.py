@@ -8,12 +8,13 @@ def test_merge_records_keeps_newest_build():
     index = {}
     records = [
         {"name": "s", "version": "1.0", "build": "h0", "build_number": 0, "timestamp": 100},
-        {"name": "s", "version": "1.0", "build": "h1", "build_number": 1, "timestamp": 200},
+        {"name": "s", "version": "1.0", "build": "h1", "build_number": 1, "timestamp": 200, "depends": ["htslib >=1.9"]},
         {"name": "s", "version": "0.9", "build": "hx", "build_number": 5, "timestamp": 50},
     ]
     repodata.merge_records(index, records)
     assert set(index["s"].keys()) == {"1.0", "0.9"}
     assert index["s"]["1.0"]["build"] == "h1"  # newest build_number/timestamp wins
+    assert index["s"]["1.0"]["depends"] == ["htslib >=1.9"]
 
 
 def test_merge_records_skips_incomplete():

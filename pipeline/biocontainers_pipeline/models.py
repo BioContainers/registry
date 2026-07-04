@@ -21,9 +21,16 @@ class Tool:
     id: str
     name: str
     description: str = ""
+    long_description: str = ""
     home_url: str = ""
+    doc_url: str = ""
+    dev_url: str = ""
     license: str = ""
+    license_family: str = ""
     total_pulls: int = 0
+    identifiers: list[str] = field(default_factory=list)   # e.g. "biotools:samtools", "doi:10.x"
+    maintainers: list[str] = field(default_factory=list)   # GitHub handles
+    dependencies: list[str] = field(default_factory=list)  # run deps of the latest version
     versions: list[Version] = field(default_factory=list)
 
     def registries(self) -> list[str]:

@@ -66,13 +66,32 @@ def build_bioconda_tools(index, recipes=None):
                 id=name,
                 name=name,
                 description=meta.get("summary", ""),
+                long_description=meta.get("description", ""),
                 home_url=meta.get("home", ""),
+                doc_url=meta.get("doc_url", ""),
+                dev_url=meta.get("dev_url", ""),
                 license=license_,
+                license_family=meta.get("license_family", ""),
+                identifiers=meta.get("identifiers", []) or [],
+                maintainers=meta.get("maintainers", []) or [],
+                dependencies=_clean_deps(ordered[0]["depends"]) if ordered else [],
                 total_pulls=0,
                 versions=versions,
             )
         )
     return tools
+
+
+def _clean_deps(depends):
+    """Drop virtual/compiler internals (__glibc, libgcc, _openmp_mutex, …) that add
+    noise rather than signal on a tool page."""
+    out = []
+    for dep in depends:
+        pkg = dep.split()[0] if dep else ""
+        if pkg.startswith("_") or pkg.startswith("lib") or pkg in {"python_abi"}:
+            continue
+        out.append(dep)
+    return out
 
 
 def build_dockerfile_tools(catalog):
@@ -84,6 +103,7 @@ def build_dockerfile_tools(catalog):
             Version(version=v, last_updated="", docker=f"biocontainers/{tool}:{v}")
             for v in sorted(info["versions"], key=version_key, reverse=True)
         ]
+        identifiers = [f"biotools:{md['biotools']}"] if md.get("biotools") else []
         tools.append(
             Tool(
                 id=tool,
@@ -91,6 +111,7 @@ def build_dockerfile_tools(catalog):
                 description=md.get("summary", ""),
                 home_url=md.get("home", ""),
                 license=md.get("license", ""),
+                identifiers=identifiers,
                 total_pulls=0,
                 versions=versions,
             )
@@ -104,6 +125,8 @@ def _merge_dockerfile(existing, extra):
     for field in ("description", "home_url", "license"):
         if not getattr(existing, field) and getattr(extra, field):
             setattr(existing, field, getattr(extra, field))
+    if not existing.identifiers and extra.identifiers:
+        existing.identifiers = extra.identifiers
 
 
 def run_build(

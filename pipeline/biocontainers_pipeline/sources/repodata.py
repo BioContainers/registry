@@ -63,6 +63,7 @@ def merge_records(index, records):
                 "build_number": bn,
                 "timestamp": ts,
                 "license": rec.get("license", "") or "",
+                "depends": rec.get("depends", []) or [],
             }
     return index
 

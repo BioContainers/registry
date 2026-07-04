@@ -6,14 +6,18 @@ from biocontainers_pipeline import build
 def _index():
     return {
         "samtools": {
-            "1.19": {"version": "1.19", "build": "h50ea8bc_0", "build_number": 0, "timestamp": 200, "license": "MIT"},
-            "1.18": {"version": "1.18", "build": "h50ea8bc_1", "build_number": 1, "timestamp": 100, "license": "MIT"},
+            "1.19": {"version": "1.19", "build": "h50ea8bc_0", "build_number": 0, "timestamp": 200, "license": "MIT", "depends": ["htslib >=1.9", "libgcc", "_openmp_mutex"]},
+            "1.18": {"version": "1.18", "build": "h50ea8bc_1", "build_number": 1, "timestamp": 100, "license": "MIT", "depends": []},
         }
     }
 
 
 def test_build_bioconda_tools_orders_versions_newest_first():
-    recipes = {"samtools": {"home": "http://htslib.org", "license": "MIT", "summary": "SAM tools", "version": "1.19"}}
+    recipes = {"samtools": {
+        "home": "http://htslib.org", "license": "MIT", "summary": "SAM tools", "version": "1.19",
+        "doc_url": "http://docs", "dev_url": "http://src", "license_family": "MIT",
+        "identifiers": ["biotools:samtools"], "maintainers": ["alice"], "description": "long",
+    }}
     tools = build.build_bioconda_tools(_index(), recipes)
     t = tools[0]
     assert t.id == "samtools"
@@ -21,6 +25,11 @@ def test_build_bioconda_tools_orders_versions_newest_first():
     assert [v.version for v in t.versions] == ["1.19", "1.18"]  # semantic version desc
     assert t.registries() == ["conda", "quay.io", "singularity"]
     assert t.versions[0].build == "h50ea8bc_0"
+    assert t.doc_url == "http://docs" and t.dev_url == "http://src"
+    assert t.identifiers == ["biotools:samtools"] and t.maintainers == ["alice"]
+    assert t.long_description == "long" and t.license_family == "MIT"
+    # latest-version deps, with lib*/compiler internals filtered out
+    assert t.dependencies == ["htslib >=1.9"]
 
 
 def test_build_bioconda_license_falls_back_to_repodata():
