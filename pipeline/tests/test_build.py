@@ -51,9 +51,10 @@ def test_build_dockerfile_tools_uses_real_dockerhub_tags():
             {"name": "v1.8.0_cv1", "last_updated": "2021-06-01"},
         ], "next": None},
     )
-    responses.get(base + "/repositories/biocontainers/diann/", json={"pull_count": 4200})
     catalog = {"diann": {"metadata": {"summary": "DIA-NN", "home": "h", "license": "CC", "biotools": ""}, "versions": ["1.8.0", "1.8.1"]}}
-    tools = build.build_dockerfile_tools(catalog, session=requests.Session(), max_workers=1)
+    tools = build.build_dockerfile_tools(
+        catalog, session=requests.Session(), max_workers=1, pulls={"diann": 4200}
+    )
     t = tools[0]
     assert t.id == "diann"
     assert t.total_pulls == 4200

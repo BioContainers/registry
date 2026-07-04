@@ -27,3 +27,18 @@ def test_repo_tags_absent_is_empty():
     base = "https://hub.docker.com/v2"
     responses.get(base + "/repositories/biocontainers/nope/tags/", status=404)
     assert dockerhub.repo_tags(requests.Session(), "nope", base=base) == []
+
+
+@responses.activate
+def test_pull_counts_paginates():
+    base = "https://hub.docker.com/v2"
+    responses.get(
+        base + "/repositories/biocontainers/",
+        json={"results": [{"name": "diann", "pull_count": 540000}], "next": base + "/repositories/biocontainers/?page=2"},
+    )
+    responses.get(
+        base + "/repositories/biocontainers/",
+        json={"results": [{"name": "abyss", "pull_count": 12664}], "next": None},
+    )
+    counts = dockerhub.pull_counts(requests.Session(), base=base)
+    assert counts == {"diann": 540000, "abyss": 12664}

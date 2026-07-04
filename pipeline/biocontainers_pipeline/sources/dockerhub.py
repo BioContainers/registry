@@ -39,9 +39,17 @@ def repo_tags(session, tool, base="https://hub.docker.com/v2"):
     return out
 
 
-def repo_pulls(session, tool, base="https://hub.docker.com/v2"):
-    r = session.get(f"{base}/repositories/{NAMESPACE}/{tool}/", timeout=60)
-    if r.status_code == 404:
-        return 0
-    r.raise_for_status()
-    return r.json().get("pull_count", 0) or 0
+def pull_counts(session, base="https://hub.docker.com/v2"):
+    """All biocontainers pull counts in one paginated sweep: {name: pull_count}.
+    Much cheaper than a per-tool call (~a dozen requests vs ~900)."""
+    url = f"{base}/repositories/{NAMESPACE}/"
+    params = {"page_size": 100}
+    out = {}
+    while url:
+        r = session.get(url, params=params, timeout=60)
+        r.raise_for_status()
+        data = r.json()
+        for x in data.get("results", []):
+            out[x["name"]] = x.get("pull_count", 0) or 0
+        url, params = data.get("next"), None
+    return out

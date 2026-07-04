@@ -96,9 +96,10 @@ def _clean_deps(depends):
     return out
 
 
-def _dockerfile_tool(tool, info, session, dh_base):
-    """Build one Dockerfile tool, taking real image tags + pulls from DockerHub and
-    falling back to the git version dirs if DockerHub has nothing."""
+def _dockerfile_tool(tool, info, session, dh_base, pulls):
+    """Build one Dockerfile tool, taking real image tags from DockerHub and falling
+    back to the git version dirs if DockerHub has nothing. `pulls` is the prefetched
+    {name: pull_count} map."""
     md = info["metadata"]
     tags = dockerhub.repo_tags(session, tool, base=dh_base)
     if tags:
@@ -115,13 +116,11 @@ def _dockerfile_tool(tool, info, session, dh_base):
             )
             for sv in sorted(best, key=version_key, reverse=True)
         ]
-        pulls = dockerhub.repo_pulls(session, tool, base=dh_base)
     else:
         versions = [
             Version(version=v, docker=f"biocontainers/{tool}:{v}")
             for v in sorted(info["versions"], key=version_key, reverse=True)
         ]
-        pulls = 0
     identifiers = [f"biotools:{md['biotools']}"] if md.get("biotools") else []
     return Tool(
         id=tool,
@@ -130,18 +129,23 @@ def _dockerfile_tool(tool, info, session, dh_base):
         home_url=md.get("home", ""),
         license=md.get("license", ""),
         identifiers=identifiers,
-        total_pulls=pulls,
+        total_pulls=pulls.get(tool, 0),
         versions=versions,
     )
 
 
-def build_dockerfile_tools(catalog, session=None, dh_base="https://hub.docker.com/v2", max_workers=12):
+def build_dockerfile_tools(catalog, session=None, dh_base="https://hub.docker.com/v2",
+                           max_workers=16, pulls=None):
     """catalog: {tool: {"metadata": {...}, "versions": [dir, ...]}}."""
     session = session or make_session()
+    if pulls is None:
+        pulls = dockerhub.pull_counts(session, base=dh_base)
     items = list(catalog.items())
-    logger.info("dockerfile: querying DockerHub for %d tools", len(items))
+    logger.info("dockerfile: querying DockerHub tags for %d tools", len(items))
     with ThreadPoolExecutor(max_workers=max_workers) as ex:
-        return list(ex.map(lambda kv: _dockerfile_tool(kv[0], kv[1], session, dh_base), items))
+        return list(
+            ex.map(lambda kv: _dockerfile_tool(kv[0], kv[1], session, dh_base, pulls), items)
+        )
 
 
 def _merge_dockerfile(existing, extra):
