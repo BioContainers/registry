@@ -29,8 +29,7 @@ function go(name) {
   border-bottom: 1px solid #e8eaec;
 }
 .logo {
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 14px;
   padding: 0 16px;
   display: inline-flex;
   align-items: center;
