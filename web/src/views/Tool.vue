@@ -109,7 +109,7 @@
           <div v-for="(c, i) in versionContainers(tool.name, v)" :key="i" class="container-row">
             <Tag>{{ c.type }}</Tag>
             <code v-if="c.type === 'docker'">docker pull {{ c.image }}</code>
-            <code v-else-if="c.type === 'singularity'">singularity pull {{ c.url }}</code>
+            <code v-else-if="c.type === 'singularity'">{{ c.command || `singularity pull ${c.url}` }}</code>
             <code v-else-if="c.type === 'conda'">{{ c.command }}</code>
           </div>
         </div>

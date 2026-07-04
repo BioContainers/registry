@@ -1,5 +1,8 @@
 import json
 
+import requests
+import responses
+
 from biocontainers_pipeline import build
 
 
@@ -37,14 +40,27 @@ def test_build_bioconda_license_falls_back_to_repodata():
     assert tools[0].license == "MIT"  # from repodata record
 
 
-def test_build_dockerfile_tools():
-    catalog = {"abyss": {"metadata": {"summary": "assembler", "home": "h", "license": "GPL"}, "versions": ["1.9.0", "2.1.5"]}}
-    tools = build.build_dockerfile_tools(catalog)
+@responses.activate
+def test_build_dockerfile_tools_uses_real_dockerhub_tags():
+    base = "https://hub.docker.com/v2"
+    responses.get(
+        base + "/repositories/biocontainers/diann/tags/",
+        json={"results": [
+            {"name": "1.8.1_cv2", "last_updated": "2022-03-01"},
+            {"name": "1.8.1_cv1", "last_updated": "2022-01-01"},
+            {"name": "v1.8.0_cv1", "last_updated": "2021-06-01"},
+        ], "next": None},
+    )
+    responses.get(base + "/repositories/biocontainers/diann/", json={"pull_count": 4200})
+    catalog = {"diann": {"metadata": {"summary": "DIA-NN", "home": "h", "license": "CC", "biotools": ""}, "versions": ["1.8.0", "1.8.1"]}}
+    tools = build.build_dockerfile_tools(catalog, session=requests.Session(), max_workers=1)
     t = tools[0]
-    assert t.id == "abyss"
-    assert t.description == "assembler"
-    assert t.versions[0].version == "2.1.5"  # semantic version desc -> newest first
-    assert t.versions[0].docker == "biocontainers/abyss:2.1.5"
+    assert t.id == "diann"
+    assert t.total_pulls == 4200
+    # grouped by software version, newest cv kept
+    assert [v.version for v in t.versions] == ["1.8.1", "1.8.0"]
+    assert t.versions[0].docker == "biocontainers/diann:1.8.1_cv2"
+    assert t.versions[1].docker == "biocontainers/diann:v1.8.0_cv1"
 
 
 def test_run_build_merges_and_writes(tmp_path):

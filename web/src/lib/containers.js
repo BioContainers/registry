@@ -12,7 +12,11 @@ export function versionContainers(toolName, v) {
     ]
   }
   if (v.docker) {
-    return [{ type: 'docker', image: v.docker }]
+    // Any Docker image is also runnable with Singularity via docker://.
+    return [
+      { type: 'docker', image: v.docker },
+      { type: 'singularity', command: `singularity pull docker://${v.docker}` },
+    ]
   }
   return []
 }
@@ -42,5 +46,6 @@ export function dockerCommand(tool) {
 
 export function singularityCommand(tool) {
   const c = latestContainer(tool, 'singularity')
-  return c?.url ? `singularity pull ${c.url}` : null
+  if (!c) return null
+  return c.command || (c.url ? `singularity pull ${c.url}` : null)
 }

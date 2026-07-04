@@ -1,5 +1,6 @@
 import itertools
 import logging
+from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timezone
 
 import requests
@@ -10,6 +11,7 @@ from biocontainers_pipeline.models import Tool, Version
 from biocontainers_pipeline.normalize import version_key
 from biocontainers_pipeline.sources import bioconda
 from biocontainers_pipeline.sources import containers as containers_src
+from biocontainers_pipeline.sources import dockerhub
 from biocontainers_pipeline.sources import repodata as repodata_src
 
 try:
@@ -94,29 +96,52 @@ def _clean_deps(depends):
     return out
 
 
-def build_dockerfile_tools(catalog):
-    """catalog: {tool: {"metadata": {...}, "versions": [dir, ...]}}."""
-    tools = []
-    for tool, info in catalog.items():
-        md = info["metadata"]
+def _dockerfile_tool(tool, info, session, dh_base):
+    """Build one Dockerfile tool, taking real image tags + pulls from DockerHub and
+    falling back to the git version dirs if DockerHub has nothing."""
+    md = info["metadata"]
+    tags = dockerhub.repo_tags(session, tool, base=dh_base)
+    if tags:
+        best = {}  # software version -> (tag, last_updated), newest kept
+        for tag, lu in tags:
+            sv = dockerhub.software_version(tag)
+            if sv not in best or lu > best[sv][1]:
+                best[sv] = (tag, lu)
         versions = [
-            Version(version=v, last_updated="", docker=f"biocontainers/{tool}:{v}")
+            Version(
+                version=sv,
+                last_updated=(best[sv][1][:10] if best[sv][1] else ""),
+                docker=f"biocontainers/{tool}:{best[sv][0]}",
+            )
+            for sv in sorted(best, key=version_key, reverse=True)
+        ]
+        pulls = dockerhub.repo_pulls(session, tool, base=dh_base)
+    else:
+        versions = [
+            Version(version=v, docker=f"biocontainers/{tool}:{v}")
             for v in sorted(info["versions"], key=version_key, reverse=True)
         ]
-        identifiers = [f"biotools:{md['biotools']}"] if md.get("biotools") else []
-        tools.append(
-            Tool(
-                id=tool,
-                name=tool,
-                description=md.get("summary", ""),
-                home_url=md.get("home", ""),
-                license=md.get("license", ""),
-                identifiers=identifiers,
-                total_pulls=0,
-                versions=versions,
-            )
-        )
-    return tools
+        pulls = 0
+    identifiers = [f"biotools:{md['biotools']}"] if md.get("biotools") else []
+    return Tool(
+        id=tool,
+        name=tool,
+        description=md.get("summary", ""),
+        home_url=md.get("home", ""),
+        license=md.get("license", ""),
+        identifiers=identifiers,
+        total_pulls=pulls,
+        versions=versions,
+    )
+
+
+def build_dockerfile_tools(catalog, session=None, dh_base="https://hub.docker.com/v2", max_workers=12):
+    """catalog: {tool: {"metadata": {...}, "versions": [dir, ...]}}."""
+    session = session or make_session()
+    items = list(catalog.items())
+    logger.info("dockerfile: querying DockerHub for %d tools", len(items))
+    with ThreadPoolExecutor(max_workers=max_workers) as ex:
+        return list(ex.map(lambda kv: _dockerfile_tool(kv[0], kv[1], session, dh_base), items))
 
 
 def _merge_dockerfile(existing, extra):
@@ -158,7 +183,7 @@ def run_build(
 
     if containers_dir:
         catalog = containers_src.load_containers(containers_dir)
-        for t in build_dockerfile_tools(catalog):
+        for t in build_dockerfile_tools(catalog, session=session):
             if t.id in by_id:
                 _merge_dockerfile(by_id[t.id], t)
             else:
