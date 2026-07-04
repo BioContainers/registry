@@ -3,7 +3,7 @@ on:
   push:
     branches: [main, master]
   schedule:
-    - cron: "0 3 * * 1"   # weekly refresh — data is regenerated at deploy time
+    - cron: "0 3 * * *"   # nightly rebuild (03:00 UTC) — data regenerated at deploy time
   workflow_dispatch:
 permissions:
   contents: read
