@@ -1,8 +1,36 @@
 # BioContainers.pro — Static, Backend‑Free Site Design
 
 **Date:** 2026-07-04
-**Status:** Approved (brainstorming complete)
+**Status:** Implemented (see Revision 2 for the as-built data layer)
 **Author:** ypriverol + Claude
+
+## Revision 2 (as built) — data sourcing & slim contract
+
+The originally-speced quay.io/DockerHub **API crawl was replaced** during implementation
+(too slow: ~14k calls / ~40 min). The pipeline now builds from, in order:
+
+1. **bioconda-recipes** (shallow `git clone`) — metadata: home, license, summary, and the
+   jinja-resolved `version`.
+2. **bioconda channel repodata** — `noarch` + `linux-64` `repodata.json.bz2` (~6 MB each,
+   parsed in <1 s). Gives **exact `version--build` container tags and every version**;
+   we keep the newest build per (name, version). Container tags = `quay.io/biocontainers/
+   <name>:<version>--<build>` and the matching Galaxy Singularity depot URL.
+3. **BioContainers/containers** (shallow `git clone`) — Dockerfile `LABEL`s → DockerHub tools
+   (`biocontainers/<name>:<versiondir>`), merged into bioconda tools by id.
+
+Versions are ordered by a **semantic `version_key`**, not build timestamp (old versions get
+rebuilt and would otherwise sort as "newest"). Full build ≈ **32 s for 13,058 tools**.
+
+**Slim contract:** per-version JSON stores only `{version, build}` (bioconda) or
+`{version, docker}` (Dockerfile). The frontend (`web/src/lib/containers.js`) **reconstructs**
+the docker/singularity/conda commands from name + tag, so the fat container objects are gone.
+`search-index.json` dropped `toolclass` (constant) and `total_pulls` (mostly 0); facets are
+**license + registry**. Index ≈ 3 MB (545 KB gzipped); tool files ≈ 645 B avg.
+
+**`data/` is not committed** (gitignored) — it is **regenerated at deploy time**: `deploy.yml`
+clones both repos, downloads repodata, runs the pipeline, then builds the Vite app (weekly
+`schedule` + on push). `data-build.yml` and the `sources/quay.py`, `sources/dockerhub.py`
+modules were removed.
 
 ## Goal
 
