@@ -37,7 +37,7 @@
         <template #title>
           <a class="tool-name" @click="$router.push(`/tools/${item.id}`)">{{ item.name }}</a>
         </template>
-        <template #extra>
+        <template #extra v-if="item.total_pulls > 0">
           <Icon type="md-cloud-download" /> {{ item.total_pulls.toLocaleString() }}
         </template>
         <p class="desc">{{ item.description || 'No description available.' }}</p>
@@ -68,8 +68,8 @@ import { buildIndex, runSearch } from '../lib/search.js'
 import { applyFacet, sortRecords, paginate } from '../lib/registryState.js'
 
 const keywords = ref('')
-const sortKey = ref('total_pulls')
-const sortOrder = ref('desc')
+const sortKey = ref('name')
+const sortOrder = ref('asc')
 const facetName = ref('')
 const facetValue = ref('')
 const page = ref(1)

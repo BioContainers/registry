@@ -71,6 +71,7 @@ def stats(tools, generated):
     return {
         "tools": len(tools),
         "versions": sum(len(t.versions) for t in tools),
+        "containers": sum(len(v.containers) for t in tools for v in t.versions),
         "total_pulls": round_sig(sum(t.total_pulls for t in tools)),
         "registries": dict(reg),
         "generated": generated,

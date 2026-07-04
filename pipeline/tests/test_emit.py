@@ -36,5 +36,6 @@ def test_write_catalog(tmp_path):
     assert detail["versions"][0]["containers"][0]["image"].startswith("quay.io/")
     stats = json.loads((tmp_path / "stats.json").read_text())
     assert stats["tools"] == 1 and stats["versions"] == 1
+    assert stats["containers"] == 1
     facets = json.loads((tmp_path / "facets.json").read_text())
     assert any(f["facet"] == "license" for f in facets)

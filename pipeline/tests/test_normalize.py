@@ -6,6 +6,23 @@ from biocontainers_pipeline.normalize import (
 )
 
 
+def test_group_versions_dedupes_identical_conda():
+    from biocontainers_pipeline.normalize import group_versions, quay_containers
+
+    # Two build tags of the same version 1.19.
+    rows = [
+        ("1.19--h50ea8bc_0", 0, ""),
+        ("1.19--py_0", 0, ""),
+    ]
+    versions = group_versions(rows, lambda tag, p, lm: quay_containers("samtools", tag, p, lm))
+    assert len(versions) == 1
+    types = [c.type for c in versions[0].containers]
+    # 2 distinct docker + 2 distinct singularity, but conda collapses to 1.
+    assert types.count("conda") == 1
+    assert types.count("docker") == 2
+    assert types.count("singularity") == 2
+
+
 def test_sort_rows_desc_newest_first():
     rows = [
         ("1.0--0", 0, "Tue, 16 Dec 2025 21:28:43 -0000"),

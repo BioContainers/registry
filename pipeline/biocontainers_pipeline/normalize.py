@@ -41,14 +41,23 @@ def group_versions(rows, builder):
     """Group (tag, pulls, last_modified) rows by software version.
 
     builder(tag, pulls, last_modified) -> list[Container]. Version order follows the
-    caller's row order (callers sort newest-first).
+    caller's row order (callers sort newest-first). Containers that are identical within
+    a version (e.g. the conda command, which is the same for every build tag) are
+    collapsed to a single entry.
     """
     groups: "OrderedDict[str, Version]" = OrderedDict()
+    seen: "dict[str, set]" = {}
     for tag, pulls, last_modified in rows:
         ver = version_of(tag)
         v = groups.get(ver)
         if v is None:
             v = Version(version=ver, last_updated=last_modified, containers=[])
             groups[ver] = v
-        v.containers.extend(builder(tag, pulls, last_modified))
+            seen[ver] = set()
+        for c in builder(tag, pulls, last_modified):
+            key = (c.type, c.image, c.url, c.command)
+            if key in seen[ver]:
+                continue
+            seen[ver].add(key)
+            v.containers.append(c)
     return list(groups.values())
