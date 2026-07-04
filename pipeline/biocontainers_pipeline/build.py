@@ -1,44 +1,77 @@
+import itertools
+import logging
+from datetime import date, datetime, timezone
+
 import requests
+from requests.adapters import HTTPAdapter
 
 from biocontainers_pipeline import emit
-from biocontainers_pipeline.models import Tool
+from biocontainers_pipeline.models import Tool, Version
 from biocontainers_pipeline.normalize import (
-    dockerhub_container,
-    group_versions,
-    quay_containers,
-    sort_rows_desc,
+    bioconda_containers,
+    dockerfile_container,
+    version_key,
 )
-from biocontainers_pipeline.sources import dockerhub, quay
+from biocontainers_pipeline.sources import bioconda
+from biocontainers_pipeline.sources import containers as containers_src
+from biocontainers_pipeline.sources import repodata as repodata_src
+
+try:
+    from urllib3.util.retry import Retry
+except ImportError:  # pragma: no cover
+    Retry = None
+
+logger = logging.getLogger(__name__)
 
 
-def _quay_builder(name):
-    return lambda tag, pulls, lm: quay_containers(name, tag, pulls, lm)
+def make_session():
+    s = requests.Session()
+    if Retry is not None:
+        retry = Retry(
+            total=3, backoff_factor=0.5,
+            status_forcelist=[429, 500, 502, 503, 504], allowed_methods=["GET"],
+        )
+        adapter = HTTPAdapter(max_retries=retry)
+        s.mount("https://", adapter)
+        s.mount("http://", adapter)
+    return s
 
 
-def _dockerhub_builder(name):
-    return lambda tag, pulls, lm: [dockerhub_container(name, tag, pulls, lm)]
+def _iso(ts_ms):
+    if not ts_ms:
+        return ""
+    return datetime.fromtimestamp(ts_ms / 1000, tz=timezone.utc).strftime("%Y-%m-%d")
 
 
-def build_quay_tools(session, recipes, limit=None, quay_base="https://quay.io/api/v1"):
+def build_bioconda_tools(index, recipes=None):
+    """index: {name: {version: {build, build_number, timestamp, license}}}.
+    recipes: {name: {home, license, summary, version}}."""
     recipes = recipes or {}
     tools = []
-    for name in quay.list_repos(session, base=quay_base, limit=limit):
-        detail = quay.repo_detail(session, name, base=quay_base)
-        rows = detail["tags"]
-        if not rows:
-            continue
-        versions = group_versions(sort_rows_desc(rows), _quay_builder(name))
-        # Prefer bioconda recipe metadata; fall back to the metadata quay embeds
-        # in the repo description.
-        recipe = recipes.get(name, {})
-        fallback = quay.parse_repo_description(detail["description"])
+    for name in sorted(index):
+        version_map = index[name]
+        ordered = sorted(
+            version_map.values(),
+            key=lambda d: version_key(d["version"]),
+            reverse=True,
+        )
+        versions = [
+            Version(
+                version=d["version"],
+                last_updated=_iso(d["timestamp"]),
+                containers=bioconda_containers(name, d["version"], d["build"]),
+            )
+            for d in ordered
+        ]
+        meta = recipes.get(name, {})
+        license_ = meta.get("license") or (ordered[0]["license"] if ordered else "")
         tools.append(
             Tool(
                 id=name,
                 name=name,
-                description=recipe.get("summary") or fallback["summary"],
-                home_url=recipe.get("home") or fallback["home"],
-                license=recipe.get("license") or fallback["license"],
+                description=meta.get("summary", ""),
+                home_url=meta.get("home", ""),
+                license=license_,
                 toolclass="CommandLineTool",
                 total_pulls=0,
                 versions=versions,
@@ -47,55 +80,73 @@ def build_quay_tools(session, recipes, limit=None, quay_base="https://quay.io/ap
     return tools
 
 
-def build_dockerhub_tools(session, limit=None, dh_base="https://hub.docker.com/v2"):
+def build_dockerfile_tools(catalog):
+    """catalog: {tool: {"metadata": {...}, "versions": [dir, ...]}}."""
     tools = []
-    for name, pull_count in dockerhub.list_repos(session, base=dh_base, limit=limit):
-        rows = dockerhub.repo_tags(session, name, base=dh_base)
-        if not rows:
-            continue
-        versions = group_versions(sort_rows_desc(rows), _dockerhub_builder(name))
+    for tool, info in catalog.items():
+        md = info["metadata"]
+        versions = [
+            Version(version=v, last_updated="", containers=[dockerfile_container(tool, v)])
+            for v in sorted(info["versions"], key=version_key, reverse=True)
+        ]
         tools.append(
             Tool(
-                id=name,
-                name=name,
+                id=tool,
+                name=tool,
+                description=md.get("summary", ""),
+                home_url=md.get("home", ""),
+                license=md.get("license", ""),
                 toolclass="CommandLineTool",
-                total_pulls=pull_count,
+                total_pulls=0,
                 versions=versions,
             )
         )
     return tools
 
 
+def _merge_dockerfile(existing, extra):
+    """Append DockerHub versions to a bioconda tool, filling blank metadata."""
+    existing.versions.extend(extra.versions)
+    for field in ("description", "home_url", "license"):
+        if not getattr(existing, field) and getattr(extra, field):
+            setattr(existing, field, getattr(extra, field))
+
+
 def run_build(
     out="data",
-    limit=None,
-    only=None,
-    recipes=None,
     recipes_dir=None,
+    containers_dir=None,
+    repodata_cache="/tmp/bioconda-repodata",
+    subdirs=repodata_src.DEFAULT_SUBDIRS,
+    limit=None,
     session=None,
-    quay_base="https://quay.io/api/v1",
-    dh_base="https://hub.docker.com/v2",
     generated=None,
+    index=None,
+    recipes=None,
 ):
-    from datetime import date
-
-    session = session or requests.Session()
+    session = session or make_session()
     generated = generated or date.today().isoformat()
-    if recipes is None and recipes_dir:
-        from biocontainers_pipeline.sources import bioconda
 
-        recipes = bioconda.load_recipes(recipes_dir)
+    if index is None:
+        index = repodata_src.build_index(session, repodata_cache, subdirs=subdirs)
+    if recipes is None:
+        recipes = bioconda.load_recipes(recipes_dir) if recipes_dir else {}
+        logger.info("recipes: %d metadata entries", len(recipes))
 
-    by_id = {}
-    if only in (None, "quay"):
-        for t in build_quay_tools(session, recipes, limit=limit, quay_base=quay_base):
-            by_id[t.id] = t
-    if only in (None, "dockerhub"):
-        for t in build_dockerhub_tools(session, limit=limit, dh_base=dh_base):
+    if limit:
+        index = dict(itertools.islice(sorted(index.items()), limit))
+
+    by_id = {t.id: t for t in build_bioconda_tools(index, recipes)}
+    logger.info("bioconda: %d tools", len(by_id))
+
+    if containers_dir:
+        catalog = containers_src.load_containers(containers_dir)
+        for t in build_dockerfile_tools(catalog):
             if t.id in by_id:
-                by_id[t.id].versions.extend(t.versions)
-                by_id[t.id].total_pulls += t.total_pulls
+                _merge_dockerfile(by_id[t.id], t)
             else:
                 by_id[t.id] = t
+        logger.info("dockerfile: %d tools merged (total %d)", len(catalog), len(by_id))
 
     emit.write_catalog(list(by_id.values()), out, generated)
+    logger.info("wrote catalog: %d tools -> %s", len(by_id), out)
