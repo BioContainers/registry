@@ -23,18 +23,22 @@ def build_quay_tools(session, recipes, limit=None, quay_base="https://quay.io/ap
     recipes = recipes or {}
     tools = []
     for name in quay.list_repos(session, base=quay_base, limit=limit):
-        rows = quay.repo_tags(session, name, base=quay_base)
+        detail = quay.repo_detail(session, name, base=quay_base)
+        rows = detail["tags"]
         if not rows:
             continue
         versions = group_versions(sort_rows_desc(rows), _quay_builder(name))
-        meta = recipes.get(name, {})
+        # Prefer bioconda recipe metadata; fall back to the metadata quay embeds
+        # in the repo description.
+        recipe = recipes.get(name, {})
+        fallback = quay.parse_repo_description(detail["description"])
         tools.append(
             Tool(
                 id=name,
                 name=name,
-                description=meta.get("summary", ""),
-                home_url=meta.get("home", ""),
-                license=meta.get("license", ""),
+                description=recipe.get("summary") or fallback["summary"],
+                home_url=recipe.get("home") or fallback["home"],
+                license=recipe.get("license") or fallback["license"],
                 toolclass="CommandLineTool",
                 total_pulls=0,
                 versions=versions,

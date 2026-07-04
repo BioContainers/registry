@@ -22,3 +22,20 @@ def test_repo_tags_returns_rows():
     )
     rows = quay.repo_tags(requests.Session(), "samtools", base=base)
     assert rows[0][0] == "1.19--h50ea8bc_0"
+
+
+def test_parse_repo_description_extracts_fields():
+    desc = (
+        "# Coreutils\n\n"
+        "> The gnu core utilities are the basic file utilities.\n\n"
+        "> Licence: Gpl\n\n"
+        "Home: https://example.org/coreutils.tar.bz2\n\n"
+    )
+    m = quay.parse_repo_description(desc)
+    assert m["summary"] == "The gnu core utilities are the basic file utilities."
+    assert m["license"] == "Gpl"
+    assert m["home"] == "https://example.org/coreutils.tar.bz2"
+
+
+def test_parse_repo_description_empty():
+    assert quay.parse_repo_description("") == {"summary": "", "license": "", "home": ""}
