@@ -1,8 +1,5 @@
 import json
 
-import requests
-import responses
-
 from biocontainers_pipeline import build
 
 
@@ -40,28 +37,21 @@ def test_build_bioconda_license_falls_back_to_repodata():
     assert tools[0].license == "MIT"  # from repodata record
 
 
-@responses.activate
-def test_build_dockerfile_tools_uses_real_dockerhub_tags():
-    base = "https://hub.docker.com/v2"
-    responses.get(
-        base + "/repositories/biocontainers/diann/tags/",
-        json={"results": [
-            {"name": "1.8.1_cv2", "last_updated": "2022-03-01"},
-            {"name": "1.8.1_cv1", "last_updated": "2022-01-01"},
-            {"name": "v1.8.0_cv1", "last_updated": "2021-06-01"},
-        ], "next": None},
-    )
-    catalog = {"diann": {"metadata": {"summary": "DIA-NN", "home": "h", "license": "CC", "biotools": ""}, "versions": ["1.8.0", "1.8.1"]}}
-    tools = build.build_dockerfile_tools(
-        catalog, session=requests.Session(), max_workers=1, pulls={"diann": 4200}
-    )
+def test_build_dockerfile_tools_uses_git_derived_tags():
+    catalog = {"diann": {
+        "metadata": {"summary": "DIA-NN", "home": "h", "license": "CC", "biotools": "diann"},
+        "versions": [
+            {"version": "1.8.0", "tag": "1.8.0_cv1"},
+            {"version": "1.8.1", "tag": "1.8.1_cv2"},
+        ],
+    }}
+    tools = build.build_dockerfile_tools(catalog)
     t = tools[0]
     assert t.id == "diann"
-    assert t.total_pulls == 4200
-    # grouped by software version, newest cv kept
+    assert t.identifiers == ["biotools:diann"]
+    # semantic version desc
     assert [v.version for v in t.versions] == ["1.8.1", "1.8.0"]
     assert t.versions[0].docker == "biocontainers/diann:1.8.1_cv2"
-    assert t.versions[1].docker == "biocontainers/diann:v1.8.0_cv1"
 
 
 def test_run_build_merges_and_writes(tmp_path):
