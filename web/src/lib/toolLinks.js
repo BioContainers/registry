@@ -35,3 +35,21 @@ export function registryLinks(tool) {
 export function maintainerUrl(handle) {
   return `https://github.com/${handle}`
 }
+
+// Framework papers to cite when using a container.
+const BIOCONTAINERS_PAPER = {
+  key: 'biocontainers',
+  text: 'da Veiga Leprevost F, Grüning BA, et al. (2017) BioContainers: an open-source and community-driven framework for software standardization. Bioinformatics 33(16):2580-2582.',
+  url: 'https://doi.org/10.1093/bioinformatics/btx192',
+}
+const BIOCONDA_PAPER = {
+  key: 'bioconda',
+  text: 'Grüning B, Dale R, Sjödin A, et al. (2018) Bioconda: sustainable and comprehensive software distribution for the life sciences. Nature Methods 15:475-476.',
+  url: 'https://doi.org/10.1038/s41592-018-0046-7',
+}
+
+// bioconda-based tools -> cite both Bioconda and BioContainers.
+// Docker(file)-based only -> cite BioContainers only.
+export function citations(tool) {
+  return isBioconda(tool) ? [BIOCONDA_PAPER, BIOCONTAINERS_PAPER] : [BIOCONTAINERS_PAPER]
+}

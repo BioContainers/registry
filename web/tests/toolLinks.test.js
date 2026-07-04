@@ -1,5 +1,5 @@
 import { it, expect } from 'vitest'
-import { parseIdentifier, isBioconda, registryLinks, maintainerUrl } from '../src/lib/toolLinks.js'
+import { parseIdentifier, isBioconda, registryLinks, maintainerUrl, citations } from '../src/lib/toolLinks.js'
 
 it('parses identifiers into links', () => {
   expect(parseIdentifier('biotools:samtools')).toEqual({
@@ -22,4 +22,11 @@ it('registryLinks only for bioconda tools', () => {
 
 it('maintainerUrl', () => {
   expect(maintainerUrl('alice')).toBe('https://github.com/alice')
+})
+
+it('citations: bioconda cites both, dockerfile cites biocontainers only', () => {
+  const bioconda = { name: 's', versions: [{ version: '1', build: 'h0' }] }
+  const dockerfile = { name: 'a', versions: [{ version: '1', docker: 'biocontainers/a:1' }] }
+  expect(citations(bioconda).map((c) => c.key)).toEqual(['bioconda', 'biocontainers'])
+  expect(citations(dockerfile).map((c) => c.key)).toEqual(['biocontainers'])
 })

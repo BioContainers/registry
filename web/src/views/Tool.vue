@@ -44,6 +44,16 @@
               All versions and their pull commands are in the
               <a @click="tab = 'containers'">Packages &amp; Containers</a> tab.
             </p>
+
+            <h2>How to cite</h2>
+            <Divider />
+            <p class="usage-note">If you use this container, please cite:</p>
+            <ul class="cite-list">
+              <li v-for="c in toolCitations" :key="c.key">
+                {{ c.text }}
+                <a :href="c.url" target="_blank">{{ c.url.replace('https://doi.org/', 'doi:') }}</a>
+              </li>
+            </ul>
           </Col>
           <Col span="8">
             <div class="prop" v-if="tool.total_pulls > 0">
@@ -130,7 +140,7 @@ import {
   singularityCommand,
   versionContainers,
 } from '../lib/containers.js'
-import { parseIdentifier, registryLinks, maintainerUrl } from '../lib/toolLinks.js'
+import { parseIdentifier, registryLinks, maintainerUrl, citations } from '../lib/toolLinks.js'
 
 const route = useRoute()
 const tool = ref(null)
@@ -141,6 +151,7 @@ const conda = computed(() => (tool.value ? condaCommand(tool.value) : null))
 const docker = computed(() => (tool.value ? dockerCommand(tool.value) : null))
 const singularity = computed(() => (tool.value ? singularityCommand(tool.value) : null))
 const identifierLinks = computed(() => (tool.value?.identifiers || []).map(parseIdentifier))
+const toolCitations = computed(() => (tool.value ? citations(tool.value) : []))
 
 async function load(id) {
   tool.value = null
@@ -209,6 +220,18 @@ code {
 .hint {
   color: #808695;
   margin-top: 16px;
+}
+.cite-list {
+  padding-left: 18px;
+  color: #515a6e;
+}
+.cite-list li {
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+.cite-list a {
+  color: #2d8cf0;
+  margin-left: 4px;
 }
 .ver-block {
   margin-bottom: 20px;
