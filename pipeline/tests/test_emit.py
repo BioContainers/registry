@@ -22,6 +22,15 @@ def test_search_record_is_lean():
     assert r["latest_version"] == "1.19"
     assert r["versionCount"] == 1
     assert "toolclass" not in r and "total_pulls" not in r
+    assert "biotools" not in r and "doi" not in r  # omitted when absent
+
+
+def test_search_record_badges():
+    t = _tool()
+    t.identifiers = ["biotools:samtools", "doi:10.1093/x"]
+    r = emit.search_record(t)
+    assert r["biotools"] == "samtools"
+    assert r["doi"] == "10.1093/x"
 
 
 def test_version_output_is_minimal():

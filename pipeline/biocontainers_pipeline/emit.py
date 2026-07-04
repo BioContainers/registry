@@ -11,9 +11,16 @@ def round_sig(n, sig=2):
     return int(round(n, d))
 
 
+def _identifier(identifiers, prefix):
+    for i in identifiers or []:
+        if i.startswith(prefix + ":"):
+            return i[len(prefix) + 1:]
+    return ""
+
+
 def search_record(t):
     """Lightweight record for the in-browser index (loaded once for all tools)."""
-    return {
+    rec = {
         "id": t.id,
         "name": t.name,
         "description": t.description,
@@ -22,6 +29,14 @@ def search_record(t):
         "latest_version": t.latest_version(),
         "versionCount": len(t.versions),
     }
+    # Compact badges for search cards, only when present.
+    biotools = _identifier(t.identifiers, "biotools")
+    doi = _identifier(t.identifiers, "doi")
+    if biotools:
+        rec["biotools"] = biotools
+    if doi:
+        rec["doi"] = doi
+    return rec
 
 
 def _version_out(v):

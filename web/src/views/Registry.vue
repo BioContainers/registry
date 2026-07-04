@@ -40,6 +40,20 @@
         <div class="meta">
           <Tag v-for="r in item.registries" :key="r" color="primary">{{ r }}</Tag>
           <Tag v-if="item.license" color="default">{{ item.license }}</Tag>
+          <a
+            v-if="item.biotools"
+            class="badge"
+            :href="`https://bio.tools/${item.biotools}`"
+            target="_blank"
+            @click.stop
+          >bio.tools</a>
+          <a
+            v-if="item.doi"
+            class="badge cite"
+            :href="`https://doi.org/${item.doi}`"
+            target="_blank"
+            @click.stop
+          >cite</a>
           <span class="ver">v{{ item.latest_version }} · {{ item.versionCount }} versions</span>
         </div>
       </Card>
@@ -143,6 +157,18 @@ onMounted(async () => {
   align-items: center;
   gap: 6px;
   flex-wrap: wrap;
+}
+.badge {
+  font-size: 11px;
+  padding: 1px 8px;
+  border: 1px solid #2d8cf0;
+  border-radius: 10px;
+  color: #2d8cf0;
+  line-height: 18px;
+}
+.badge.cite {
+  border-color: #19be6b;
+  color: #19be6b;
 }
 .ver {
   color: #808695;

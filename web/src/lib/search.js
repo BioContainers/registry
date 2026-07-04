@@ -3,6 +3,7 @@ import MiniSearch from 'minisearch'
 const STORE = [
   'id', 'name', 'description', 'license',
   'registries', 'latest_version', 'versionCount',
+  'biotools', 'doi',
 ]
 
 export function buildIndex(records) {
