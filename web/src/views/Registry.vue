@@ -12,7 +12,6 @@
     <div class="options">
       <span>Sort by:</span>
       <Select v-model="sortKey" style="width: 130px" @on-change="refresh">
-        <Option value="total_pulls">Downloads</Option>
         <Option value="name">Name</Option>
         <Option value="versionCount">Versions</Option>
       </Select>
@@ -36,9 +35,6 @@
       <Card v-for="item in pageItems" :key="item.id" class="card">
         <template #title>
           <a class="tool-name" @click="$router.push(`/tools/${item.id}`)">{{ item.name }}</a>
-        </template>
-        <template #extra v-if="item.total_pulls > 0">
-          <Icon type="md-cloud-download" /> {{ item.total_pulls.toLocaleString() }}
         </template>
         <p class="desc">{{ item.description || 'No description available.' }}</p>
         <div class="meta">

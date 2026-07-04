@@ -2,6 +2,8 @@ name: deploy
 on:
   push:
     branches: [main, master]
+  schedule:
+    - cron: "0 3 * * 1"   # weekly refresh — data is regenerated at deploy time
   workflow_dispatch:
 permissions:
   contents: read
@@ -15,9 +17,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
+      - name: Install pipeline
+        run: pip install ./pipeline
+      - name: Clone data sources (shallow)
+        run: |
+          git clone --depth 1 --filter=blob:none https://github.com/bioconda/bioconda-recipes /tmp/bioconda-recipes
+          git clone --depth 1 https://github.com/BioContainers/containers /tmp/containers
+      - name: Build catalog (bioconda repodata + recipes + Dockerfiles)
+        run: |
+          python -m biocontainers_pipeline.cli build \
+            --out data \
+            --recipes-dir /tmp/bioconda-recipes/recipes \
+            --containers-dir /tmp/containers \
+            --repodata-cache /tmp/repodata
       - name: Build web
         working-directory: web
         run: |

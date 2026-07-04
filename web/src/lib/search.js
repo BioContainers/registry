@@ -1,8 +1,8 @@
 import MiniSearch from 'minisearch'
 
 const STORE = [
-  'id', 'name', 'description', 'license', 'toolclass',
-  'registries', 'latest_version', 'versionCount', 'total_pulls',
+  'id', 'name', 'description', 'license',
+  'registries', 'latest_version', 'versionCount',
 ]
 
 export function buildIndex(records) {

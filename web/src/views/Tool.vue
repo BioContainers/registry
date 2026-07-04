@@ -69,7 +69,7 @@
       <TabPane label="Packages &amp; Containers" name="containers">
         <div v-for="v in tool.versions" :key="v.version" class="ver-block">
           <h3>{{ tool.name }} {{ v.version }} <small>{{ v.last_updated }}</small></h3>
-          <div v-for="(c, i) in v.containers" :key="i" class="container-row">
+          <div v-for="(c, i) in versionContainers(tool.name, v)" :key="i" class="container-row">
             <Tag>{{ c.type }}</Tag>
             <code v-if="c.type === 'docker'">docker pull {{ c.image }}</code>
             <code v-else-if="c.type === 'singularity'">singularity pull {{ c.url }}</code>
@@ -86,7 +86,13 @@
 import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { loadTool } from '../lib/dataClient.js'
-import { installFlags, condaCommand, dockerCommand, singularityCommand } from '../lib/toolView.js'
+import {
+  installFlags,
+  condaCommand,
+  dockerCommand,
+  singularityCommand,
+  versionContainers,
+} from '../lib/containers.js'
 
 const route = useRoute()
 const tool = ref(null)

@@ -1,15 +1,20 @@
-from biocontainers_pipeline.models import Container, Tool, Version
+from biocontainers_pipeline.models import Tool, Version
 
 
-def test_registries_derived_from_containers():
+def test_registries_and_counts():
     t = Tool(
-        id="x", name="x", description="", home_url="", license="MIT",
-        toolclass="CommandLineTool", total_pulls=0,
+        id="x", name="x", license="MIT",
         versions=[
-            Version(version="1.0", last_updated="", containers=[
-                Container(type="docker", image="quay.io/biocontainers/x:1.0--0", url=None, command=None, pulls=5),
-                Container(type="conda", image=None, url=None, command="conda install -c bioconda x=1.0", pulls=0),
-            ])
+            Version(version="1.0", build="h0"),        # bioconda -> 3 containers
+            Version(version="deb", docker="biocontainers/x:deb"),  # dockerfile -> 1
         ],
     )
-    assert t.registries() == ["conda", "quay.io"]
+    assert t.registries() == ["DockerHub", "conda", "quay.io", "singularity"]
+    assert t.latest_version() == "1.0"
+    assert t.container_count() == 4
+
+
+def test_bioconda_empty_build_still_counts_as_bioconda():
+    t = Tool(id="x", name="x", versions=[Version(version="1.0", build="")])
+    assert t.registries() == ["conda", "quay.io", "singularity"]
+    assert t.container_count() == 3

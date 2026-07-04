@@ -18,9 +18,9 @@ def test_build_bioconda_tools_orders_versions_newest_first():
     t = tools[0]
     assert t.id == "samtools"
     assert t.home_url == "http://htslib.org"
-    assert [v.version for v in t.versions] == ["1.19", "1.18"]  # timestamp desc
+    assert [v.version for v in t.versions] == ["1.19", "1.18"]  # semantic version desc
     assert t.registries() == ["conda", "quay.io", "singularity"]
-    assert t.versions[0].containers[0].image == "quay.io/biocontainers/samtools:1.19--h50ea8bc_0"
+    assert t.versions[0].build == "h50ea8bc_0"
 
 
 def test_build_bioconda_license_falls_back_to_repodata():
@@ -34,7 +34,8 @@ def test_build_dockerfile_tools():
     t = tools[0]
     assert t.id == "abyss"
     assert t.description == "assembler"
-    assert t.versions[0].containers[0].image == "biocontainers/abyss:2.1.5"  # reversed -> newest first
+    assert t.versions[0].version == "2.1.5"  # semantic version desc -> newest first
+    assert t.versions[0].docker == "biocontainers/abyss:2.1.5"
 
 
 def test_run_build_merges_and_writes(tmp_path):

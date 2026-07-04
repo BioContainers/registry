@@ -1,7 +1,6 @@
 import json
 import os
 from collections import Counter
-from dataclasses import asdict
 from math import floor, log10
 
 
@@ -13,17 +12,27 @@ def round_sig(n, sig=2):
 
 
 def search_record(t):
+    """Lightweight record for the in-browser index (loaded once for all tools)."""
     return {
         "id": t.id,
         "name": t.name,
         "description": t.description,
         "license": t.license,
-        "toolclass": t.toolclass,
         "registries": t.registries(),
         "latest_version": t.latest_version(),
         "versionCount": len(t.versions),
-        "total_pulls": round_sig(t.total_pulls),
     }
+
+
+def _version_out(v):
+    d = {"version": v.version}
+    if v.last_updated:
+        d["last_updated"] = v.last_updated
+    if v.build is not None:
+        d["build"] = v.build       # bioconda: frontend builds quay/singularity/conda
+    if v.docker:
+        d["docker"] = v.docker     # Dockerfile image
+    return d
 
 
 def tool_detail(t):
@@ -33,34 +42,24 @@ def tool_detail(t):
         "description": t.description,
         "home_url": t.home_url,
         "license": t.license,
-        "toolclass": t.toolclass,
-        "total_pulls": round_sig(t.total_pulls),
-        "versions": [],
+        "versions": [_version_out(v) for v in t.versions],
     }
-    for v in t.versions:
-        containers = []
-        for c in v.containers:
-            entry = {k: val for k, val in asdict(c).items() if val not in (None, 0, "")}
-            entry["type"] = c.type
-            containers.append(entry)
-        d["versions"].append(
-            {"version": v.version, "last_updated": v.last_updated, "containers": containers}
-        )
+    if t.total_pulls:
+        d["total_pulls"] = round_sig(t.total_pulls)
     return d
 
 
 def facets(tools):
-    lic, tc, reg = Counter(), Counter(), Counter()
+    lic, reg = Counter(), Counter()
     for t in tools:
         lic[t.license or "Not available"] += 1
-        tc[t.toolclass or "Unknown"] += 1
         for r in t.registries():
             reg[r] += 1
 
     def block(name, c):
         return {"facet": name, "values": [{"value": k, "count": v} for k, v in c.most_common()]}
 
-    return [block("license", lic), block("toolclass", tc), block("registry", reg)]
+    return [block("license", lic), block("registry", reg)]
 
 
 def stats(tools, generated):
@@ -71,8 +70,7 @@ def stats(tools, generated):
     return {
         "tools": len(tools),
         "versions": sum(len(t.versions) for t in tools),
-        "containers": sum(len(v.containers) for t in tools for v in t.versions),
-        "total_pulls": round_sig(sum(t.total_pulls for t in tools)),
+        "containers": sum(t.container_count() for t in tools),
         "registries": dict(reg),
         "generated": generated,
     }

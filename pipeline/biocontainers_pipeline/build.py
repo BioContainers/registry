@@ -7,11 +7,7 @@ from requests.adapters import HTTPAdapter
 
 from biocontainers_pipeline import emit
 from biocontainers_pipeline.models import Tool, Version
-from biocontainers_pipeline.normalize import (
-    bioconda_containers,
-    dockerfile_container,
-    version_key,
-)
+from biocontainers_pipeline.normalize import version_key
 from biocontainers_pipeline.sources import bioconda
 from biocontainers_pipeline.sources import containers as containers_src
 from biocontainers_pipeline.sources import repodata as repodata_src
@@ -59,7 +55,7 @@ def build_bioconda_tools(index, recipes=None):
             Version(
                 version=d["version"],
                 last_updated=_iso(d["timestamp"]),
-                containers=bioconda_containers(name, d["version"], d["build"]),
+                build=d["build"],
             )
             for d in ordered
         ]
@@ -72,7 +68,6 @@ def build_bioconda_tools(index, recipes=None):
                 description=meta.get("summary", ""),
                 home_url=meta.get("home", ""),
                 license=license_,
-                toolclass="CommandLineTool",
                 total_pulls=0,
                 versions=versions,
             )
@@ -86,7 +81,7 @@ def build_dockerfile_tools(catalog):
     for tool, info in catalog.items():
         md = info["metadata"]
         versions = [
-            Version(version=v, last_updated="", containers=[dockerfile_container(tool, v)])
+            Version(version=v, last_updated="", docker=f"biocontainers/{tool}:{v}")
             for v in sorted(info["versions"], key=version_key, reverse=True)
         ]
         tools.append(
@@ -96,7 +91,6 @@ def build_dockerfile_tools(catalog):
                 description=md.get("summary", ""),
                 home_url=md.get("home", ""),
                 license=md.get("license", ""),
-                toolclass="CommandLineTool",
                 total_pulls=0,
                 versions=versions,
             )
