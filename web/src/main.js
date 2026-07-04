@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import ViewUIPlus from 'view-ui-plus'
+import enUS from 'view-ui-plus/dist/locale/en-US'
 import 'view-ui-plus/dist/styles/viewuiplus.css'
 import App from './App.vue'
 import router from './router.js'
@@ -12,4 +13,7 @@ if (redirect && redirect !== location.href) {
   history.replaceState(null, '', u.pathname + u.search)
 }
 
-createApp(App).use(router).use(ViewUIPlus).mount('#app')
+// Force the English locale (View UI Plus defaults to Chinese).
+ViewUIPlus.locale(enUS)
+
+createApp(App).use(router).use(ViewUIPlus, { locale: enUS }).mount('#app')
