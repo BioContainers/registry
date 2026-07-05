@@ -37,7 +37,6 @@ def search_record(t):
         "description": t.description,
         "license": t.license,
         "registries": _ordered_registries(t),
-        "primary": t.primary_source(),
         "latest_version": t.latest_version(),
         "versionCount": len(t.versions),
     }

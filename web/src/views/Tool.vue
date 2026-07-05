@@ -63,7 +63,7 @@
 
             <div class="prop">
               <strong>Versions</strong>
-              <div>{{ tool.versions.length }} · latest {{ primaryVersion(tool)?.version }}</div>
+              <div>{{ tool.versions.length }} · latest {{ tool.versions[0]?.version }}</div>
             </div>
 
             <div class="prop" v-if="tool.license || tool.license_family">
@@ -163,7 +163,6 @@ import {
   dockerCommand,
   singularityCommand,
   versionContainers,
-  primaryVersion,
 } from '../lib/containers.js'
 import { parseIdentifier, registryLinks, maintainerUrl, citations } from '../lib/toolLinks.js'
 

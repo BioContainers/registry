@@ -20,14 +20,14 @@ def test_bioconda_empty_build_still_counts_as_bioconda():
     assert t.container_count() == 3
 
 
-def test_latest_version_prefers_bioconda_over_higher_docker():
-    # versions arrive newest-first by number; a legacy Docker version may sort on top,
-    # but the maintained Bioconda version must be reported as latest.
+def test_latest_version_is_honest_newest_but_primary_is_bioconda():
+    # A legacy Docker version may sort on top by number; latest_version stays honest
+    # (newest overall), while primary_source reports Bioconda as the recommended source.
     t = Tool(id="x", name="x", versions=[
         Version(version="2.0", docker="biocontainers/x:v2.0_cv1"),  # legacy, highest number
         Version(version="1.9", build="h0"),                         # bioconda
     ])
-    assert t.latest_version() == "1.9"
+    assert t.latest_version() == "2.0"
     assert t.primary_source() == "bioconda"
 
 
