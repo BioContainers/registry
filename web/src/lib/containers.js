@@ -83,6 +83,10 @@ export function packageGuide(tool) {
         { kind: 'singularity', text: `singularity pull docker://biocontainers/${n}:<tag>` },
       ],
       sif: `https://containers.biocontainers.pro/s3/SingImgsRepo/${n}/<tag>/${n}_<tag>.sif`,
+      singularity: {
+        text: 'Browse / search all Singularity images',
+        url: 'https://containers.biocontainers.pro/s3/SingImgsRepo/',
+      },
     }
   }
   return guide

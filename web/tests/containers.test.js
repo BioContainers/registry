@@ -72,4 +72,5 @@ it('packageGuide: templates + browse links per source, no version enumeration', 
   expect(gd.docker.browse[0].url).toBe('https://hub.docker.com/r/biocontainers/diann/tags')
   expect(gd.docker.commands[0].text).toBe('docker pull biocontainers/diann:<tag>')
   expect(gd.docker.sif).toBe('https://containers.biocontainers.pro/s3/SingImgsRepo/diann/<tag>/diann_<tag>.sif')
+  expect(gd.docker.singularity.url).toBe('https://containers.biocontainers.pro/s3/SingImgsRepo/')
 })

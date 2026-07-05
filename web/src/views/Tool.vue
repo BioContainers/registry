@@ -92,6 +92,9 @@
                 <code>{{ c.text }}</code>
               </div>
               <p class="usage-note">Prebuilt Singularity <code>.sif</code> images: <code>{{ guide.docker.sif }}</code></p>
+              <p class="usage-note">
+                <a :href="guide.docker.singularity.url" target="_blank">{{ guide.docker.singularity.text }} ↗</a>
+              </p>
             </div>
 
             <h2>How to cite</h2>
