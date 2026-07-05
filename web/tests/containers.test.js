@@ -6,6 +6,7 @@ import {
   dockerCommand,
   singularityCommand,
   primaryVersion,
+  packageGuide,
 } from '../src/lib/containers.js'
 
 const bioconda = { id: 's', name: 's', versions: [{ version: '1.19', build: 'h50ea8bc_0' }] }
@@ -53,4 +54,22 @@ it('prioritizes bioconda: default install uses the bioconda version, not the leg
   expect(condaCommand(dual)).toBe('conda install -c bioconda abyss=2.3.7')
   // docker-only tool still uses its docker image
   expect(primaryVersion(dockerfile).version).toBe('2.1.5')
+})
+
+it('packageGuide: templates + browse links per source, no version enumeration', () => {
+  const bioconda = { id: 's', name: 'samtools', versions: [{ version: '1.19', build: 'h0' }, { version: '1.18', build: 'h1' }] }
+  const g = packageGuide(bioconda)
+  expect(g.docker).toBeNull()
+  expect(g.bioconda.versionCount).toBe(2)
+  expect(g.bioconda.browse[0].url).toBe('https://quay.io/repository/biocontainers/samtools?tab=tags')
+  expect(g.bioconda.commands.map((c) => c.kind)).toEqual(['conda', 'docker', 'singularity'])
+  expect(g.bioconda.commands[0].text).toBe('conda install -c bioconda samtools=<version>')
+  expect(g.bioconda.commands[1].text).toBe('docker pull quay.io/biocontainers/samtools:<tag>')
+
+  const dockerfile = { id: 'diann', name: 'diann', versions: [{ version: '1.8.1', docker: 'biocontainers/diann:v1.8.1_cv2' }] }
+  const gd = packageGuide(dockerfile)
+  expect(gd.bioconda).toBeNull()
+  expect(gd.docker.browse[0].url).toBe('https://hub.docker.com/r/biocontainers/diann/tags')
+  expect(gd.docker.commands[0].text).toBe('docker pull biocontainers/diann:<tag>')
+  expect(gd.docker.sif).toBe('https://containers.biocontainers.pro/s3/SingImgsRepo/diann/<tag>/diann_<tag>.sif')
 })

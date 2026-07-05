@@ -41,7 +41,7 @@
               <pre class="code">{{ singularity }}</pre>
             </div>
             <p class="hint">
-              All versions and their pull commands are in the
+              To pull a specific version and browse all available tags, see the
               <a @click="tab = 'containers'">Packages &amp; Containers</a> tab.
             </p>
 
@@ -114,38 +114,57 @@
       </TabPane>
 
       <TabPane label="Packages &amp; Containers" name="containers">
-        <!-- Bioconda packages (recommended). Labelled only when legacy images also exist. -->
-        <h2 v-if="biocondaVersions.length && legacyVersions.length" class="group-label">
-          Bioconda packages <Tag color="green">recommended</Tag>
-        </h2>
-        <div v-for="v in biocondaVersions" :key="`bc-${v.version}`" class="ver-block">
-          <h3>{{ tool.name }} {{ v.version }} <small>{{ v.last_updated }}</small></h3>
-          <div v-for="(c, i) in versionContainers(tool.name, v)" :key="i" class="container-row">
-            <Tag>{{ c.type }}</Tag>
-            <code v-if="c.type === 'docker'">docker pull {{ c.image }}</code>
-            <code v-else-if="c.type === 'singularity'">{{ c.command || `singularity pull ${c.url}` }}</code>
-            <code v-else-if="c.type === 'conda'">{{ c.command }}</code>
+        <p class="tab-intro">
+          Versions and tags are browsed on the source registries. Use the links to find the exact
+          <code>&lt;version&gt;</code> / <code>&lt;tag&gt;</code>, then the templates below to pull it.
+        </p>
+
+        <!-- Bioconda / quay.io. Marked 'recommended' only when a legacy Docker image also exists. -->
+        <div v-if="guide.bioconda" class="src-block">
+          <h2 class="group-label">
+            Bioconda / quay.io
+            <Tag v-if="guide.docker" color="green">recommended</Tag>
+            <span class="src-count">· {{ guide.bioconda.versionCount }} versions</span>
+          </h2>
+          <p class="src-browse">
+            Browse all versions &amp; tags:
+            <a v-for="l in guide.bioconda.browse" :key="l.label" :href="l.url" target="_blank" class="src-link">
+              {{ l.label }} ↗
+            </a>
+          </p>
+          <p class="usage-note">Install a specific version (find the exact <code>&lt;tag&gt;</code> on the tags page above):</p>
+          <div v-for="c in guide.bioconda.commands" :key="c.kind" class="container-row">
+            <Tag>{{ c.kind }}</Tag>
+            <code>{{ c.text }}</code>
           </div>
+          <p class="usage-note">
+            Singularity images:
+            <a :href="guide.bioconda.singularity.url" target="_blank">{{ guide.bioconda.singularity.text }} ↗</a>
+          </p>
         </div>
 
-        <!-- Legacy Docker images. Framed as legacy only when a Bioconda source also exists. -->
-        <div v-if="legacyVersions.length" :class="{ 'legacy-section': biocondaVersions.length }">
-          <template v-if="biocondaVersions.length">
-            <h2 class="group-label">Legacy Docker image</h2>
-            <p class="legacy-note">
-              These are older BioContainers Docker images, not maintained via Bioconda. Prefer the
-              Bioconda packages above; use these only if you specifically need the legacy image.
-            </p>
-          </template>
-          <div v-for="v in legacyVersions" :key="`dh-${v.version}`" class="ver-block">
-            <h3>{{ tool.name }} {{ v.version }} <small>{{ v.last_updated }}</small></h3>
-            <div v-for="(c, i) in versionContainers(tool.name, v)" :key="i" class="container-row">
-              <Tag>{{ c.type }}</Tag>
-              <code v-if="c.type === 'docker'">docker pull {{ c.image }}</code>
-              <code v-else-if="c.type === 'singularity'">{{ c.command || `singularity pull ${c.url}` }}</code>
-              <code v-else-if="c.type === 'conda'">{{ c.command }}</code>
-            </div>
+        <!-- BioContainers Docker image (framed as legacy when a Bioconda source also exists). -->
+        <div v-if="guide.docker" class="src-block" :class="{ 'legacy-section': guide.bioconda }">
+          <h2 class="group-label">
+            {{ guide.bioconda ? 'Legacy Docker image' : 'BioContainers Docker image' }}
+            <span class="src-count">· {{ guide.docker.versionCount }} versions</span>
+          </h2>
+          <p v-if="guide.bioconda" class="legacy-note">
+            Older BioContainers Docker image, not maintained via Bioconda. Prefer the Bioconda
+            package above; use this only if you specifically need the legacy image.
+          </p>
+          <p class="src-browse">
+            Browse all tags:
+            <a v-for="l in guide.docker.browse" :key="l.label" :href="l.url" target="_blank" class="src-link">
+              {{ l.label }} ↗
+            </a>
+          </p>
+          <p class="usage-note">Pull a specific version:</p>
+          <div v-for="c in guide.docker.commands" :key="c.kind" class="container-row">
+            <Tag>{{ c.kind }}</Tag>
+            <code>{{ c.text }}</code>
           </div>
+          <p class="usage-note">Prebuilt Singularity <code>.sif</code> images: <code>{{ guide.docker.sif }}</code></p>
         </div>
       </TabPane>
     </Tabs>
@@ -162,7 +181,7 @@ import {
   condaCommand,
   dockerCommand,
   singularityCommand,
-  versionContainers,
+  packageGuide,
 } from '../lib/containers.js'
 import { parseIdentifier, registryLinks, maintainerUrl, citations } from '../lib/toolLinks.js'
 
@@ -176,12 +195,9 @@ const docker = computed(() => (tool.value ? dockerCommand(tool.value) : null))
 const singularity = computed(() => (tool.value ? singularityCommand(tool.value) : null))
 const identifierLinks = computed(() => (tool.value?.identifiers || []).map(parseIdentifier))
 const toolCitations = computed(() => (tool.value ? citations(tool.value) : []))
-// Split versions by source so Bioconda leads and legacy Docker images are demoted.
-const biocondaVersions = computed(() =>
-  (tool.value?.versions || []).filter((v) => v.build !== undefined && v.build !== null)
-)
-const legacyVersions = computed(() =>
-  (tool.value?.versions || []).filter((v) => v.docker && (v.build === undefined || v.build === null))
+// Per-source "how to pull + where to browse" guide (no version enumeration).
+const guide = computed(() =>
+  tool.value ? packageGuide(tool.value) : { bioconda: null, docker: null }
 )
 
 async function load(id) {
@@ -281,5 +297,26 @@ code {
   font-size: 13px;
   margin: 0 0 14px;
   max-width: 640px;
+}
+.tab-intro {
+  color: #515a6e;
+  margin-bottom: 20px;
+  max-width: 720px;
+}
+.src-block {
+  margin-bottom: 8px;
+}
+.src-count {
+  color: #808695;
+  font-size: 13px;
+  font-weight: normal;
+}
+.src-browse {
+  margin: 6px 0 14px;
+  color: #515a6e;
+}
+.src-link {
+  color: #2d8cf0;
+  margin-left: 10px;
 }
 </style>
