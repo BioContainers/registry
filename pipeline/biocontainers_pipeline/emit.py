@@ -18,6 +18,17 @@ def _identifier(identifiers, prefix):
     return ""
 
 
+_REGISTRY_PRIORITY = ["conda", "quay.io", "singularity", "DockerHub"]
+
+
+def _ordered_registries(t):
+    """Registries with the Bioconda family first so cards lead with the recommended source."""
+    return sorted(
+        t.registries(),
+        key=lambda r: _REGISTRY_PRIORITY.index(r) if r in _REGISTRY_PRIORITY else len(_REGISTRY_PRIORITY),
+    )
+
+
 def search_record(t):
     """Lightweight record for the in-browser index (loaded once for all tools)."""
     rec = {
@@ -25,7 +36,8 @@ def search_record(t):
         "name": t.name,
         "description": t.description,
         "license": t.license,
-        "registries": t.registries(),
+        "registries": _ordered_registries(t),
+        "primary": t.primary_source(),
         "latest_version": t.latest_version(),
         "versionCount": len(t.versions),
     }
@@ -57,6 +69,7 @@ def tool_detail(t):
         "description": t.description,
         "home_url": t.home_url,
         "license": t.license,
+        "primary": t.primary_source(),
         "versions": [_version_out(v) for v in t.versions],
     }
     # Optional enrichment — emitted only when present, to keep files small.

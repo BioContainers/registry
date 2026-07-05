@@ -43,7 +43,16 @@ class Tool:
         return sorted(regs)
 
     def latest_version(self) -> str:
+        # Prefer the newest Bioconda version (maintained/patched) over a legacy
+        # Dockerfile version, even if the Docker version sorts higher by number.
+        for v in self.versions:
+            if v.build is not None:
+                return v.version
         return self.versions[0].version if self.versions else ""
+
+    def primary_source(self) -> str:
+        """'bioconda' when the tool has any Bioconda version, else 'dockerhub'."""
+        return "bioconda" if any(v.build is not None for v in self.versions) else "dockerhub"
 
     def container_count(self) -> int:
         # a bioconda version = docker+singularity+conda (3); a Dockerfile version = 1

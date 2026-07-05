@@ -29,8 +29,17 @@ export function installFlags(tool) {
   return { conda: types.has('conda'), docker: types.has('docker'), singularity: types.has('singularity') }
 }
 
+// A tool's recommended version: the newest Bioconda version if any exists,
+// otherwise the newest version overall (Docker-only tools). This is what the
+// Usage block and default install commands are built from, so tools that also
+// exist in Bioconda steer users there rather than to the legacy Docker image.
+export function primaryVersion(tool) {
+  const versions = tool.versions || []
+  return versions.find((v) => v.build !== undefined && v.build !== null) || versions[0] || null
+}
+
 function latestContainer(tool, type) {
-  const v = (tool.versions || [])[0]
+  const v = primaryVersion(tool)
   if (!v) return null
   return versionContainers(tool.name, v).find((c) => c.type === type) || null
 }

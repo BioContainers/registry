@@ -5,6 +5,7 @@ import {
   condaCommand,
   dockerCommand,
   singularityCommand,
+  primaryVersion,
 } from '../src/lib/containers.js'
 
 const bioconda = { id: 's', name: 's', versions: [{ version: '1.19', build: 'h50ea8bc_0' }] }
@@ -35,4 +36,21 @@ it('installFlags and command helpers', () => {
     'singularity pull https://depot.galaxyproject.org/singularity/s:1.19--h50ea8bc_0'
   )
   expect(singularityCommand(dockerfile)).toBe('singularity pull docker://biocontainers/abyss:2.1.5')
+})
+
+it('prioritizes bioconda: default install uses the bioconda version, not the legacy docker one', () => {
+  // dual-source tool: legacy Docker version sorts on top, bioconda version below
+  const dual = {
+    id: 'abyss', name: 'abyss', primary: 'bioconda',
+    versions: [
+      { version: '2.1.5-7-deb', docker: 'biocontainers/abyss:v2.1.5-7-deb_cv1' }, // legacy, top
+      { version: '2.3.7', build: 'h5b5514e_2' }, // bioconda
+    ],
+  }
+  expect(primaryVersion(dual).version).toBe('2.3.7')
+  // default docker command is the quay.io bioconda image, NOT the legacy DockerHub one
+  expect(dockerCommand(dual)).toBe('docker pull quay.io/biocontainers/abyss:2.3.7--h5b5514e_2')
+  expect(condaCommand(dual)).toBe('conda install -c bioconda abyss=2.3.7')
+  // docker-only tool still uses its docker image
+  expect(primaryVersion(dockerfile).version).toBe('2.1.5')
 })

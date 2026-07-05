@@ -63,7 +63,7 @@
 
             <div class="prop">
               <strong>Versions</strong>
-              <div>{{ tool.versions.length }} · latest {{ tool.versions[0]?.version }}</div>
+              <div>{{ tool.versions.length }} · latest {{ primaryVersion(tool)?.version }}</div>
             </div>
 
             <div class="prop" v-if="tool.license || tool.license_family">
@@ -114,13 +114,37 @@
       </TabPane>
 
       <TabPane label="Packages &amp; Containers" name="containers">
-        <div v-for="v in tool.versions" :key="v.version" class="ver-block">
+        <!-- Bioconda packages (recommended). Labelled only when legacy images also exist. -->
+        <h2 v-if="biocondaVersions.length && legacyVersions.length" class="group-label">
+          Bioconda packages <Tag color="green">recommended</Tag>
+        </h2>
+        <div v-for="v in biocondaVersions" :key="`bc-${v.version}`" class="ver-block">
           <h3>{{ tool.name }} {{ v.version }} <small>{{ v.last_updated }}</small></h3>
           <div v-for="(c, i) in versionContainers(tool.name, v)" :key="i" class="container-row">
             <Tag>{{ c.type }}</Tag>
             <code v-if="c.type === 'docker'">docker pull {{ c.image }}</code>
             <code v-else-if="c.type === 'singularity'">{{ c.command || `singularity pull ${c.url}` }}</code>
             <code v-else-if="c.type === 'conda'">{{ c.command }}</code>
+          </div>
+        </div>
+
+        <!-- Legacy Docker images. Framed as legacy only when a Bioconda source also exists. -->
+        <div v-if="legacyVersions.length" :class="{ 'legacy-section': biocondaVersions.length }">
+          <template v-if="biocondaVersions.length">
+            <h2 class="group-label">Legacy Docker image</h2>
+            <p class="legacy-note">
+              These are older BioContainers Docker images, not maintained via Bioconda. Prefer the
+              Bioconda packages above; use these only if you specifically need the legacy image.
+            </p>
+          </template>
+          <div v-for="v in legacyVersions" :key="`dh-${v.version}`" class="ver-block">
+            <h3>{{ tool.name }} {{ v.version }} <small>{{ v.last_updated }}</small></h3>
+            <div v-for="(c, i) in versionContainers(tool.name, v)" :key="i" class="container-row">
+              <Tag>{{ c.type }}</Tag>
+              <code v-if="c.type === 'docker'">docker pull {{ c.image }}</code>
+              <code v-else-if="c.type === 'singularity'">{{ c.command || `singularity pull ${c.url}` }}</code>
+              <code v-else-if="c.type === 'conda'">{{ c.command }}</code>
+            </div>
           </div>
         </div>
       </TabPane>
@@ -139,6 +163,7 @@ import {
   dockerCommand,
   singularityCommand,
   versionContainers,
+  primaryVersion,
 } from '../lib/containers.js'
 import { parseIdentifier, registryLinks, maintainerUrl, citations } from '../lib/toolLinks.js'
 
@@ -152,6 +177,13 @@ const docker = computed(() => (tool.value ? dockerCommand(tool.value) : null))
 const singularity = computed(() => (tool.value ? singularityCommand(tool.value) : null))
 const identifierLinks = computed(() => (tool.value?.identifiers || []).map(parseIdentifier))
 const toolCitations = computed(() => (tool.value ? citations(tool.value) : []))
+// Split versions by source so Bioconda leads and legacy Docker images are demoted.
+const biocondaVersions = computed(() =>
+  (tool.value?.versions || []).filter((v) => v.build !== undefined && v.build !== null)
+)
+const legacyVersions = computed(() =>
+  (tool.value?.versions || []).filter((v) => v.docker && (v.build === undefined || v.build === null))
+)
 
 async function load(id) {
   tool.value = null
@@ -235,5 +267,20 @@ code {
 }
 .ver-block {
   margin-bottom: 20px;
+}
+.group-label {
+  margin: 8px 0 12px;
+}
+.legacy-section {
+  margin-top: 28px;
+  padding-top: 8px;
+  border-top: 1px solid #dcdee2;
+  opacity: 0.85;
+}
+.legacy-note {
+  color: #808695;
+  font-size: 13px;
+  margin: 0 0 14px;
+  max-width: 640px;
 }
 </style>
