@@ -1,9 +1,7 @@
 <template>
   <div class="content" v-if="tool">
-    <Tabs v-model="tab">
-      <TabPane label="Readme" name="readme">
-        <Row :gutter="40">
-          <Col span="16">
+    <Row :gutter="40">
+      <Col span="16">
             <h1>{{ tool.name }}</h1>
             <p class="desc">{{ tool.description || 'No description available.' }}</p>
             <p class="long-desc" v-if="tool.long_description && tool.long_description !== tool.description">
@@ -40,10 +38,61 @@
               </p>
               <pre class="code">{{ singularity }}</pre>
             </div>
-            <p class="hint">
-              To pull a specific version and browse all available tags, see the
-              <a @click="tab = 'containers'">Packages &amp; Containers</a> tab.
+
+            <h2>Packages &amp; containers</h2>
+            <Divider />
+            <p class="usage-note">
+              Versions and tags are browsed on the source registries. Use the links to find the exact
+              <code>&lt;version&gt;</code> / <code>&lt;tag&gt;</code>, then the templates to pull it.
             </p>
+
+            <!-- Bioconda / quay.io. Marked 'recommended' only when a legacy Docker image also exists. -->
+            <div v-if="guide.bioconda" class="src-block">
+              <h3 class="group-label">
+                Bioconda / quay.io
+                <Tag v-if="guide.docker" color="green">recommended</Tag>
+                <span class="src-count">· {{ guide.bioconda.versionCount }} versions</span>
+              </h3>
+              <p class="src-browse">
+                Browse all versions &amp; tags:
+                <a v-for="l in guide.bioconda.browse" :key="l.label" :href="l.url" target="_blank" class="src-link">
+                  {{ l.label }} ↗
+                </a>
+              </p>
+              <p class="usage-note">Install a specific version (find the exact <code>&lt;tag&gt;</code> on the tags page above):</p>
+              <div v-for="c in guide.bioconda.commands" :key="c.kind" class="container-row">
+                <Tag>{{ c.kind }}</Tag>
+                <code>{{ c.text }}</code>
+              </div>
+              <p class="usage-note">
+                Singularity images:
+                <a :href="guide.bioconda.singularity.url" target="_blank">{{ guide.bioconda.singularity.text }} ↗</a>
+              </p>
+            </div>
+
+            <!-- BioContainers Docker image (framed as legacy when a Bioconda source also exists). -->
+            <div v-if="guide.docker" class="src-block" :class="{ 'legacy-section': guide.bioconda }">
+              <h3 class="group-label">
+                {{ guide.bioconda ? 'Legacy Docker image' : 'BioContainers Docker image' }}
+                <span class="src-count">· {{ guide.docker.versionCount }} versions</span>
+              </h3>
+              <p v-if="guide.bioconda" class="legacy-note">
+                Older BioContainers Docker image, not maintained via Bioconda. Prefer the Bioconda
+                package above; use this only if you specifically need the legacy image.
+              </p>
+              <p class="src-browse">
+                Browse all tags:
+                <a v-for="l in guide.docker.browse" :key="l.label" :href="l.url" target="_blank" class="src-link">
+                  {{ l.label }} ↗
+                </a>
+              </p>
+              <p class="usage-note">Pull a specific version:</p>
+              <div v-for="c in guide.docker.commands" :key="c.kind" class="container-row">
+                <Tag>{{ c.kind }}</Tag>
+                <code>{{ c.text }}</code>
+              </div>
+              <p class="usage-note">Prebuilt Singularity <code>.sif</code> images: <code>{{ guide.docker.sif }}</code></p>
+            </div>
 
             <h2>How to cite</h2>
             <Divider />
@@ -54,8 +103,8 @@
                 <a :href="c.url" target="_blank">{{ c.url.replace('https://doi.org/', 'doi:') }}</a>
               </li>
             </ul>
-          </Col>
-          <Col span="8">
+      </Col>
+      <Col span="8">
             <div class="prop" v-if="tool.total_pulls > 0">
               <strong>Downloads</strong>
               <div>{{ tool.total_pulls.toLocaleString() }}</div>
@@ -111,63 +160,6 @@
             </div>
           </Col>
         </Row>
-      </TabPane>
-
-      <TabPane label="Packages &amp; Containers" name="containers">
-        <p class="tab-intro">
-          Versions and tags are browsed on the source registries. Use the links to find the exact
-          <code>&lt;version&gt;</code> / <code>&lt;tag&gt;</code>, then the templates below to pull it.
-        </p>
-
-        <!-- Bioconda / quay.io. Marked 'recommended' only when a legacy Docker image also exists. -->
-        <div v-if="guide.bioconda" class="src-block">
-          <h2 class="group-label">
-            Bioconda / quay.io
-            <Tag v-if="guide.docker" color="green">recommended</Tag>
-            <span class="src-count">· {{ guide.bioconda.versionCount }} versions</span>
-          </h2>
-          <p class="src-browse">
-            Browse all versions &amp; tags:
-            <a v-for="l in guide.bioconda.browse" :key="l.label" :href="l.url" target="_blank" class="src-link">
-              {{ l.label }} ↗
-            </a>
-          </p>
-          <p class="usage-note">Install a specific version (find the exact <code>&lt;tag&gt;</code> on the tags page above):</p>
-          <div v-for="c in guide.bioconda.commands" :key="c.kind" class="container-row">
-            <Tag>{{ c.kind }}</Tag>
-            <code>{{ c.text }}</code>
-          </div>
-          <p class="usage-note">
-            Singularity images:
-            <a :href="guide.bioconda.singularity.url" target="_blank">{{ guide.bioconda.singularity.text }} ↗</a>
-          </p>
-        </div>
-
-        <!-- BioContainers Docker image (framed as legacy when a Bioconda source also exists). -->
-        <div v-if="guide.docker" class="src-block" :class="{ 'legacy-section': guide.bioconda }">
-          <h2 class="group-label">
-            {{ guide.bioconda ? 'Legacy Docker image' : 'BioContainers Docker image' }}
-            <span class="src-count">· {{ guide.docker.versionCount }} versions</span>
-          </h2>
-          <p v-if="guide.bioconda" class="legacy-note">
-            Older BioContainers Docker image, not maintained via Bioconda. Prefer the Bioconda
-            package above; use this only if you specifically need the legacy image.
-          </p>
-          <p class="src-browse">
-            Browse all tags:
-            <a v-for="l in guide.docker.browse" :key="l.label" :href="l.url" target="_blank" class="src-link">
-              {{ l.label }} ↗
-            </a>
-          </p>
-          <p class="usage-note">Pull a specific version:</p>
-          <div v-for="c in guide.docker.commands" :key="c.kind" class="container-row">
-            <Tag>{{ c.kind }}</Tag>
-            <code>{{ c.text }}</code>
-          </div>
-          <p class="usage-note">Prebuilt Singularity <code>.sif</code> images: <code>{{ guide.docker.sif }}</code></p>
-        </div>
-      </TabPane>
-    </Tabs>
   </div>
   <Spin fix v-else />
 </template>
@@ -187,7 +179,6 @@ import { parseIdentifier, registryLinks, maintainerUrl, citations } from '../lib
 
 const route = useRoute()
 const tool = ref(null)
-const tab = ref('readme')
 
 const flags = computed(() => (tool.value ? installFlags(tool.value) : {}))
 const conda = computed(() => (tool.value ? condaCommand(tool.value) : null))
